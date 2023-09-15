@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_clearFilter"
+        android:orderInCategory="200"
+        android:title="Clear Filter"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="200"
+        android:title="Search"
+        android:icon="@drawable/ic_shortcut_search_on"
+        app:showAsAction="ifRoom"
+        ></item>
+
+</menu>

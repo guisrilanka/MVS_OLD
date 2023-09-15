@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/relativeLayout"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tableHeaderGray"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingTop="1dp">
+
+
+            <TableLayout android:layout_weight="55">
+
+                <TableRow>
+
+                    <LinearLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="15"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvItemNo"
+                            android:background="@color/white"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/blue"
+                            android:textStyle="bold"
+                            android:text="ITM001"
+                            android:gravity="left"
+                            android:paddingLeft="5dp"
+                            android:textSize="14dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent" />
+
+                        <TextView
+                            android:id="@+id/tvItemDesc"
+                            android:background="@color/white"
+                            android:gravity="left"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="5dp"
+                            android:textColor="@color/hockeyapp_text_black"
+                            android:text="Cuttlefish Meat, Fish Meat, Potato  墨鱼丸肉、鱼肉"
+                            android:textSize="13dp"
+                            android:maxLines="5"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tvUom"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="CTN"
+                        android:textColor="@color/hockeyapp_text_black"
+                        android:textSize="13dp"/>
+
+                    <TextView
+                        android:id="@+id/tvUnitPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="$ 200"
+                        android:textColor="@color/hockeyapp_text_black"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/tvStartDate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:text="11-07-2017"
+                        android:padding="5dp"
+                        android:textColor="@color/hockeyapp_text_black"
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tvEndDate"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="11-07-2017"
+                        android:padding="5dp"
+                        android:textColor="@color/hockeyapp_text_black"
+                        android:textSize="10dp"/>
+                </TableRow>
+
+            </TableLayout>
+
+
+        </TableRow>
+
+    </TableLayout>
+</RelativeLayout>

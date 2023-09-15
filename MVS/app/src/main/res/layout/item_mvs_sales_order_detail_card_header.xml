@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+              android:paddingLeft="4dp"
+              android:background="@color/blue"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tableHeaderGray">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="4"
+                android:layout_marginRight="1dp"
+                android:text="No"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="14dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="15"
+                android:layout_marginRight="1dp"
+                android:text="Item"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="14dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="Price ($)"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="14dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="UOM"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="14dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="Bill QTY"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="10"
+                android:text="Total($)"
+                android:textStyle="bold"
+                android:layout_marginRight="1dp"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="10"
+                android:background="@color/blue"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:text="Exch. QTY"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

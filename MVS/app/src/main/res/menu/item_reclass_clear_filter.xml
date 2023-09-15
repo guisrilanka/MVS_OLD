@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_clearEntry"
+        android:orderInCategory="200"
+        android:title="Clear Scan Entry"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        app:showAsAction="never"
+        ></item>
+
+</menu>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:id="@+id/lblDialogHeader"
+        android:layout_height="40dp"
+        android:text="Search"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:background="@color/colorAccent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer Code: "
+            android:layout_weight="1.2"
+            android:textSize="13dp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editFilterCustomerCode"
+            android:layout_weight="1"
+
+            android:padding="5dp"
+            android:background="@drawable/rectangle"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer Name: "
+            android:layout_weight="1.2"
+            android:textSize="13dp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editFilterCustomerName"
+            android:focusable="true"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:background="@drawable/rectangle"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer Price Group: "
+            android:layout_gravity="center"
+            android:layout_weight="1.2"
+            android:textSize="13dp"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/actvPriceGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle"
+            android:padding="5dp"
+            android:maxLines="1"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="Search" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:text="Cancel" />
+
+    </LinearLayout>
+</LinearLayout>

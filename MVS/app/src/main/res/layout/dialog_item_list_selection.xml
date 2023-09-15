@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="Search Item"
+        android:textSize="22sp" />
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/lblItemCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Code"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/lblItemDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="70dp"
+                    android:gravity="center_vertical"
+                    android:text="Description"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblNoData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:visibility="gone" />
+
+            <ListView
+                android:id="@+id/itemList"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/editFilterItemDescription"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="Filter Item Desc."
+                android:paddingLeft="12dp" />
+
+            <Button
+                android:id="@+id/btnClearText3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_clear" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/editFilterItemCode"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="Filter Item Code"
+                android:paddingLeft="12dp" />
+
+            <Button
+                android:id="@+id/btnClearText2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_clear" />
+
+        </LinearLayout>
+
+        <!--<TextView-->
+        <!--android:textColor="#000000"-->
+        <!--android:textSize="17dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Description: "/>-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <EditText
+                android:id="@+id/editFilterItemCategory"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:hint="Filter Item Category"
+                android:paddingLeft="12dp" />
+
+            <Button
+                android:id="@+id/btnClearText1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_clear" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Confirm"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="14dp"
+            android:background="@color/colorAccent"
+            android:text="Search" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="30dp"
+            android:background="@android:color/darker_gray"
+            android:text="Cancel" />
+
+    </LinearLayout>
+
+</LinearLayout>

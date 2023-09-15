@@ -1,0 +1,17 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item android:id="@+id/action__downloadImages"
+          android:title="Download Images"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/action_transfer_stock"
+        android:title="Transfer Stock"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_resetQty"
+          android:title="Print &#38; Unload Stock"
+          app:showAsAction="never"/>
+
+
+</menu>

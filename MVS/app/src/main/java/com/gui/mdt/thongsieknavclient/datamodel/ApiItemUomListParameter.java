@@ -1,0 +1,55 @@
+package com.gui.mdt.thongsieknavclient.datamodel;
+
+/**
+ * Created by nelin_000 on 08/16/2017.
+ */
+
+public class ApiItemUomListParameter {
+    private String UserCompany;
+    private String UserName;
+    private String Password;
+    private String FilterItemCode;
+    private String FilterLastModifiedDate;
+
+    public ApiItemUomListParameter(){}
+
+    public String getUserCompany() {
+        return UserCompany;
+    }
+
+    public void setUserCompany(String userCompany) {
+        UserCompany = userCompany;
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public String getFilterItemCode() {
+        return FilterItemCode;
+    }
+
+    public void setFilterItemCode(String filterItemCode) {
+        FilterItemCode = filterItemCode;
+    }
+
+    public String getFilterLastModifiedDate() {
+        return FilterLastModifiedDate;
+    }
+
+    public void setFilterLastModifiedDate(String filterLastModifiedDate) {
+        FilterLastModifiedDate = filterLastModifiedDate;
+    }
+}

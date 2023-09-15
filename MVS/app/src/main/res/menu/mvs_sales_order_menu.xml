@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorAccent">
+
+    <item android:id="@+id/action_void"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Void"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_cusInfo"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Customer Info"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_cusInvoice"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Customer Invoice"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_draftPrint"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Print Draft"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_takePhoto"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Take Picture"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_cusPrint"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Confirm &#38; Print"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_qr"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Scan QR"
+        app:showAsAction="never"/>
+
+</menu>

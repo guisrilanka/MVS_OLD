@@ -1,0 +1,434 @@
+<resources>
+    <string name="app_name">MVS</string>
+
+    <!--UAT-->
+    <!--    <string name="api_server">http://58.185.119.44:9050/</string>-->
+    <!--    //uat-->
+<!--    <string name="api_server">http://thongsiek.dyndns.biz:9020/</string>-->
+    <!--    live-->
+<string name="api_server">http://thongsiek.dyndns.biz:9060/</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_company">Company</string>
+    <string name="prompt_user_name">User Name</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>♠
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_general_setting">Settings</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too sh♠ort</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_incorrect_user_and_password">Incorrect user name and password.</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_general_settings">Settings</string>
+
+    <!--  General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_api_server_display_name">NAV Service Broker Server</string>
+    <string name="pref_remember_user_name_display_name">Remember User Name</string>
+    <string name="pref_remember_user_password">Remember Password</string>
+    <string name="pref_api_server_key">pref_api_server</string>
+    <string name="pref_gst_percentage_key">pref_gst_percentage_key</string>
+    <string name="pref_remember_user_name_key">pref_remember_user_name</string>
+    <string name="pref_remember_password_key">pref_remember_password</string>
+    <string name="pref_select_printer_key">pref_select_printer</string>
+    <string name="pref_update_sync_running_no">pref_update_sync_running_no</string>
+    <string name="pref_update_sync_running_no_display_name">Update Running No From Server</string>
+    <string name="pref_last_user_name">pref_last_user_name</string>
+    <string name="pref_last_logging_year">pref_last_logging_year</string>
+    <string name="pref_last_user_password">pref_last_user_password</string>
+    <string name="title_activity_dash_board">DashBoardActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_testgtet_settings">Settings</string>
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="notification_msg_no_permission_access_selected_company">You have no permission to access the selected company.</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+
+    <string name="pref_no_of_si_printouts">No Of Invoice Printouts</string>
+    <string name="default_no_of_si_printouts">2</string>
+    <string name="pref_no_of_si_printouts_key">pref_no_of_si_printouts</string>
+
+    <string name="module_mso">MSO</string>
+    <string name="module_mvs">MVS</string>
+    <string name="module_lds">LDS</string>
+    <string name="SyncScopeDownloadCustomer">SYNC_DL_CUSTOMER</string>
+    <string name="SyncScopeDownloadCustomerSalesCodes">SYNC_DL_SALES_CODE</string>
+    <string name="SyncScopeDownloadCustomerTemplate">SYNC_DL_CUS_TEMPLATE</string>
+    <string name="SyncScopeDownLoadItem">SYNC_DL_ITEM</string>
+    <string name="SyncScopeDownLoadItemCrossRef">SYNC_DL_ITEM_CROSS_REF</string>
+    <string name="SyncScopeDownLoadItemCategory">SYNC_DL_ITEM_CATEGORY</string>
+    <string name="SyncScopeDownLoadItemUom">SYNC_DL_ITEM_UOM</string>
+    <string name="SyncScopeDownLoadGst">SYNC_DL_GST</string>
+    <string name="SyncScopeDownLoadSalesPrice">SYNC_DL_SALES_PRICE</string>
+    <string name="SyncScopeDownLoadSO">SYNC_DL_SO</string>
+    <string name="SyncScopeDownLoadSR">SYNC_DL_SR</string>
+    <string name="SyncScopeDownLoadSRLine">SYNC_DL_SR_LINEe</string>
+    <string name="SyncScopeUploadSO">SYNC_UP_SO</string>
+    <string name="SyncScopeUploadSI">SYNC_UP_SI</string>
+    <string name="SyncScopeDownItemBalance">SYNC_DL_ITEM_BALANCE</string>
+    <string name="SyncScopeUploadRunningNos">SYNC_UP_RUNNING_NOS</string>
+    <string name="SyncScopeUploadPayment">SYNC_UP_PAYMENT</string>
+    <string name="SyncScopeSoDeliveryFlag">SYNC_UP_DELIVERY_FLAG</string>
+    <string name="SyncScopePdf">SYNC_UP_PDF</string>
+    <string name="SyncScopeSendEmail">SYNC_SEND_EMAIL</string>
+    <string name="SalesOrderStatusPending">0</string>
+    <string name="SalesOrderStatusConfirmed">1</string>
+    <string name="SalesOrderStatusComplete">2</string>
+    <string name="SalesOrderStatusDelivery">3</string>
+    <string name="SalesPaymentStatusPending">0</string>
+    <string name="SalesPaymentStatusConfirmed">1</string>
+    <string name="PaymentTypeCash">0</string>
+    <string name="PaymentTypeCheque">1</string>
+    <string name="Country">Singapore</string>
+    <string name="mobile">Mobile</string>
+    <string name="StockTransferIn">IN</string>
+    <string name="StockTransferOut">OUT</string>
+    <string name="StockTransferStatusPending">0</string>
+    <string name="StockTransferStatusConfirmed">1</string>
+    <string name="StockTransferStatusComplete">2</string>
+    <string name="SyncScopeUploadSOImage">SYNC_UP_SO_IMAGE</string>
+    <string name="SyncScopeUploadSR">SYNC_UP_SR</string>
+    <string name="SyncScopeCreateStockBalSumPdf">SYNC_CREATE_STOCK_BAL_SUMMARY_PDF</string>
+    <string name="SyncScopeDownLoadItemImage">SYNC_DL_ITEM_IMAGE</string>
+
+    <string name="StockRequestStatusPending">0</string>
+    <string name="StockRequestStatusConfirmed">1</string>
+    <string name="StockRequestStatusComplete">2</string>
+
+    <string name="MVSSalesOrderStatusPending">0</string>
+    <string name="MVSSalesOrderStatusConfirmed">1</string>
+    <string name="MVSSalesOrderStatusComplete">2</string>
+    <string name="MVSSalesOrderStatusConverted">3</string>
+    <string name="MVSSalesOrderStatusVoid">4</string>
+
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="searching">Searching item details..</string>
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_purchase_order">Purchase Order</string>
+    <string name="title_activity_grn">Purchase Receipt</string>
+    <string name="title_activity_transfer_in">Transfer In</string>
+    <string name="title_activity_transfer_out">Transfer Out</string>
+    <string name="title_activity_production_paste_group">Prod. Semi-Finished</string>
+    <string name="title_activity_delivery">Delivery</string>
+    <string name="title_activity_warehouse_shipment">Warehouse Shipment</string>
+    <string name="title_activity_production_finishedgoods">Production Finished Goods</string>
+    <string name="underline_production_date">Production Date</string>
+    <string name="underline_expiry_date">Expiry Date</string>
+    <string name="underline_qty_received">Quantity</string>
+    <string name="underline_lot_number">Lot Number</string>
+    <string name="title_activity_grnorder_detail_lot_entry">GRNOrderDetailLotEntryActivity</string>
+    <string name="title_activity_transfer_in_line">TransferInLineActivity</string>
+    <string name="title_activity_warehouse_shipment_line">WarehouseShipmentLineActivity</string>
+    <string name="title_activity_production_paste_group_bom">ProductionPasteGroupBOMActivity
+    </string>
+    <string name="title_activity_production_finished_goods">ProductionFinishedGoodsActivity</string>
+    <string name="title_activity_item_reclass_line">Item Reclass Line</string>
+
+    <!-- Notification Messages -->
+    <string name="notification_title_error">ERROR</string>
+    <string name="notification_msg_unable_to_retrieve">Unable to retrieve company list. Please check internet connection and server endpoint! </string>
+    <string name="notification_title_no_connection">NO INTERNET CONNECTION</string>
+    <string name="notification_msg_no_connection">Unable to connect to server. Please check your internet connection and retry.</string>
+    <string name="notification_msg_no_company">There is no company selected. Please reload.</string>
+    <string name="notification_title_no_permission">NO PERMISSION</string>
+    <string name="notification_msg_no_permission">You have no permission to use this app.</string>
+    <string name="notification_msg_server_no_response">No response from server. Please check internet connection and whether server is online.</string>
+    <string name="notification_title_quantity_exceeds">Invalid Quantity</string>
+    <string name="notification_msg_quantity_exceeds">Quantity exceeds lot remaining quantity.</string>
+    <string name="notification_msg_quantity_exceeds_available">Quantity exceeds lot available quantity.</string>
+    <string name="notification_title_clear_invalid">Clear Entry</string>
+    <string name="notification_msg_clear_invalid">Quantity is zero. Nothing to clear.</string>
+    <string name="notification_title_invalid_lotno">Invalid Lot No</string>
+    <string name="notification_msg_invalid_lotno">Lot No. does not belong to this order</string>
+    <string name="notification_title_confirmation">Confirmation</string>
+    <string name="notification_msg_confirmation">Are you sure want to post the order?</string>
+    <string name="notification_msg_confirmation_stock_take">Are you sure want to post the stock take?</string>
+    <string name="notification_msg_confirmation_item_reclass">Are you sure want to post the item reclass?</string>
+    <string name="notification_msg_no_item_found">No Item Found!</string>
+    <string name="notification_title_routing_missing_fields">MISSING FIELDS</string>
+    <string name="notification_msg_routing_missing_fields">Please enter both Routing and Operation No.</string>
+    <string name="notification_msg_confirmation_force_sync">Are you sure want to sync data?\n
+                                                            This process will take time to complete.</string>
+    <string name="notification_msg_confirmation_image_sync">Are you sure want to download?\n
+                                                            This process will take time to complete.</string>
+
+    <string name="notification_msg_confirmation_item_reset">Are you sure want to reset item balances?\nThis process will take time to complete.</string>
+    <string name="test_user">user02</string>
+    <string name="test_password">P@ssw0rd1</string>
+
+    <!-- TextView strings-->
+    <string name="no_data">There is no data to display</string>
+    <string name="title_activity_production_finished_goods_routing">
+        ProductionFinishedGoodsRoutingActivity
+    </string>
+    <string name="title_activity_production_finished_goods_bom">ProductionFinishedGoodsBOMActivity
+    </string>
+    <string name="scrapQty">0.0</string>
+    <string name="OutputQty">0.0</string>
+    <string name="post">post</string>
+
+    <!--New Added-->
+    <!--ItemReclass-->
+    <string name="edit">Edit Item</string>
+    <string name="contScan">Continue Scan</string>
+    <string name="underline_qty_based">Quantity Base</string>
+    <string name="underline_doc_no">Document No. </string>
+    <string name="title_activity_item_reclass">Item Reclass</string>
+    <string name="notification_title_confirmation_item_exist">Item Exist</string>
+    <string name="notification_msg_confirmation_item_exist">Do you want to continue scanning?</string>
+
+    <!--Stock Take-->
+    <string name="title_activity_stock_take">Stock Take</string>
+    <string name="dummy_docno">Doc No.: </string>
+    <string name="dummy_loc">Loc: </string>
+    <string name="dummy_new_loc">New Loc: </string>
+    <string name="dummy_bin">Bin: </string>
+    <string name="dummy_new_bin">New Bin: </string>
+    <string name="dummy_posting_date">Post. Date: </string>
+    <string name="dummy_qty_base">Qty Base: </string>
+    <string name="dummy_creator">Created By: </string>
+    <string name="dummy_item_description"></string>
+    <string name="dummy_item_no_uom">Item No.: / Uom: </string>
+    <string name="dummy_qty_to_transfer">Qty to trn: </string>
+    <string name="dummy_lot_no">Lot No: </string>
+
+    <string name="scan_2D_code_text">Scan 2D Code</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="add_new_stock_take_line_text">Add New Stock Take Line</string>
+    <string name="add_new_item_reclass_header_text">New Item Reclass Header</string>
+    <string name="location_short_text">Loc: </string>
+    <string name="new_location_short_text">New Loc: </string>
+    <string name="bin_text">Bin: </string>
+    <string name="new_bin_text">New Bin: </string>
+    <string name="qty_short_text">Qty: </string>
+    <string name="quantity_short_text">Qty</string>
+    <string name="qty_hint">Quantity</string>
+    <string name="item_no_text">Item No: </string>
+    <string name="item_no_hint">Item Number</string>
+    <string name="qty_based_text">Qty Based: </string>
+    <string name="production_date_short_text">Prod Date</string>
+    <string name="expiry_date_short_text">Exp. Date</string>
+    <string name="lot_no_text">Lot No.</string>
+    <string name="add_entry_text">Add Entry</string>
+    <string name="scan_text">SCAN</string>
+    <string name="carton_label_text">Carton Label</string>
+    <string name="pallet_label_text">Pallet Label(R)</string>
+    <string name="print_label_text">Print Label</string>
+    <string name="vendor_shipment_text">Vendor Shipment No</string>
+
+    <string name="doc_no_lbltxt">Doc No: </string>
+    <string name="loc_lbltxt">Loc: </string>
+    <string name="new_loc_lbltxt">New Loc: </string>
+    <string name="post_date_lbltxt">Post Date: </string>
+    <string name="item_no_lbltxt">Item No: </string>
+    <string name="qty_lbltxt">Qty: </string>
+    <string name="qty_based_lbltxt">Qty Based: </string>
+
+    <string name="location_hint">Location</string>
+    <string name="not_allowed_to_edit">Not allowed to edit!</string>
+
+    <string name="list_type">listType</string>
+    <string name="module">module</string>
+
+    <string name="sales_order_jason_obj">salesOrderJasonObj</string>
+    <string name="customer_json_obj">customerJasonObj</string>
+    <string name="sales_order_line_obj">salesOrderLineObj</string>
+    <string name="item_json_obj">itemJsonObj</string>
+    <string name="stock_transfer_request">objStockTransferRequest</string>
+    <string name="stock_transfer_request_line">objStockTransferRequestLine</string>
+    <string name="stock_request_jason_obj">stockRequestJasonObj</string>
+    <string name="stock_request_line_jason_obj">stockRequestLineJasonObj</string>
+
+    <string name="date_format_dd_MM_yyyy">dd-MM-yyyy</string>
+    <string name="date_format_yyyy_MM_dd">yyyy-MM-dd</string>
+    <string name="date_format_yyyy_MM_dd_HH_mm_ss">yyyy-MM-dd HH.mm.ss</string>
+    <string name="time_zone_gmt">GMT</string>
+    <string name="double_amount_zero">0.0</string>
+
+    <string name="is_search_pop_up_need">isSearchPopUpNeed</string>
+    <string name="key_so">SO/</string>
+    <string name="key_sr">SR/</string>
+    <string name="form_name_mso_sales_order">MsoSalesOrder</string>
+    <string name="form_name_mvs_stock_transfer_in">MvsStockTransferIn</string>
+    <string name="form_name_mvs_stock_transfer_out">MvsStockTransferOut</string>
+    <string name="stock_transfer_in_prefixes">TI</string>
+    <string name="stock_transfer_out_prefixes">TO</string>
+    <string name="form_name_mvs_stock_Request">MvsStockRequest</string>
+    <string name="stock_request_prefixes">RQ</string>
+    <string name="form_name_mvs_sales_order">MvsSalesOrder</string>
+
+    <string name="intent_extra_form_name">formName</string>
+    <string name="intent_extra_details">details</string>
+    <string name="intent_extra_add_customer">AddCustomer</string>
+    <string name="adapter_position">adapterPosition</string>
+
+    <string name="mso_new_sales_order">MsoNewSalesOrder</string>
+    <string name="mvs_new_stock_transfer">MvsNewStockTransfer</string>
+    <!--<string name="mvs_new_stock_transfer_out">MvsNewStockTransferOut</string>-->
+    <string name="progress_dialog__status_loading">Loading...</string>
+    <string name="intent_extra_add_new_item">AddNewItem</string>
+    <string name="mvs_new_stock_request">MvsNewStockRequest</string>
+    <string name="mvs_new_sales_order">MvsNewSalesOrder</string>
+
+    <string name="button_text_yes">Yes</string>
+    <string name="button_text_no">No</string>
+    <string name="button_text_ok">Ok</string>
+    <string name="message_exception">Exception :</string>
+    <string name="message_title_alert">Alert</string>
+    <string name="message_body_select_customer">Please select a customer first</string>
+    <string name="message_body_invalid_barcode">Invalid barcode</string>
+    <string name="message_body_select_delivery_date">Please select delivery date</string>
+    <string name="message_updated_successfully">Updated Successfully!</string>
+    <string name="message_failed">Failed!</string>
+    <string name="message_add_at_least_one_item">Please add at least one item!</string>
+    <string name="message_Minimum_sales_amount_validation">Grand Total should be greater than minimum sales amount</string>
+    <string name="message_item_qty_will_be_cleared">Item Qty will be cleared. Are you sure?</string>
+    <string name="message_cleared">Cleared!</string>
+    <string name="message_so_added">SO ADDED: </string>
+    <string name="message_so_line_added">SO_LINE ADDED: </string>
+    <string name="message_void_sale_invoice">VOID_SALE_INVOICE: </string>
+    <string name="message_confirm_and_print">CONFIRM_AND_PRINT: </string>
+    <string name="message_invalid_date">Invalid date!</string>
+    <string name="message_customer_blocked">Sorry! Customer is blocked</string>
+    <string name="message_customer_added">Customer added</string>
+    <string name="message_qty_updated">Quantity updated!</string>
+    <string name="message_item_added">Item added</string>
+    <string name="message_body_select_stock_transfer_in_date">Please select stock Transfer in date</string>
+    <string name="message_st_added">STI_ADDED: </string>
+    <string name="message_st_line_added">STI_LINE ADDED: </string>
+    <string name="message_Customer_Ar">No Customer AR</string>
+    <string name="message_item_price_change">Item prices might be changed according to the delivery date. Are you sure?</string>
+    <string name="message_remove_item">Do you want to remove this item?</string>
+    <string name="message_item_not_found">Item not found!</string>
+    <string name="message_updated">updated!</string>
+    <string name="message_changing_customer_will_refresh_stock_items">Changing the customer will refresh stock request items. Are you sure?</string>
+    <string name="message_total_qty_cant_be_negative">Total quantity can not be negative!</string>
+    <string name="message_deleted_so_line">DELETED SOLINE:</string>
+    <string name="message_ask_log_out">Are you sure want to log out?</string>
+    <string name="message_so_unable_to_convert_vcl_bal_qty">Sales order is unable to convert. Following items have exceeded the vehicle balance quantity</string>
+    <string name="message_converted_success">Converted successfully!</string>
+    <string name="message_so_unable_to_save_vcl_bal_qty">Sales order is unable to save. Following items have exceeded the vehicle balance quantity</string>
+    <string name="message_voided_success">Voided successfully!</string>
+    <string name="message_ask_so_delete">Do you want to delete this sales order?</string>
+    <string name="message_not_allow_delete">Not allow to delete!</string>
+    <string name="message_deleted">Deleted!</string>
+    <string name="message_total_sale_qty_greater_then_zero">Total Sales quantity must be greater than zero!</string>
+
+    <string name="sales_item_status_unblocked">0</string>
+
+    <string name="message_sr_added">SR ADDED: </string>
+    <string name="message_sr_line_added">SR_LINE ADDED: </string>
+    <string name="hash_symbol">#</string>
+    <string name="delivery_date">deliveryDate</string>
+    <string name="exist_sales_order_line_jason_obj">existSalesOrderLineJasonObj</string>
+    <string name="decimal_two_places">%.2f</string>
+    <string name="dollar_mark">$</string>
+    <string name="minus_symbol">-</string>
+    <string name="customer_detail_object">_customerDetailObject</string>
+    <string name="status_transfered">1</string>
+    <string name="customerNotBlocked">0</string>
+
+    <string name="notification_btn_txt_print">Print</string>
+    <string name="notification_btn_txt_unload">Unload</string>
+
+    //baroce
+    <string name="ok">OK</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="permission_camera">This app needs camera permission to scan barcode</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="title_activity_main">Barcode Reader Sample</string>
+    <string name="barcode_header">Click &quot;Read Barcode&quot; to read a barcode</string>
+    <string name="read_barcode">Read Barcode</string>
+    <string name="auto_focus">Auto Focus</string>
+    <string name="use_flash">Use Flash</string>
+    <string name="barcode_success">Barcode read successfully</string>
+    <string name="barcode_failure">No barcode captured</string>
+    <string name="barcode_error">"Error reading barcode: %1$s"</string>
+    <string name="grant">GRANT</string>
+    <string name="cancel">CANCEL</string>
+    <string name="no_qr_code_to_scan">No QR code to scan</string>
+
+
+    <string name="mapbox_access_code">pk.eyJ1IjoibWFkaHVzaGFua2FsYXNpdGhhIiwiYSI6ImNrOTE0cTIxeTA2NDYzaHA2ajNuNGs4eHMifQ.TfWtqg8mLdtZDPx_u5ARHA</string>
+
+    //datecs printer
+    <string name="msg_failed_to_connect">Failed to establish connection</string>
+    <string name="msg_failed_to_init">Failed to init printer</string>
+    <string name="msg_failed_to_print_self_test">Failed to print self test</string>
+    <string name="msg_failed_to_print_text">Failed to print text</string>
+    <string name="msg_failed_to_print_image">Failed to print image</string>
+    <string name="msg_failed_to_print_page">Failed to print page</string>
+    <string name="msg_failed_to_print_barcode">Failed to print barcode</string>
+    <string name="msg_failed_to_read_card">Failed to read card</string>
+    <string name="msg_failed_to_read_barcode">Failed to read barcode</string>
+
+    <string name="msg_connecting">Connecting to device&#8230;</string>
+
+    <string name="title_please_wait">Please wait</string>
+    <string name="card_info">Card information</string>
+    <string name="barcode">Barcode</string>
+    <string name="card_no">Card#</string>
+    <string name="holder">Holder</string>
+    <string name="exp_date">Exp date</string>
+    <string name="no_card_read">No card information read</string>
+    <string name="msg_reading_barcode">Reading barcode&#8230;</string>
+    <string name="msg_reading_magstripe">Reading magnetic card&#8230;</string>
+    <string name="msg_low_battery">Low battery</string>
+    <string name="msg_check_bluetooth_connection">Check your bluetooth connection</string>
+    <string name="msg_no_paper">No paper</string>
+    <string name="msg_paper_ready">Paper ready</string>
+    <string name="msg_overheated">Overheated</string>
+    <string name="msg_read_card">Read card</string>
+    <string name="msg_read_encrypted_card">Read encrypted card</string>
+    <string name="msg_read_barcode">Read barcode</string>
+    <string name="select_default_printer">Select default printer</string>
+    <string name="printer_honeywell">Honeywell</string>
+    <string name="print_successfully">Print successfully</string>
+
+</resources>

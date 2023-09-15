@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:background="@color/colorAccent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Print Summary"
+        android:layout_weight="1"
+        android:textColor="@android:color/black"
+        android:textSize="22sp" />
+<FrameLayout
+    android:clickable="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|center">
+
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/btnclose"
+        android:layout_marginRight="10dp"/>
+</FrameLayout>
+
+</LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/layoutStatus"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Summary: "
+            android:textColor="@android:color/black" />
+
+        <FrameLayout
+            android:id="@+id/cmbStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true">
+
+            <Spinner
+                android:id="@+id/spinnerStatus"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/rectangle"
+                android:padding="5dp"
+                android:spinnerMode="dropdown" />
+
+            <ImageView
+                android:id="@+id/imgstatus"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="end"
+                android:background="@drawable/down_arrow"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"/>
+        </FrameLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutSalesOrderNo"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/lblSalesOrderNo"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"/>
+
+        <FrameLayout
+            android:id="@+id/btncalender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/txtDeliveryDate"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/rectangle"
+                android:gravity="center_vertical"
+                android:paddingLeft="13dp"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/imgDeliveryDate"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="end"
+                android:background="@drawable/calender"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="3dp"/>
+        </FrameLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <Button
+            android:id="@+id/btnemail"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="-5dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:text="EMAIL" />
+
+        <Button
+            android:id="@+id/btnprint"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="PRINT" />
+
+    </LinearLayout>
+
+</LinearLayout>

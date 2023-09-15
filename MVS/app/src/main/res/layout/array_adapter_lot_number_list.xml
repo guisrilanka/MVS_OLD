@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/lblLotNo"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:paddingLeft="30dp"
+        android:gravity="center_vertical"
+        android:text="2016080300001"
+        android:textColor="#000000"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/lblLotQuantity"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="30dp"
+        android:gravity="center_vertical"
+        android:text="57000.01"
+        android:textColor="#000000"
+        android:textSize="14sp"/>
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+</LinearLayout>

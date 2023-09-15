@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Print Summary"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+        <FrameLayout
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center">
+
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/btnclose"
+                android:layout_marginRight="10dp"/>
+        </FrameLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Summary : "
+                android:layout_weight="2"/>
+
+            <FrameLayout
+                android:id="@+id/cmbStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/spinnerStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle"
+                    android:padding="5dp"
+                    android:spinnerMode="dropdown" />
+
+                <ImageView
+                    android:id="@+id/imgstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/down_arrow"/>
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/layoutStatus"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+
+            <TextView
+                android:textColor="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date :"
+                android:layout_weight="2"/>
+
+            <FrameLayout
+                android:id="@+id/btncalender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/txtDeliveryDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle"
+                    android:padding="5dp"
+                    android:textColor="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/imgDeliveryDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/calender"/>
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <Button
+                android:id="@+id/btnemail"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/colorAccent"
+                android:layout_alignParentLeft="true"
+                android:text="Email"
+                android:visibility="visible" />
+
+            <Button
+                android:layout_marginLeft="30dp"
+                android:id="@+id/btnprint"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/colorAccent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_gravity="right"
+                android:text="Print"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

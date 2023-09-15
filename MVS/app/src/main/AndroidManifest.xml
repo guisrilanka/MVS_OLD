@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.gui.mdt.thongsieknavclient">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:name=".NavClientApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/appslogo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme">
+
+
+        <meta-data
+            android:name="net.hockeyapp.android.appIdentifier"
+            android:value="${HOCKEYAPP_APP_ID}" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="thong_siek.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="38" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.gui.mdt.thongsieknavclient.model.sugarmodels" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.MapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".ui.GeneralSettingsActivity"
+            android:label="@string/title_activity_general_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.DashBoardActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PurchaseOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PurchaseOrderLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PurchaseOrderLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.GRNOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.GRNOrderLineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.GRNOrderLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TransferOutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.TransferOutLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.TransferOutLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.TransferInActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.TransferInLineActivity"
+            android:label="@string/title_activity_transfer_in_line"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.TransferInLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.WarehouseShipmentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.WarehouseShipmentLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.WarehouseShipmentLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ProductionPasteGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ProductionPasteGroupBOMActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ProductionPasteGroupBOMLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ProductionPasteGroupRoutingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ProductionFinishedGoodsActivity"
+            android:label="@string/title_activity_production_finished_goods"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ProductionFinishedGoodsRoutingActivity"
+            android:label="@string/title_activity_production_finished_goods_routing"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ProductionFinishedGoodsBOMActivity"
+            android:label="@string/title_activity_production_finished_goods_bom"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ProductionFinishedGoodsBOMLotEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.ProductionFinishedGoodsRoutingLotEntryActivity" />
+        <activity android:name=".ui.ProductionPasteGroupRoutingLotEntryActivity" /> <!-- New Added -->
+        <activity
+            android:name=".ui.AddNewItemReclassificationHeaderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- android:theme="@style/AppTheme.NoActionBar" -->
+        <activity
+            android:name=".ui.AddNewItemReclassificationLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- android:theme="@style/AppTheme.NoActionBar" -->
+        <activity
+            android:name=".ui.AddNewStockTakeLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Item Reclassification -->
+        <activity
+            android:name=".ui.ItemReclassificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ItemReclassificationLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ItemReclassificationLotEntryActivity"
+            android:screenOrientation="portrait" /> <!-- Stock Take -->
+        <activity
+            android:name=".ui.StockTakeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.StockTakeLineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.StockTakeLotEntryActivity"
+            android:screenOrientation="portrait" /> <!-- Sale Order -->
+        <activity
+            android:name=".ui.MsoHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LdsHomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MsoSalesOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesItemSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesItemDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MsoSalesOrderListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MsoPaymentListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesCustomerListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesCustomerDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MsoSalesOrderItemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name=".ui.MsoPaymentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsStockRequestListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsStockRequestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.MvsSalesOrderListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsSalesOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.SalesCustomerArActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesCustomerInvoiceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LdsSalesInvoiceListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LdsSalesInvoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LdsPaymentListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.LdsPaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsSalesOrderItemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsStockTransferItemActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesCustomerPriceList"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsStockTransferRequestListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsStockTransferRequestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MsoTakePictureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesCustomerInvoiceDetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PrintSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name=".ui.MsoCustomerPriceListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SalesCustomerArSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PrintInvoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintInvoiceOnRP4Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintInvoiceSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintInvoiceSummaryRP4Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintStockBalanceSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintStockBalanceSummaryRP4Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.EmailStockBalanceSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintSalesOrderDraftActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PrintSalesOrderDraftRP4Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.EmailInvoiceSummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ScanQrActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+    </application>
+
+</manifest>

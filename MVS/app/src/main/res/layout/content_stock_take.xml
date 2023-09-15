@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="3dp"
+    android:background="#ebebe0"
+    tools:context="com.gui.mdt.thongsieknavclient.ui.ItemReclassificationLineActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_stock_take">
+
+    <TextView
+        android:id="@+id/lblNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:text="@string/no_data"
+        android:visibility="invisible"/>
+
+    <ListView
+        android:layout_marginTop="7dp"
+        android:id="@+id/orderList"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"></ListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@id/orderList"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:id="@+id/btnPost"
+        android:text="@string/post"
+        android:textSize="12sp"
+        android:background="@android:color/holo_blue_light"/>
+
+</RelativeLayout>

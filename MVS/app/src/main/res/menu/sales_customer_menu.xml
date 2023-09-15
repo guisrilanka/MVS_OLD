@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorAccent">
+
+    <item android:id="@+id/action_cusAr"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Customer AR"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_cusInvoice"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Customer Invoice"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_cusPriceList"
+          android:icon="@drawable/ic_shortcut_clear_on"
+          android:title="Customer Price List"
+          app:showAsAction="never"/>
+
+
+</menu>

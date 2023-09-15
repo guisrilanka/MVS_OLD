@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.gui.mdt.thongsieknavclient.ui.MsoPaymentListActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_lds"
+            android:layout_width="match_parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/MenuBarTheme">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvSalesOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:text="Payment Collection List"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/btnSearch"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/icon_search8"
+                        android:gravity="right" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/graybgcolor"
+        tools:context="com.journaldev.customlistview.MainActivity"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/activity_mso_sales_order">
+
+        <!-- <ListView
+             android:id="@+id/listView1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:dividerHeight="5px"
+             />-->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout android:id="@+id/lllist1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <include layout="@layout/item_sales_payment_card"/>
+                </LinearLayout>
+
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card"/>
+                <include layout="@layout/item_sales_payment_card_selected"/>
+                <include layout="@layout/item_sales_payment_card_selected"/>
+                <include layout="@layout/item_sales_payment_card_selected"/>
+                <include layout="@layout/item_sales_payment_card_selected"/>
+                <include layout="@layout/item_sales_payment_card_selected"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+   <!-- <android.support.design.widget.FloatingActionButton
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />-->
+
+</android.support.design.widget.CoordinatorLayout>
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_content_item_reclass"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lgray"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="3dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.gui.mdt.thongsieknavclient.ui.ItemReclassificationLineActivity"
+    tools:showIn="@layout/activity_item_reclassification">
+
+    <TextView
+        android:id="@+id/lblNoData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_data"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:visibility="invisible" />
+
+    <ListView
+        android:id="@+id/orderList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="7dp"></ListView>
+
+</RelativeLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dashboard_grid_rows_images">
+        <item>@drawable/android_cart</item>
+        <item>@drawable/android_box</item>
+        <item>@drawable/android_out</item>
+        <item>@drawable/android_in</item>
+        <item>@drawable/android_production_paste</item>
+        <item>@drawable/android_production_finished</item>
+        <item>@drawable/androd_delivery</item>
+        <item>@drawable/android_out</item>
+        <item>@drawable/android_box</item>
+        <!--<item>@drawable/android_box</item>-->
+        <item>@drawable/android_exit</item>
+    </string-array>
+    <!--<item>@drawable/android_box</item>-->
+    <!--<item>Sales Order</item>-->
+    <string-array name="dashboard_grid_rows_values">
+        <item>PO</item>
+        <item>GRN</item>
+        <item>Transfer Out</item>
+        <item>Transfer In</item>
+        <item>Prod. Semi</item>
+        <item>Prod. Fin</item>
+        <item>Delivery</item>
+        <item>Item Reclass</item>
+        <item>Stock Take</item>
+        <!--<item>Sales Order</item>-->
+        <item>Exit</item>
+    </string-array>
+    <string-array name="default_nav_compaines">
+        <item>Thong Siek Food</item>
+    </string-array>
+
+    <string-array name="status">
+        <item>All</item>
+        <item>In Progress</item>
+        <item>Completed</item>
+    </string-array>
+
+    <string-array name="LineStatus">
+        <item>Blank</item>
+        <item>Completed</item>
+        <item>Shortage</item>
+        <item>Cancelled</item>
+    </string-array>
+
+    <string-array name="printers">
+        <item>Honeywell </item>
+        <item>Honeywell RP4</item>
+    </string-array>
+</resources>

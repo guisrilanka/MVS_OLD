@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lgray"
+    android:paddingBottom="8dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.PurchaseOrderLineActivity"
+    tools:showIn="@layout/activity_purchase_order_line">
+
+    <TextView
+        android:id="@+id/lblNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutTopBanner"
+        android:layout_marginTop="6dp"
+        android:text="@string/no_data"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/layoutTopBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lblVendorShipNo"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:hint="@string/vendor_shipment_text"
+            android:paddingLeft="20dp"
+            android:textColor="@android:color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="#ebebe0"></LinearLayout>
+
+        <EditText
+            android:id="@+id/textScanCode"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/border_gray"
+            android:gravity="center"
+            android:hint="@string/scan_2D_code_text"
+            android:inputType="none"
+            android:paddingLeft="20dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layoutTopBanner"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/orderList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></ListView>
+
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_below="@id/orderList"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/post"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

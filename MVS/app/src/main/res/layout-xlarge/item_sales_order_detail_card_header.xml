@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="1dp"
+              android:orientation="vertical">
+
+
+    <!-- <TableLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+         <TableRow
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="4"
+                 android:layout_marginRight="1dp"
+                 android:text="No"
+                 android:textStyle="bold"
+                 android:background="@color/hockeyapp_background_light"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="15"
+                 android:layout_marginRight="1dp"
+                 android:text="Item"
+                 android:textStyle="bold"
+                 android:background="@color/hockeyapp_background_light"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:text="Price($)"
+                 android:textStyle="bold"
+                 android:background="@color/hockeyapp_background_light"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:text="UoM"
+                 android:textStyle="bold"
+                 android:background="@color/hockeyapp_background_light"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:text="QTY"
+                 android:textStyle="bold"
+                 android:background="@color/hockeyapp_background_light"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:text="Total($)"
+                 android:textStyle="bold"
+                 android:background="@color/hockeyapp_background_light"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+         </TableRow>-->
+
+    <!--Blue Header-->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tableHeaderGray">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="4"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:text="No"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="15"
+                android:layout_marginRight="1dp"
+                android:text="Item"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="Price($)"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="UOM"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="QTY"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:text="Total($)"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+        </TableRow>
+
+        <!-- <TableRow
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_marginTop="1dp">
+             <TextView
+                 android:id="@+id/tvNo"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="4"
+                 android:layout_marginRight="1dp"
+                 android:text="1"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:id="@+id/tvItemNo"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="left"
+                 android:layout_weight="15"
+                 android:layout_marginRight="1dp"
+                 android:paddingLeft="5dp"
+                 android:text="DTM001"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:id="@+id/tvPrice"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:paddingLeft="5dp"
+                 android:text="$ 120"
+                 android:background="@color/tableHeaderGray"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:id="@+id/tvUom"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:paddingLeft="5dp"
+                 android:text="KG"
+                 android:background="@color/tableHeaderGray"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:id="@+id/tvQTY"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:paddingLeft="5dp"
+                 android:text="15"
+                 android:background="@color/tableHeaderGray"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+             <TextView
+                 android:id="@+id/tvTotal"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_weight="10"
+                 android:layout_marginRight="1dp"
+                 android:paddingLeft="5dp"
+                 android:text="$ 180.00"
+                 android:background="@color/tableHeaderGray"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+         </TableRow>
+         <TableRow>
+             <TextView
+                 android:id="@+id/tvItemDescroption"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginRight="1dp"
+                 android:paddingLeft="30dp"
+                 android:text="Cuttlefish Meat, Fish Meat, Potato Starch, Palm Oil 墨鱼丸肉、鱼肉、土豆淀粉、棕榈油"
+                 android:textColor="@color/hockeyapp_text_black"
+                 android:textSize="15dp" />
+
+         </TableRow>
+ -->
+
+        <!--Blue Theme-->
+        <!--<TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tableHeaderGray"
+            android:layout_marginTop="1dp">
+            <TextView
+                android:id="@+id/tvNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="4"
+                android:layout_marginRight="1dp"
+                android:text="1"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/tvItemNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="15"
+                android:layout_marginRight="1dp"
+                android:paddingLeft="5dp"
+                android:text="DTM001"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:paddingLeft="5dp"
+                android:text="$ 120"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/tvUom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:paddingLeft="5dp"
+                android:text="KG"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/tvQTY"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:paddingLeft="5dp"
+                android:text="15"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:paddingLeft="5dp"
+                android:text="$ 180.00"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+        </TableRow>
+        <TableRow
+            android:background="@color/tableHeaderGray">
+
+            <TextView android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_marginRight="1dp"
+                      android:background="@color/white"
+                      android:text="        "
+                      android:layout_weight="4"/>
+
+            <TextView
+                android:id="@+id/tvItemDescroption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="55"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:text="Cuttlefish Meat, Fish Meat, Potato Starch, Palm Oil 墨鱼丸肉、鱼肉、土豆淀粉、棕榈油"
+                android:background="@color/white"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="15dp" />
+
+        </TableRow>-->
+
+    </TableLayout>
+</LinearLayout>

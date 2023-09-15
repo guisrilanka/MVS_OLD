@@ -1,0 +1,91 @@
+package com.gui.mdt.thongsieknavclient.model.grnmodels;
+
+/**
+ * Created by yeqim_000 on 30/08/16.
+ */
+public class PrintPurchaseOrderReceiptLotNoLabelParameter {
+    private String UserCompany;
+    private String UserName;
+    private String Password;
+    private String PurchaseOrderReceiptNo;
+    private int PurchaseOrderReceiptLineNo;
+    private String LotNo;
+    private String SerialNo;
+    private float Quantity;
+
+    public PrintPurchaseOrderReceiptLotNoLabelParameter(String userCompany, String userName, String password, String purchaseOrderReceiptNo, int purchaseOrderReceiptLineNo, String lotNo, String serialNo, float quantity) {
+        UserCompany = userCompany;
+        UserName = userName;
+        Password = password;
+        PurchaseOrderReceiptNo = purchaseOrderReceiptNo;
+        PurchaseOrderReceiptLineNo = purchaseOrderReceiptLineNo;
+        LotNo = lotNo;
+        SerialNo = serialNo;
+        Quantity = quantity;
+    }
+
+    public String getUserName() {
+
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public String getPurchaseOrderReceiptNo() {
+        return PurchaseOrderReceiptNo;
+    }
+
+    public void setPurchaseOrderReceiptNo(String purchaseOrderReceiptNo) {
+        PurchaseOrderReceiptNo = purchaseOrderReceiptNo;
+    }
+
+    public int getPurchaseOrderReceiptLineNo() {
+        return PurchaseOrderReceiptLineNo;
+    }
+
+    public void setPurchaseOrderReceiptLineNo(int purchaseOrderReceiptLineNo) {
+        PurchaseOrderReceiptLineNo = purchaseOrderReceiptLineNo;
+    }
+
+    public String getLotNo() {
+        return LotNo;
+    }
+
+    public void setLotNo(String lotNo) {
+        LotNo = lotNo;
+    }
+
+    public String getSerialNo() {
+        return SerialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        SerialNo = serialNo;
+    }
+
+    public float getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(float quantity) {
+        Quantity = quantity;
+    }
+
+    public String getUserCompany() {
+        return UserCompany;
+    }
+
+    public void setUserCompany(String userCompany) {
+        UserCompany = userCompany;
+    }
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorAccent">
+
+    <item android:id="@+id/action_cusInfo"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Customer Info"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_takePicture"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Take Picture"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_collectPayment"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Payment Collection"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_Deliver"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Confirm Delivery"
+        app:showAsAction="never"/>
+
+</menu>

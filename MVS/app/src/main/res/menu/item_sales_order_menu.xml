@@ -1,0 +1,16 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item android:id="@+id/selectAll"
+        android:title="Select All"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/cancelSelect"
+        android:title="Cancel Select"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/confirm"
+        android:title="Confirm"
+        app:showAsAction="never"/>
+
+</menu>

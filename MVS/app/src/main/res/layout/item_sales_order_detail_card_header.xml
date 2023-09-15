@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:orientation="vertical">
+
+    <!--Blue Header-->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/tableHeaderGray">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="4"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:text="No"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="15"
+                android:layout_marginRight="1dp"
+                android:text="Item"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="Price($)"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="UOM"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:layout_marginRight="1dp"
+                android:text="QTY"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="12dp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:text="Total($)"
+                android:textStyle="bold"
+                android:background="@color/blue"
+                android:textColor="@color/hockeyapp_text_black"
+                android:textSize="12dp" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

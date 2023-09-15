@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    <color name="colorPrimary">#00a1f1</color>
+    <color name="colorPrimaryDark">#026799</color>
+    <color name="colorAccent">#AB6400</color>
+    -->
+
+    <!--
+    <color name="colorPrimary">#FF333333</color>
+    <color name="colorPrimaryDark">#FF666666</color>
+    <color name="colorAccent">#FF3AAD73</color>
+    -->
+    <color name="lg">#ebebe0</color>
+    <color name="yellow">#ffff33</color>
+    <color name="lgray">#ebebe0</color>
+    <color name="white">#ffffff</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorPrimaryLight">#BBDEFB</color>
+    <color name="colorAccent">#03A9F4</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#727272</color>
+    <color name="blue">#FF03A9F4</color>
+    <color name="dashboardText">#ffffff</color>
+    <color name="listConfirmed">#7be59f</color>
+    <!--<color name="listHqDownloaded">#003789</color>-->
+    <!--<color name="listHqDownloaded">#0150c4</color>-->
+    <color name="listHqDownloaded">#73d0ef</color>
+    <color name="graybgcolor">#ebebe0</color>
+    <color name="backgroundGray">#ebebe0</color>
+    <color name="tableHeaderGray">#dedede</color>
+    <!--<color name="salesPrice">#d3ef84</color>-->
+    <color name="salesPrice">#2196F3</color>
+    <color name="springGreen">#00FF7F</color>
+    <color name="errorRed">#FF0000</color>
+    <color name="listVoid">#B0C4DE</color>
+    <color name="colorExchQty">#FFC0CB</color>
+
+    <color name="scanner_line">#00ceff</color>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorAccent">
+
+    <item android:id="@+id/action_selectAll"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Select All"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_cancelSelect"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Cancel Select"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_confirm"
+        android:icon="@drawable/ic_shortcut_clear_on"
+        android:title="Sync to Server"
+        app:showAsAction="never"/>
+
+</menu>

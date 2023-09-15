@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/api_server"
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:key="@string/pref_api_server_key"
+        android:title="@string/pref_api_server_display_name" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_remember_user_name_key"
+        android:title="@string/pref_remember_user_name_display_name" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/pref_remember_password_key"
+        android:title="@string/pref_remember_user_password" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/pref_update_sync_running_no"
+        android:title="@string/pref_update_sync_running_no_display_name" />
+
+    <!--no of print out count for sales invoice-->
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/default_no_of_si_printouts"
+        android:inputType="number"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:key="@string/pref_no_of_si_printouts_key"
+        android:title="@string/pref_no_of_si_printouts" />
+
+
+    <ListPreference
+        android:key="@string/pref_select_printer_key"
+        android:entries="@array/printers"
+        android:entryValues="@array/printers"
+        android:title="@string/select_default_printer"
+        android:defaultValue="@string/printer_honeywell"/>
+
+</PreferenceScreen>
