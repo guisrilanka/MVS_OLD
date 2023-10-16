@@ -59,6 +59,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemCrossReferenceDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
+import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderImageUploadStatusDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesPricesDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
@@ -245,7 +246,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             if (mDetails.equals(getResources().getString(R.string.mvs_new_sales_order))) {
                 mItemVoid.setEnabled(false);
                 mItemPrint.setEnabled(false);
-                mItemTakePicture.setEnabled(false);
+                mItemTakePicture.setEnabled(true);
                 mItemDraftReport.setEnabled(false);
                 mItemScan.setEnabled(false);
 
@@ -467,24 +468,34 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             }
 
             if (!invalidDate) {
+
+                SalesOrderImageUploadStatusDbHandler db = new SalesOrderImageUploadStatusDbHandler(getApplicationContext());
+                db.open();
+                Toast.makeText(mApp, "________________________", Toast.LENGTH_SHORT).show();
+                System.out.println("+++++++++++++++++++++++++++++++++");
+//                db.getAllItemsByTransferredForMVS("0");
+                db.close();
+
+
+
                 if (mTempCustomer.getCode() != null) {
                     if (mSalesOrderLineList.size() > 0) {
                         updateSummeryValues(mSalesOrderLineList);
                         /*if (Double.parseDouble(String.valueOf(h_grandTotal)) > mTempCustomer.getMinimumSalesAmount()) {*/
                         /*if (totalQty >= 0) {*/
                         if (validateGTAndSalesQty()) {
-                            if (validateVehicleQtyOnList(mSalesOrderLineList,
-                                    mApp.getmCurrentDriverCode(),
-                                    getApplicationContext())) {
+//                            if (validateVehicleQtyOnList(mSalesOrderLineList,
+//                                    mApp.getmCurrentDriverCode(),
+//                                    getApplicationContext())) {
                                 mTaskName = "SoSaveMain";
                                 mSaveSalesOrderTask = new SaveSalesOrderTask();
                                 mSaveSalesOrderTask.execute((Void) null);
 
-                            } else {
-                                showMessageBox(getResources().getString(R.string.message_title_alert)
-                                        , getResources().getString(R.string.message_so_unable_to_save_vcl_bal_qty) + '\n'
-                                                + mInValidItems);
-                            }
+//                            } else {
+//                                showMessageBox(getResources().getString(R.string.message_title_alert)
+//                                        , getResources().getString(R.string.message_so_unable_to_save_vcl_bal_qty) + '\n'
+//                                                + mInValidItems);
+//                            }
                         } else {
                             Toast.makeText(mApp, getResources().getString(R.string.message_total_sale_qty_greater_then_zero), Toast.LENGTH_SHORT).show();
                         }
@@ -2273,6 +2284,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     mTempSalesOrder.setDueDate(deliveryDate); //client request on 2017-10-03
                 }
                 mTempSalesOrder.setComment(mPoComments);
+
                 updateLineNo();
                 try {
                     if (dbAdapter.deleteSalesOrder(mTempSalesOrder.getNo())) {
@@ -2622,12 +2634,14 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 return true;
 
             case R.id.action_takePhoto:
-                if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))) {
+//                if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))) {
                     Intent intentTakePic = new Intent(this, MsoTakePictureActivity.class);
                     intentTakePic.putExtra("soNo", mTempSalesOrder.getNo());
                     intentTakePic.putExtra("status", mTempSalesOrder.getStatus());
                     this.startActivity(intentTakePic);
-                }
+//                }
+//                showMessageBox(getResources().getString(R.string.message_title_alert),getResources().getString(R.string.MVSSalesOrderStatusConverted));
+
                 return true;
 
             case R.id.action_draftPrint:

@@ -76,7 +76,7 @@ public class UserSetupRunningNoUploadTask extends AsyncTask<Void, Void, Boolean>
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
+/*comment by chamil-------------------------------------------------------
         try {
             if(isNetworkAvailable()) {
                 Call<ApiPostRunningNumbersResponse> call = mApp.getNavBrokerService().PostRunningNumbers
@@ -90,7 +90,7 @@ public class UserSetupRunningNoUploadTask extends AsyncTask<Void, Void, Boolean>
             mLog.error("NAV_Client_Exception", e);
             return false;
         }
-
+*/
         return true;
     }
 

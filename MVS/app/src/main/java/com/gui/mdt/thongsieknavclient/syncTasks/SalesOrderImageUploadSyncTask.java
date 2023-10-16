@@ -171,8 +171,8 @@ public class SalesOrderImageUploadSyncTask extends AsyncTask<Void, Void, Boolean
 
             if(!apiSoImageUploadParameterList.isEmpty())
             {
-                Call<ApiSoImageUploadListResult> call = mApp.getNavBrokerService().PostSOImage(apiSoImageUploadParameterList);
-                apiSoImageUploadListResult = call.execute().body();
+//                Call<ApiSoImageUploadListResult> call = mApp.getNavBrokerService().PostSOImage(apiSoImageUploadParameterList);
+//                apiSoImageUploadListResult = call.execute().body();
             }
             else
             {

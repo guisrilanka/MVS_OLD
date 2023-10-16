@@ -73,6 +73,7 @@ public class SalesOrder {
     String vatPercentage;
 
 
+
     public String getVatPercentage() {
         return vatPercentage;
     }
@@ -417,7 +418,6 @@ public class SalesOrder {
     public void setTotalBillQty(Integer totalBillQty) {
         TotalBillQty = totalBillQty;
     }
-
     //Gson
     public String toJson() {
         Gson gson = new Gson();

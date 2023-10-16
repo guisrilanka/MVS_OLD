@@ -95,7 +95,9 @@ public class MvsSalesOrderListAdapter extends RecyclerView.Adapter<MvsSalesOrder
         holder.mTxtTotalBillQty.setText("Total Bill Quantity: "
                 + String.valueOf(salesOrdersList.get(position).getTotalBillQty()));
 
+//change by chamil pathirana
         if (salesOrdersList.get(position).getStatus().equals(context.getResources().getString(R.string.MVSSalesOrderStatusConfirmed)))
+//        if (salesOrdersList.get(position).getStatus().equals("0")) /////// this my code chamil
         {
             holder.chkSalesOrder.setChecked(true);
             holder.chkSalesOrder.setEnabled(false);
@@ -116,7 +118,8 @@ public class MvsSalesOrderListAdapter extends RecyclerView.Adapter<MvsSalesOrder
                     salesOrdersList.get(position).getStatus().equals(
                             context.getResources().getString(R.string.MVSSalesOrderStatusComplete)))
             {
-                holder.chkSalesOrder.setEnabled(false);
+                // ----------------------------chamil change the code setEnable false as true
+                holder.chkSalesOrder.setEnabled(true);
                 holder.chkSalesOrder.setChecked(false);
                 holder.layoutMvsSalesOrderCard.setBackgroundResource(R.drawable.all_rectangle_white_background_blue_border);
                 holder.txtSINo.setText("SI No:                        ");

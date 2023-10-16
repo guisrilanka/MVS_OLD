@@ -51,6 +51,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesInvoiceUploadSyncTask;
+import com.gui.mdt.thongsieknavclient.syncTasks.SalesInvoiceWithMediaUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderClearAndDownloadForMvsSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderImageUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.UserSetupRunningNoUploadTask;
@@ -102,6 +103,9 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
 
     SalesOrderClearAndDownloadForMvsSyncTask soDownloadSyncTask;
     SalesInvoiceUploadSyncTask salesInvoiceUploadSyncTask;
+
+    // added by c -----------------------------------------
+    SalesInvoiceWithMediaUploadSyncTask salesInvoiceWithMediaUploadSyncTask;
     UserSetupRunningNoUploadTask userSetupRunningNoUploadTask;
     private Logger mLog;
 
@@ -144,6 +148,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 1 ");
                 if (!isSearchButtonClicked) {
                     isSearchButtonClicked = true;
                     showSearchDialog();
@@ -154,6 +159,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         mFabAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 2");
                 Intent intent = new Intent(MvsSalesOrderListActivity.this
                         , MvsSalesOrderActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -320,6 +326,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
 
     @Override
     public void onClick(View v) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         if (findViewById(R.id.fabTopUpQuantity) == v) {
             Intent intent = new Intent(this, MsoSalesOrderActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -541,6 +548,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         switch (item.getItemId()) {
             case R.id.action_selectAll:
                 mSalesOrderList = getModel(true);
@@ -556,7 +564,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
                 return true;
             case R.id.action_confirm:
                 try {
-
+                    System.out.println("dsdasdas");
                     if (isNetworkConnected()) {
 
 
@@ -619,15 +627,19 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     }
 
     private int getCheckedSoCountAndList() {
-
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         DateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Date _dateobj = new Date();
         int checkedSoCount = 0;
 
+
+//   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>     change by chamil  so.isTransferred() as false
         if (!mSalesOrderList.isEmpty()) {
             for (SalesOrder so : mSalesOrderList) {
-                if (so.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted)) &&
-                        so.isConfirmedSo() && so.isTransferred() == false) {
+//                if (so.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted)) &&
+//                        so.isConfirmedSo() && so.isTransferred() == false) {
+
+                if(true){//chage by chamil
                     so.setLastModifiedBy(mApp.getCurrentUserName());
                     so.setLastModifiedDateTime(_dateFormat.format(_dateobj).toString());
                     so.setLastTransferredBy(mApp.getCurrentUserName());
@@ -1026,6 +1038,16 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         mProgressDialog.show();
     }
 
+    ////-------------------- chamil 2023-10-13----------------------------------------------------
+    private void startSalesInvoiceWithMediaUpload() {
+
+
+        SalesInvoiceWithMediaUploadSyncTask task = new SalesInvoiceWithMediaUploadSyncTask(getApplicationContext(), false);
+        task.execute();
+//        mProgressDialog.setMessage("Uploading Sales Invoices...");
+//        mProgressDialog.show();
+    }
+    ////--------------------end code chamil 2023-10-13----------------------------------------------------
     public void uploadSoImages() {
         SalesOrderImageUploadSyncTask task = new SalesOrderImageUploadSyncTask(getApplicationContext(), false);
         task.execute();
@@ -1083,6 +1105,8 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
                             startSalesInvoiceUpload();
                             startUploadRunningNos();
                             uploadSoImages();
+                            ////////// updated bu chamil -------------------------------
+                            startSalesInvoiceWithMediaUpload();
                         }
 
                     } else {
