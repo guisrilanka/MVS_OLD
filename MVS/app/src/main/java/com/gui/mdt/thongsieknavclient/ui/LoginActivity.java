@@ -11,11 +11,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +39,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.gui.mdt.thongsieknavclient.BuildConfig;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
@@ -45,6 +54,8 @@ import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.model.AuthenticateUserParameter;
 import com.gui.mdt.thongsieknavclient.model.AuthenticateUserResult;
+
+import com.gui.mdt.thongsieknavclient.services.LocationUpdateService;
 import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import net.hockeyapp.android.CrashManager;
@@ -93,6 +104,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+        FirebaseAnalytics.getInstance(this);
         setContentView(R.layout.activity_login);
 
         if (!canAccessCamera()||!canAccessStorage()||!canAccessLocation()) {
@@ -182,7 +195,10 @@ public class LoginActivity extends AppCompatActivity {
             finish();
             return;
         }
+        startLocationService();
 
+        checkNetworkConnectivity();
+        firebaseMessaging();
     }
 
     private void displayVersion() {
@@ -626,6 +642,14 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, "Location access allowed!", Toast.LENGTH_SHORT).show();
                     }
+//                    updated c 2023-10-20------------------------------
+                    if (!canAccessLocation()) {
+                        Toast.makeText(this, "Location access not allowed!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startLocationService();
+                        Toast.makeText(this, "Location access allowed!", Toast.LENGTH_SHORT).show();
+                    }
+//                    end updated
                     break;
 
             }
@@ -682,6 +706,47 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+    //                    updated c 2023-10-20------------------------------
+    private void startLocationService() {
+        Intent serviceIntent = new Intent(this, LocationUpdateService.class);
+        startService(serviceIntent);
+    }
+    private void checkNetworkConnectivity(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Toast.makeText(mContext, ">>>>>>>>>>>>>>>>>>>... network available : " , Toast.LENGTH_SHORT).show();
+        } else {
+            // Network is not available
+            Toast.makeText(mContext, "---------------------... network not  available : " , Toast.LENGTH_SHORT).show();
+        }
+        NetworkInfo networkInfo1 = connMgr.getActiveNetworkInfo();
+        if (networkInfo1 != null && networkInfo1.isConnected()) {
+            Toast.makeText(mContext, "---------------------... network not  available : " , Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, "---------------------... network not  available : " , Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void firebaseMessaging(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            // Handle error
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult().getToken();
+                        System.out.println(">>>>>>>>>>>>>>>>>> : "+token);
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
 

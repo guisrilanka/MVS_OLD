@@ -1,5 +1,4 @@
 package com.gui.mdt.thongsieknavclient.adapters;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.StockTransferRequest;
 import com.gui.mdt.thongsieknavclient.ui.MvsStockTransferRequestActivity;
@@ -23,8 +21,7 @@ import java.util.List;
  * Created by GUI-NB03 on 2017-09-18.
  */
 
-public class MvsStockTransferRequestListAdapter extends
-        RecyclerView.Adapter<MvsStockTransferRequestListAdapter.ItemViewHolder> {
+public class MvsStockTransferRequestListAdapter extends RecyclerView.Adapter<MvsStockTransferRequestListAdapter.ItemViewHolder> {
 
     private List<StockTransferRequest> stockTransferRequestList;
     private int rowLayout;

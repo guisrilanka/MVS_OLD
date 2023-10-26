@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.model.SalesCustomerArResponse;
 

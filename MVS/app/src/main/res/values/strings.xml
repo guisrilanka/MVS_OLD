@@ -8,6 +8,12 @@
     <!--    live-->
 <!--<string name="api_server">http://thongsiek.dyndns.biz:9060/</string>-->
 
+    <!--change by chamil>>>>>>>>>>>>>>>>>>>> -->
+    <!--    //uat-->
+    <string name="api_wh_server">http://whpicking.australiaeast.cloudapp.azure.com:57650/</string>
+    <!--    //live-->
+<!--    <string name="api_wh_server">http://thongsiek.dyndns.biz:9020/</string>-->
+
     <!-- Strings related to login -->
     <string name="prompt_company">Company</string>
     <string name="prompt_user_name">User Name</string>
@@ -31,6 +37,7 @@
     <string name="pref_remember_user_name_display_name">Remember User Name</string>
     <string name="pref_remember_user_password">Remember Password</string>
     <string name="pref_api_server_key">pref_api_server</string>
+
     <string name="pref_gst_percentage_key">pref_gst_percentage_key</string>
     <string name="pref_remember_user_name_key">pref_remember_user_name</string>
     <string name="pref_remember_password_key">pref_remember_password</string>

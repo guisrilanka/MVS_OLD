@@ -38,7 +38,7 @@ public class SalesOrderImageUploadStatusDbHandler {
 
     // Adding new item
     public void addItems(SalesOrderImageUploadStatus salesOrderImageUploadStatus) {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  +++++++++++++++++++++++++++++++++++++++++++++ 3 ");
+
         ContentValues values = new ContentValues();
         values.put(dbHelper.KEY_SOIUS_SO_No, salesOrderImageUploadStatus.getSoNo());
         values.put(dbHelper.KEY_SOIUS_IMAGE_NAME, salesOrderImageUploadStatus.getImageName());
@@ -47,6 +47,9 @@ public class SalesOrderImageUploadStatusDbHandler {
         values.put(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_BY, salesOrderImageUploadStatus.getLastTransferredBy());
         values.put(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_DATETIME, salesOrderImageUploadStatus.getLastTransferredDateTime());
 
+        //updated by chamil -------------------------------------
+        values.put(dbHelper.KEY_SOIUS_TRANSFERRED_WH, salesOrderImageUploadStatus.isTransferredWareHouse());
+
         // Inserting Row
         db=dbHelper.getWritableDatabase();
         db.insert(dbHelper.TABLE_SO_IMAGE_UPLOAD_STATUS, null, values);
@@ -54,7 +57,7 @@ public class SalesOrderImageUploadStatusDbHandler {
 
     // update item
     public boolean updateItem( String iamgeName, boolean transfered, String lastTransferedBy, String lastTransferedDateTime) {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  +++++++++++++++++++++++++++++++++++++++++++++ 2 ");
+
         boolean success = false;
         ContentValues values = new ContentValues();
 
@@ -77,7 +80,7 @@ public class SalesOrderImageUploadStatusDbHandler {
 
     public List<SalesOrderImageUploadStatus> getAllItemsByTransferred(String transfered) {
 
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  +++++++++++++++++++++++++++++++++++++++++++++ ");
+
 
         List<SalesOrderImageUploadStatus> itemList = new ArrayList<SalesOrderImageUploadStatus>();
         db=dbHelper.getReadableDatabase();
@@ -96,6 +99,8 @@ public class SalesOrderImageUploadStatusDbHandler {
                 item.setTransferred(c.getInt(c.getColumnIndex(dbHelper.KEY_SOIUS_TRANSFERRED)) > 0);
                 item.setLastTransferredBy(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_BY)));
                 item.setLastTransferredDateTime(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_DATETIME)));
+
+                item.setTransferredWareHouse(c.getInt(c.getColumnIndex(dbHelper.KEY_SOIUS_TRANSFERRED_WH))> 0);
 
                 itemList.add(item);
             } while (c.moveToNext());
@@ -125,6 +130,8 @@ public class SalesOrderImageUploadStatusDbHandler {
                 item.setLastTransferredBy(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_BY)));
                 item.setLastTransferredDateTime(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_DATETIME)));
 
+                item.setTransferredWareHouse(c.getInt(c.getColumnIndex(dbHelper.KEY_SOIUS_TRANSFERRED_WH))> 0);
+
                 itemList.add(item);
 
             } while (c.moveToNext());
@@ -145,7 +152,7 @@ public class SalesOrderImageUploadStatusDbHandler {
 //              change by chamil   so.isTransferred()==false // original code is  so.isTransferred()
                 if (so.getNo() != null) {
                     if (so.getNo() != ""
-                            && so.isTransferred()==false
+                            && so.isTransferred()
                             && so.getStatus().equals(statusConfirmed))
                     {
                         finalItemList.add(item);
@@ -157,5 +164,49 @@ public class SalesOrderImageUploadStatusDbHandler {
         c.close();
         return finalItemList;
 
+    }
+    public List<SalesOrderImageUploadStatus> getAllItemsByTransferredWareHouse(String transfered) {
+
+        List<SalesOrderImageUploadStatus> itemList = new ArrayList<SalesOrderImageUploadStatus>();
+        db=dbHelper.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + dbHelper.TABLE_SO_IMAGE_UPLOAD_STATUS
+                + " WHERE "+dbHelper.KEY_SOIUS_TRANSFERRED_WH + " = " + transfered;
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                SalesOrderImageUploadStatus item = new SalesOrderImageUploadStatus();
+                item.setSoNo( c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_SO_No)));
+                item.setImageName(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_IMAGE_NAME)));
+                item.setImageUrl(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_IMAGE_URL)));
+                item.setTransferred(c.getInt(c.getColumnIndex(dbHelper.KEY_SOIUS_TRANSFERRED)) > 0);
+                item.setLastTransferredBy(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_BY)));
+                item.setLastTransferredDateTime(c.getString(c.getColumnIndex(dbHelper.KEY_SOIUS_LAST_TRANSFERRED_DATETIME)));
+
+                item.setTransferredWareHouse(c.getInt(c.getColumnIndex(dbHelper.KEY_SOIUS_TRANSFERRED_WH))> 0);
+
+                itemList.add(item);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return itemList;
+    }
+    public boolean updateItemTransformWh(String soNo) {
+
+        boolean success = false;
+        db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(dbHelper.KEY_SOIUS_TRANSFERRED_WH, true);
+
+        if (db.update(dbHelper.TABLE_SO_IMAGE_UPLOAD_STATUS, contentValues, dbHelper.KEY_SOIUS_SO_No + " = ?", new String[]{soNo}) == 1) {
+            success = true;
+        } else {
+            success = false;
+        }
+
+        return success;
     }
 }

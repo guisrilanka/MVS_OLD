@@ -1,4 +1,3 @@
-
 package com.gui.mdt.thongsieknavclient.ui;
 
 import android.os.Bundle;

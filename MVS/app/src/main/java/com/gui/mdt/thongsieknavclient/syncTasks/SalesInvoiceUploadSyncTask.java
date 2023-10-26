@@ -332,28 +332,28 @@ public class SalesInvoiceUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
 
                 //upload si header
                 logHeaderParams(apiSalesInvoiceHeaderParameterList);
-/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> comment by chami all;
-//                Call<ApiPostMobileSalesInvoiceHeaderResponse> headerUploadCall = mApp.getNavBrokerService()
-//                        .PostMobileSalesInvoiceHeader(apiSalesInvoiceHeaderParameterList);
 
-//                apiSalesOrderHeaderResponse = headerUploadCall.execute().body();
-//                logHeaderResponse(apiSalesOrderHeaderResponse);
+                Call<ApiPostMobileSalesInvoiceHeaderResponse> headerUploadCall = mApp.getNavBrokerService()
+                        .PostMobileSalesInvoiceHeader(apiSalesInvoiceHeaderParameterList);
 
-                */
+                apiSalesOrderHeaderResponse = headerUploadCall.execute().body();
+                logHeaderResponse(apiSalesOrderHeaderResponse);
+
+
 
                 //update so db
 //                saveUploadedSalesOrderHeaders();  2018/10/31
 
                 //upload si line list
-//                logLineParams(apiSalesOrderLineParameterList);
-//
-//                Call<ApiPostMobileSalesInvoiceLineResponse> lineUploadCall = mApp.getNavBrokerService()
-//                        .PostMobileSalesInvoiceLine(apiSalesOrderLineParameterList);
-//
-//                apiSalesOrderLineResponse = lineUploadCall.execute().body();
-//
-//                logLineResponse(apiSalesOrderLineResponse);
-//                saveUploadedSalesOrderHeader(confirmedSalesOrder, apiSalesOrderHeaderResponse, apiSalesOrderLineResponse);
+                logLineParams(apiSalesOrderLineParameterList);
+
+                Call<ApiPostMobileSalesInvoiceLineResponse> lineUploadCall = mApp.getNavBrokerService()
+                        .PostMobileSalesInvoiceLine(apiSalesOrderLineParameterList);
+
+                apiSalesOrderLineResponse = lineUploadCall.execute().body();
+
+                logLineResponse(apiSalesOrderLineResponse);
+                saveUploadedSalesOrderHeader(confirmedSalesOrder, apiSalesOrderHeaderResponse, apiSalesOrderLineResponse);
 
             }
 

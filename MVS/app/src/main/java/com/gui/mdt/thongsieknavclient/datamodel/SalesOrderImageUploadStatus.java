@@ -13,6 +13,11 @@ public class SalesOrderImageUploadStatus {
     String lastTransferredBy;
     String lastTransferredDateTime;
 
+//    chamil isTransfered wh----------------
+    boolean TransferredWareHouse;
+
+
+
     public String getImageName() {
         return imageName;
     }
@@ -59,5 +64,12 @@ public class SalesOrderImageUploadStatus {
 
     public void setLastTransferredDateTime(String lastTransferredDateTime) {
         this.lastTransferredDateTime = lastTransferredDateTime;
+    }
+
+    public boolean isTransferredWareHouse() {
+        return TransferredWareHouse;
+    }
+    public void setTransferredWareHouse(boolean transferredWareHouse) {
+        TransferredWareHouse = transferredWareHouse;
     }
 }

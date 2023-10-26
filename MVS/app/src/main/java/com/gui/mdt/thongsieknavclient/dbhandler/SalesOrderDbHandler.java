@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrder;
+import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderImageUploadStatus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,6 +76,10 @@ public class SalesOrderDbHandler {
         values.put(dbHelper.KEY_SO_SI_DATE, so.getSIDate());
         values.put(dbHelper.KEY_SO_SI_NO, so.getSINo());
         values.put(dbHelper.KEY_SO_IS_DELETED, so.isDeleted());
+
+        // added by chamil--------------------------------------------------
+        values.put(dbHelper.KEY_SO_LAT, so.getLatitude());
+        values.put(dbHelper.KEY_SO_LONG, so.getLongitude());
         // Inserting Row
         db = dbHelper.getWritableDatabase();
         db.insert(dbHelper.TABLE_SO, null, values);
@@ -105,7 +110,6 @@ public class SalesOrderDbHandler {
     }
 
     public List<SalesOrder> getAllSalesOrders() {
-
         List<SalesOrder> salesOrders = new ArrayList<SalesOrder>();
         db = dbHelper.getReadableDatabase();
 
@@ -310,6 +314,10 @@ public class SalesOrderDbHandler {
                     so.setTransferred(c.getInt(c.getColumnIndex(dbHelper.KEY_SO_TRANSFERRED)) > 0);
                     so.setCreatedFrom(c.getString(c.getColumnIndex(dbHelper.KEY_SO_CREATED_FROM)));
                     so.setAmountExcludingVAT(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_AMOUNT_EXCLUDING_VAT)));
+
+                    //added by chamil --------------------------------------------------
+                    so.setLatitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LAT)));
+                    so.setLongitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LONG)));
 
                     String _confirm = context.getResources().getString(R.string.SalesOrderStatusPending);
                     if (c.getInt(c.getColumnIndex(dbHelper.KEY_SO_STATUS)) == Integer.parseInt(_confirm)) {
@@ -517,6 +525,10 @@ public class SalesOrderDbHandler {
                 so.setVATAmount(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_VAT_AMOUNT)));
                 so.setDeleted(c.getInt(c.getColumnIndex(dbHelper.KEY_SO_IS_DELETED)) > 0);
 
+                //added by chamil --------------------------------------------------
+                so.setLatitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LAT)));
+                so.setLongitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LONG)));
+
                 String _confirm = context.getResources().getString(R.string.MVSSalesOrderStatusConfirmed);
                 if (c.getInt(c.getColumnIndex(dbHelper.KEY_SO_STATUS)) == Integer.parseInt(_confirm)) {
                     so.setConfirmedSo(true);
@@ -609,7 +621,6 @@ public class SalesOrderDbHandler {
     }
 
     public List<SalesOrder> getSalesOrdersForUploading() {
-
         List<SalesOrder> salesOrders = new ArrayList<SalesOrder>();
         db = dbHelper.getReadableDatabase();
 
@@ -713,7 +724,9 @@ public class SalesOrderDbHandler {
                 so.setAmountExcludingVAT(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_AMOUNT_EXCLUDING_VAT)));
                 so.setSINo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SI_NO)));
                 so.setSIDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SI_DATE)));
-
+                //////// added by chamil
+                so.setLatitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LAT)));
+                so.setLongitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LONG)));
 
                 salesOrders.add(so);
             } while (c.moveToNext());
@@ -844,6 +857,10 @@ public class SalesOrderDbHandler {
                 so.setDelivered(c.getInt(c.getColumnIndex(dbHelper.KEY_SO_DELIVERED)) > 0);
                 so.setAmountExcludingVAT(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_AMOUNT_EXCLUDING_VAT)));
 
+                //////// added by chamil
+                so.setLatitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LAT)));
+                so.setLongitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LONG)));
+
                 soList.add(so);
             } while (c.moveToNext());
         }
@@ -858,6 +875,7 @@ public class SalesOrderDbHandler {
     }
 
     public List<SalesOrder> getSalesOrderForUploading(String documentNo) {
+
         List<SalesOrder> soReturnList = new ArrayList<SalesOrder>();
         db = dbHelper.getReadableDatabase();
         String deliveredStatus = "1";
@@ -906,6 +924,7 @@ public class SalesOrderDbHandler {
     }
 
     public List<SalesOrder> getDownloadedPendingSalesOrder() {
+
         List<SalesOrder> soReturnList = new ArrayList<SalesOrder>();
         db = dbHelper.getReadableDatabase();
 
@@ -1100,6 +1119,7 @@ public class SalesOrderDbHandler {
     }
 
     public List<SalesOrder> getSalesInvoiceSummaryList(String filterCreatedDate) {
+
         List<SalesOrder> salesOrders = new ArrayList<SalesOrder>();
         Cursor c;
         db = dbHelper.getReadableDatabase();
@@ -1241,5 +1261,33 @@ public class SalesOrderDbHandler {
         }
         c.close();
         return soNoList;
+    }
+
+    //added by chamil------------------------------------------------
+    public SalesOrder getSalesOrderBySoNumber(String salesInvoiceNo) {
+        List<SalesOrder> soList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT * FROM " + dbHelper.TABLE_SO + " WHERE " + dbHelper.KEY_SO_NO + " = ?";
+        String[] selectionArgs = { salesInvoiceNo };
+
+        try (Cursor c = db.rawQuery(query, selectionArgs)) {
+            if (c.moveToFirst()) {
+                do {
+                    SalesOrder so = new SalesOrder();
+                    so.setId(c.getInt(c.getColumnIndex(dbHelper.KEY_SO_ID)));
+                    so.setKey(c.getString(c.getColumnIndex(dbHelper.KEY_SO_KEY)));
+                    so.setNo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_NO)));
+                    so.setOrderDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_ORDER_DATE)));
+                    so.setDocumentDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_DOCUMENT_DATE)));
+                    so.setLatitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LAT)));
+                    so.setLongitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LONG)));
+                    so.setStatus(c.getString(c.getColumnIndex(dbHelper.KEY_SO_STATUS)));
+                    soList.add(so);
+                } while (c.moveToNext());
+            }
+        }
+
+        return soList.isEmpty() ? new SalesOrder() : soList.get(0);
     }
 }

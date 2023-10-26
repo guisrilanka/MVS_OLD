@@ -40,6 +40,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_CUSTOMER_TEMPLATE = "customerTemplate";
     public static final String TABLE_STOCK_STATUS = "stockStatus";
 
+    //    updated c 2023-10-23 ...............................................
+    public static final String TABLE_GPS_LOCATION = "gpsLocation";
+    //  end  updated c 2023-10-23 ...............................................
 
     //customer table columns
     public static final String KEY_CUS_KEY = "key";
@@ -166,6 +169,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_SO_SI_DATE = "SIDate";
     public static final String KEY_SO_IS_DOWNLOADED = "IsDownloaded";
     public static final String KEY_SO_SI_NO = "SINo";
+    public static final String KEY_SO_LAT = "Latitude";//updated c 2023/10/19
+    public static final String KEY_SO_LONG = "Longitude";//updated c 2023/10/19
     public static final String KEY_SO_IS_DELETED = "IsDeleted";
 
     //SO LINE table columns
@@ -322,6 +327,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_SOIUS_IMAGE_NAME = "ImageName";
     public static final String KEY_SOIUS_IMAGE_URL = "ImageUrl";
     public static final String KEY_SOIUS_TRANSFERRED = "Transferred";
+    public static final String KEY_SOIUS_TRANSFERRED_WH = "TransferredWareHouse";//updated c 2023/10/19
     public static final String KEY_SOIUS_LAST_TRANSFERRED_BY = "LastTransferredBy";
     public static final String KEY_SOIUS_LAST_TRANSFERRED_DATETIME = "LastTransferredDateTime";
 
@@ -415,6 +421,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_SS_LOAD_DATE = "loadDate";
     public static final String KEY_SS_IS_DISPATCHED = "isDispatched";
     public static final String KEY_SS_DISPATCHED_TIME = "dispatchedTime";
+
+
+//    updated c 2023-10-23------------------------
+    //gpsLocation Table columns
+    public static final String KEY_GPS_ID = "id";
+    public static final String KEY_GPS_LATITUDE = "latitude";
+    public static final String KEY_GPS_LONGITUDE = "longitude";
+    public static final String KEY_GPS_DATE = "date";
+    public static final String KEY_GPS_STATUS = "status";
+
+//   end updated c 2023-10-23------------------------
 
     /*public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -586,6 +603,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_SO_SI_DATE + " TEXT ,"
                 + KEY_SO_IS_DOWNLOADED + " TEXT, "
                 + KEY_SO_SI_NO + " TEXT, "
+                + KEY_SO_LAT + " TEXT, "
+                + KEY_SO_LONG + " TEXT, "
                 + KEY_SO_IS_DELETED + " TEXT "
                 + ")";
         db.execSQL(CREATE_SO_HEADER_TABLE);
@@ -767,6 +786,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_SOIUS_IMAGE_NAME + " TEXT,"
                 + KEY_SOIUS_IMAGE_URL + " TEXT,"
                 + KEY_SOIUS_TRANSFERRED + " TEXT,"
+                + KEY_SOIUS_TRANSFERRED_WH + " TEXT,"
                 + KEY_SOIUS_LAST_TRANSFERRED_BY + " TEXT,"
                 + KEY_SOIUS_LAST_TRANSFERRED_DATETIME + " TEXT "
                 + ")";
@@ -876,6 +896,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_SS_DISPATCHED_TIME + " TEXT "
                 + ")";
         db.execSQL(CREATE_STOCK_STATUS_TABLE);
+
+// updated bu c 2023-10-23----------------------------------
+        //gpLocation table create
+        String CREATE_GPS_LOCATION_TABLE = "CREATE TABLE " + TABLE_GPS_LOCATION + "("
+                + KEY_GPS_ID + " INTEGER  PRIMARY KEY AUTOINCREMENT,"
+                + KEY_GPS_LATITUDE + " TEXT,"
+                + KEY_GPS_LONGITUDE + " TEXT,"
+                + KEY_GPS_STATUS + " TEXT,"
+                + KEY_GPS_DATE + " TEXT "
+                + ")";
+        db.execSQL(CREATE_GPS_LOCATION_TABLE);
+//end updated bu c 2023-10-23----------------------------------
     }
 
     @Override
@@ -933,6 +965,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUSTOMER_SALES_CODE);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUSTOMER_TEMPLATE);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_STOCK_STATUS);
+
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPS_LOCATION);
             // Create tables again
 
             onCreate(db);

@@ -1,5 +1,6 @@
 package com.gui.mdt.thongsieknavclient.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -8,15 +9,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +49,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.adapters.MvsSalesOrderAdapter;
@@ -128,6 +139,12 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     SharedPreferences mDefaultSharedPreferences;
     SharedPrefHelper mPrefHelper;
 
+    double latitude,longitude;
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private FusedLocationProviderClient fusedLocationClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,8 +183,53 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         List<String> arr = splitString("NTUC-GEYLANG LOR 38 (457)-(F51) , 612/620 GEYLANG LORONG 38"
                 , 40);
         System.out.println(arr.size() + "");
+
+        //    --------------------update by chamil-------------------------------------
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (checkLocationPermission()) {
+            requestLocationUpdates();
+        }
     }
 
+    private boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+            return false;
+        }
+        return true;
+    }
+
+    private void requestLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(5000) // 5 seconds
+                .setFastestInterval(1000); // 1 second
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, new com.google.android.gms.location.LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull com.google.android.gms.location.LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+                if (location != null) {
+                     latitude = location.getLatitude();
+                     longitude = location.getLongitude();
+
+                }
+            }
+        }, getMainLooper());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationUpdates();
+            }
+        }
+    }
+//    end --------------------update by chamil-------------------------------------
     public static List<String> splitString(String msg, int lineSize) {
         List<String> res = new ArrayList<>();
 
@@ -469,33 +531,24 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
             if (!invalidDate) {
 
-                SalesOrderImageUploadStatusDbHandler db = new SalesOrderImageUploadStatusDbHandler(getApplicationContext());
-                db.open();
-                Toast.makeText(mApp, "________________________", Toast.LENGTH_SHORT).show();
-                System.out.println("+++++++++++++++++++++++++++++++++");
-//                db.getAllItemsByTransferredForMVS("0");
-                db.close();
-
-
-
                 if (mTempCustomer.getCode() != null) {
                     if (mSalesOrderLineList.size() > 0) {
                         updateSummeryValues(mSalesOrderLineList);
                         /*if (Double.parseDouble(String.valueOf(h_grandTotal)) > mTempCustomer.getMinimumSalesAmount()) {*/
                         /*if (totalQty >= 0) {*/
                         if (validateGTAndSalesQty()) {
-//                            if (validateVehicleQtyOnList(mSalesOrderLineList,
-//                                    mApp.getmCurrentDriverCode(),
-//                                    getApplicationContext())) {
+                            if (validateVehicleQtyOnList(mSalesOrderLineList,
+                                    mApp.getmCurrentDriverCode(),
+                                    getApplicationContext())) {
                                 mTaskName = "SoSaveMain";
                                 mSaveSalesOrderTask = new SaveSalesOrderTask();
                                 mSaveSalesOrderTask.execute((Void) null);
 
-//                            } else {
-//                                showMessageBox(getResources().getString(R.string.message_title_alert)
-//                                        , getResources().getString(R.string.message_so_unable_to_save_vcl_bal_qty) + '\n'
-//                                                + mInValidItems);
-//                            }
+                            } else {
+                                showMessageBox(getResources().getString(R.string.message_title_alert)
+                                        , getResources().getString(R.string.message_so_unable_to_save_vcl_bal_qty) + '\n'
+                                                + mInValidItems);
+                            }
                         } else {
                             Toast.makeText(mApp, getResources().getString(R.string.message_total_sale_qty_greater_then_zero), Toast.LENGTH_SHORT).show();
                         }
@@ -2260,6 +2313,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 mTempSalesOrder.setCreatedDateTime(todayDate);
                 mTempSalesOrder.setCreatedFrom(getResources().getString(R.string.mobile));
 
+                mTempSalesOrder.setLatitude(latitude);
+                mTempSalesOrder.setLongitude(longitude);
+
                 float totalAmtInclVat_ = Float.parseFloat(String.format("%.2f", totalVatAmount))
                         + Float.parseFloat(String.format("%.2f", subTotal));
 
@@ -2634,13 +2690,12 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 return true;
 
             case R.id.action_takePhoto:
-//                if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))) {
+                if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))) {
                     Intent intentTakePic = new Intent(this, MsoTakePictureActivity.class);
                     intentTakePic.putExtra("soNo", mTempSalesOrder.getNo());
                     intentTakePic.putExtra("status", mTempSalesOrder.getStatus());
                     this.startActivity(intentTakePic);
-//                }
-//                showMessageBox(getResources().getString(R.string.message_title_alert),getResources().getString(R.string.MVSSalesOrderStatusConverted));
+                }
 
                 return true;
 

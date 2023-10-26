@@ -20,10 +20,8 @@ import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.Item;
 import com.gui.mdt.thongsieknavclient.ui.SalesItemDetailActivity;
-
 import java.io.File;
 import java.util.List;
-
 import static android.app.Activity.RESULT_OK;
 
 
