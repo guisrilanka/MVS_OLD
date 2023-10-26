@@ -62,9 +62,6 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
 //    }
 
 
-
-
-
         private void sendNotification(String title, String messageBody) {
             NotificationCompat.Builder builder;
             String channelId = "default_channel_id";
