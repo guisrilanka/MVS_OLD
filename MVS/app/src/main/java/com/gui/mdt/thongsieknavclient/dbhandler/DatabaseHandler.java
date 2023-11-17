@@ -12,7 +12,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
     public static final int DATABASE_VERSION = 167;
-
     // Database Name
     public static final String DATABASE_NAME = "thongsiek";
 
@@ -42,6 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //    updated c 2023-10-23 ...............................................
     public static final String TABLE_GPS_LOCATION = "gpsLocation";
+    public static final String TABLE_CUSTOMER_SEQUENCE = "customerSequence";
     //  end  updated c 2023-10-23 ...............................................
 
     //customer table columns
@@ -897,7 +897,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_STOCK_STATUS_TABLE);
 
-// updated bu c 2023-10-23----------------------------------
+// updated buy c 2023-10-23----------------------------------
         //gpLocation table create
         String CREATE_GPS_LOCATION_TABLE = "CREATE TABLE " + TABLE_GPS_LOCATION + "("
                 + KEY_GPS_ID + " INTEGER  PRIMARY KEY AUTOINCREMENT,"
@@ -907,6 +907,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_GPS_DATE + " TEXT "
                 + ")";
         db.execSQL(CREATE_GPS_LOCATION_TABLE);
+        //customer table create
+        String CREATE_CUSTOMER_SEQUENCE_TABLE = "CREATE TABLE " + TABLE_CUSTOMER_SEQUENCE + "("
+                + KEY_CUS_KEY + " TEXT PRIMARY KEY,"
+                + KEY_CUS_CODE + " TEXT "
+                + ")";
+        db.execSQL(CREATE_CUSTOMER_SEQUENCE_TABLE);
 //end updated bu c 2023-10-23----------------------------------
     }
 
@@ -967,6 +973,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_STOCK_STATUS);
 
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPS_LOCATION);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUSTOMER_SEQUENCE);
             // Create tables again
 
             onCreate(db);

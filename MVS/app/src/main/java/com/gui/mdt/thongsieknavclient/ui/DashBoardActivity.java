@@ -40,6 +40,7 @@ import com.gui.mdt.thongsieknavclient.model.AuthenticateUserResult;
 import com.gui.mdt.thongsieknavclient.model.AuthorizedModuleResult;
 import com.gui.mdt.thongsieknavclient.model.BaseResult;
 import com.gui.mdt.thongsieknavclient.model.ImageItem;
+import com.gui.mdt.thongsieknavclient.syncTasks.TokenUploadSyncTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -429,6 +430,7 @@ public class DashBoardActivity extends AppCompatActivity {
                             }
 
                             updateUserData();
+                            uploadDeviceToken();
 
                         } else {
                             String currentUserDisplayName = mUserSetup.getUserDisplayName();
@@ -532,7 +534,15 @@ public class DashBoardActivity extends AppCompatActivity {
                 }
             }
         }
-
+        public void uploadDeviceToken(){
+            String fcmToken =  mDefaultSharedPreferences.getString("fcm_token", "");
+            Bundle driverData = new Bundle();
+            driverData.putString("driverCode", mApp.getmCurrentDriverCode());
+            driverData.putString("fcmToken", fcmToken);
+//            if(mApp.getCurrentUserName()!=null) {
+                TokenUploadSyncTask task = new TokenUploadSyncTask(getApplicationContext(), driverData);
+                task.execute();
+            }
         @Override
         protected void onCancelled() {
             mInitTask = null;

@@ -50,7 +50,7 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
     SyncConfiguration syncConfig;
     Logger mLog;
     int mLineNo = 1;
-
+    List<SalesOrder> salesOrdersSynced;
     List<SalesOrderImageUploadStatus> salesOrderImageUploadStatusList=
             new ArrayList<SalesOrderImageUploadStatus>();
     ApiSoMediaUploadParameter mediaParameter;
@@ -73,14 +73,16 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
-
+            SalesOrderDbHandler dbAdapter = new SalesOrderDbHandler(context);
+            dbAdapter.open();
 
             if(isNetworkAvailable()) {
+                salesOrdersSynced = dbAdapter.getSalesInvoiceForImageWithMediaUploading();
                 loadSalesOrderImageUploadStatus();
                 processSalesInvoiceWithMedia();
                 uploadImages();
 
-                isSuccess = changeUplodedSOImageStatus();
+                isSuccess = changeUploadedSOImageStatus();
 
 //                if (isSuccess) {
 //                    syncConfig.setSuccess(true);
@@ -117,14 +119,19 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
     private void processSalesInvoiceWithMedia() {
         SalesOrderDbHandler db = new SalesOrderDbHandler(context);
         db.open();
-
-        for (SalesOrderImageUploadStatus soius : salesOrderImageUploadStatusList) {
-            String orderId = soius.getSoNo();
-                if (!salesOrderMap.containsKey(orderId)) {
-                    SalesOrder salesOrder = db.getSalesOrderBySoNumber(orderId);
-                    salesOrderMap.put(orderId, salesOrder);
+        for(SalesOrder salesOrderSynced: salesOrdersSynced) {
+            for (SalesOrderImageUploadStatus soius : salesOrderImageUploadStatusList) {
+                String orderId = soius.getSoNo();
+                if(salesOrderSynced.getNo().equals(orderId)) {
+                    if (!salesOrderMap.containsKey(orderId)) {
+                        SalesOrder salesOrder = db.getSalesOrderBySoNumber(orderId);
+                        salesOrderMap.put(orderId, salesOrder);
+                    }
                 }
+            }
         }
+
+
 
         db.close();
     }
@@ -143,7 +150,8 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
             apiParameter.setDeliverLatitude(salesOrder.getLatitude());
             apiParameter.setDeliverLongitude(salesOrder.getLongitude());
 
-            apiParameter.setStatus(Integer.parseInt(salesOrder.getStatus()));
+            apiParameter.setStatus(4);
+//            apiParameter.setStatus(Integer.parseInt(salesOrder.getStatus()));
             apiParameter.setSignature("");
 
             List<ApiSoMediaUploadParameter> mediaList = new ArrayList<>();
@@ -231,20 +239,25 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
         NetworkInfo activeNetworkInfo = _connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-    public boolean changeUplodedSOImageStatus()
-    {
+    public boolean changeUploadedSOImageStatus() {
         boolean status = true;
-            if (salesOrderImageUploadStatusList != null) {
-                for (SalesOrderImageUploadStatus soius : salesOrderImageUploadStatusList) {
-                            SalesOrderImageUploadStatusDbHandler db = new SalesOrderImageUploadStatusDbHandler(context);
-                            db.open();
 
-                            status = db.updateItemTransformWh(
-                                    soius.getSoNo()
-                            );
-                            db.close();
+        if (salesOrderImageUploadStatusList != null) {
+            for (SalesOrder salesOrderSynced : salesOrdersSynced) {
+                for (SalesOrderImageUploadStatus soius : salesOrderImageUploadStatusList) {
+                    if (salesOrderSynced.getNo().equals(soius.getSoNo())) {
+                        SalesOrderImageUploadStatusDbHandler db = new SalesOrderImageUploadStatusDbHandler(context);
+                        db.open();
+
+                        status = db.updateItemTransformWh(
+                                soius.getSoNo()
+                        );
+                        db.close();
+                    }
                 }
             }
+        }
+
         return status;
     }
 

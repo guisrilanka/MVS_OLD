@@ -1290,4 +1290,64 @@ public class SalesOrderDbHandler {
 
         return soList.isEmpty() ? new SalesOrder() : soList.get(0);
     }
+    public List<SalesOrder> getSalesInvoiceForImageWithMediaUploading() {
+
+        List<SalesOrder> salesOrders = new ArrayList<SalesOrder>();
+        db = dbHelper.getReadableDatabase();
+
+        String _filterStatus = context.getResources().getString(R.string.SalesOrderStatusConfirmed);
+        String _isTransfered = "1";
+
+        String selectQuery = "SELECT  * FROM " + dbHelper.TABLE_SO
+                + " WHERE "
+                + dbHelper.KEY_SO_STATUS + " = ? AND "
+                + dbHelper.KEY_SO_TRANSFERRED + " = ? ORDER BY datetime(" + dbHelper.KEY_SO_CREATED_DATE + ") DESC";
+
+
+        Cursor c = db.rawQuery(selectQuery, new String[]{_filterStatus, _isTransfered});
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                SalesOrder so = new SalesOrder();
+                so.setId(Integer.parseInt(c.getString(c.getColumnIndex(dbHelper.KEY_SO_ID))));
+                so.setKey(c.getString(c.getColumnIndex(dbHelper.KEY_SO_KEY)));
+                so.setNo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_NO)));
+                so.setSelltoCustomerNo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SELL_TO_CUS_NO)));
+                so.setSelltoCustomerName(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SELL_TO_CUS_NAME)));
+                so.setSelltoAddress(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SELL_TO_ADDRESS)));
+                so.setSelltoContactNo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SELL_TO_CONTACT_NO)));
+                so.setSelltoPostCode(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SELL_TO_POST_CODE)));
+                so.setDueDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_DUEDATE)));
+                so.setSelltoCity(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SELL_TO_CITY)));
+                so.setOrderDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_ORDER_DATE)));
+                so.setDocumentDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_DOCUMENT_DATE)));
+                so.setRequestedDeliveryDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_REQUESTED_DELIVERY_DATE)));
+                so.setShipmentDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SHIPMENT_DATE)));
+                so.setExternalDocumentNo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_EXTERNAL_DOCUMET_NO)));
+                so.setSalespersonCode(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SALESPERSON_CODE)));
+                so.setDriverCode(c.getString(c.getColumnIndex(dbHelper.KEY_SO_DRIVER_CODE)));
+                so.setStatus(c.getString(c.getColumnIndex(dbHelper.KEY_SO_STATUS)));
+                so.setCreatedBy(c.getString(c.getColumnIndex(dbHelper.KEY_SO_CREATED_BY)));
+                so.setCreatedDateTime(c.getString(c.getColumnIndex(dbHelper.KEY_SO_CREATED_DATE)));
+                so.setLastModifiedBy(c.getString(c.getColumnIndex(dbHelper.KEY_SO_LAST_MODIFIED_BY)));
+                so.setLastModifiedDateTime(c.getString(c.getColumnIndex(dbHelper.KEY_SO_LAST_MODIFIED_DATE)));
+                so.setAmountIncludingVAT(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_AMOUNT_INCLUDING_VAT)));
+                so.setTransferred(c.getInt(c.getColumnIndex(dbHelper.KEY_SO_TRANSFERRED)) > 0);
+                so.setConfirmedSo(true);
+                so.setAmountExcludingVAT(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_AMOUNT_EXCLUDING_VAT)));
+                so.setSINo(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SI_NO)));
+                so.setSIDate(c.getString(c.getColumnIndex(dbHelper.KEY_SO_SI_DATE)));
+                //////// added by chamil
+                so.setLatitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LAT)));
+                so.setLongitude(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LONG)));
+
+                salesOrders.add(so);
+            } while (c.moveToNext());
+        }
+
+        c.close();
+
+        return salesOrders;
+    }
 }

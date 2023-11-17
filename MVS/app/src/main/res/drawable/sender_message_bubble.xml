@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Add a new item for elevation at the bottom -->
+    <item android:bottom="9dp" android:left="5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#d6d2d2" />
+            <corners android:radius="5dp" />
+
+        </shape>
+    </item>
+    <item android:right="20dp">
+        <rotate
+            android:fromDegrees="-60"
+            android:pivotX="0%"
+            android:pivotY="0.2%"
+            android:toDegrees="0">
+            <shape android:shape="rectangle">
+                <solid android:color="#ffffff" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:left="5dp" android:bottom="10dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#ffffff" />
+            <corners android:radius="5dp" />
+        </shape>
+    </item>
+</layer-list>
+

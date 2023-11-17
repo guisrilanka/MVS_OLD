@@ -86,6 +86,9 @@
     <string name="SyncScopeSoDeliveryFlag">SYNC_UP_DELIVERY_FLAG</string>
     <string name="SyncScopePdf">SYNC_UP_PDF</string>
     <string name="SyncScopeSendEmail">SYNC_SEND_EMAIL</string>
+
+    <string name="SyncScopeDownLoadCustomerSequence">SYNC_DL_CUSTOMER_SEQUENCE</string>
+
     <string name="SalesOrderStatusPending">0</string>
     <string name="SalesOrderStatusConfirmed">1</string>
     <string name="SalesOrderStatusComplete">2</string>

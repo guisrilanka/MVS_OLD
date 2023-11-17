@@ -5,8 +5,12 @@ import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerListResult;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerLocations;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSalesCodeParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSalesCodeResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSequenceParameter;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSequenceResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerTemplateParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerTemplateResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiDeviceTokenParameter;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiDeviceTokenResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiDriverParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiDriverResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiGPSLocationParameter;
@@ -723,4 +727,9 @@ public interface NavBrokerService {
     Call<ApiSalesInvoiceWithMediaResponse> updateMVSSaleOrders(@Body RequestBody requestBody);
     @POST("tsf_delivery_uat/public/api/updateMVSDriverLocation")
     Call<ApiGPSLocationResponse> updateMVSDriverLocation(@Body ApiGPSLocationParameter requestBody);
+    @POST("tsf_delivery_uat/public/api/updateDevicesTokenMVS")
+    Call<ApiDeviceTokenResponse> updateDeviceToken(@Body ApiDeviceTokenParameter requestBody);
+    @POST("tsf_delivery_uat/public/api/customerSeanceMVS")
+    Call<ApiCustomerSequenceResponse> getCustomerSequence(@Body ApiCustomerSequenceParameter requestBody);
+
 }

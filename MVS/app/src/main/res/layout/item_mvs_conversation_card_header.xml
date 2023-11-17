@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/all_rectangle_white_background_blue_border"
+    android:padding="10dp">
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/conversation_person_24"
+        android:background="@drawable/avatar_rounderd_border"
+        android:scaleType="centerCrop"
+
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvSenderName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:maxLines="2"
+                android:gravity="left"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:hint="test1"
+
+                />
+
+            <TextView
+                android:id="@+id/tvCustomerBalance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ellipsize="marquee"
+                android:gravity="right"
+                android:textColor="@android:color/black"
+                android:textSize="11sp"
+
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvLastMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:maxLines="2"
+                android:gravity="left"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:hint="last message"
+                android:paddingRight="20dp"
+
+                />
+
+            <TextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/tvBadgeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/badge_background"
+                android:textColor="@android:color/white"
+
+                android:text="0"
+                android:minWidth="22dp"
+                android:minHeight="22dp"
+                android:layout_gravity="top|end"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

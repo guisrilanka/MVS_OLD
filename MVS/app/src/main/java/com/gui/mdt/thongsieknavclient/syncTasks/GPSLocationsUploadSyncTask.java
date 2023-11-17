@@ -173,9 +173,9 @@ public class GPSLocationsUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
                         .updateMVSDriverLocation(updateMVSDriverLocation);
 
                 apiGPSLocationResponse = call.execute().body();
-                 if(apiGPSLocationResponse.getStatus()==200) {
-
-                 }
+//                 if(apiGPSLocationResponse.getStatus()==200) {
+//
+//                 }
             }
 
         } catch (IOException e) {
