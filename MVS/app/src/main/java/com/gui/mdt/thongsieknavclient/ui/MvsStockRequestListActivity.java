@@ -590,7 +590,9 @@ public class MvsStockRequestListActivity extends AppCompatActivity implements an
 
             if (!srlList.isEmpty()) {
                 for (StockRequestLine srl : srlList) {
-                    if (srl.getQuantity() == 0f || srl.getUnitPrice() == 0f) {
+                    //changed zero price implementation
+//                    if (srl.getQuantity() == 0f || srl.getUnitPrice() == 0f) {
+                    if (srl.getQuantity() == 0f) {
                         if (srlDb.deleteStockRequestLineByKey(srl.getKey())) {
                             Log.d("DELETED SRLINE:", srl.getItemNo() == null ? "" : srl.getItemNo());
                         }

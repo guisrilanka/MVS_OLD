@@ -29,6 +29,16 @@ public class Item {
     public float Qty;
     public float ExchQty;
 
+    public boolean isInventoryValueZero() {
+        return isInventoryValueZero;
+    }
+
+    public void setInventoryValueZero(boolean inventoryValueZero) {
+        isInventoryValueZero = inventoryValueZero;
+    }
+
+    private boolean isInventoryValueZero;
+
     public String getVatProdPostingGroup() {
         return VatProdPostingGroup;
     }

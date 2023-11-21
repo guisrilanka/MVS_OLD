@@ -49,6 +49,16 @@ public class ApiItemListResult {
         public String Identifier_Code;
         private String VAT_Prod_Posting_Group;
 
+        public Boolean getInventory_Value_Zero() {
+            return Inventory_Value_Zero;
+        }
+
+        public void setInventory_Value_Zero(Boolean inventory_Value_Zero) {
+            Inventory_Value_Zero = inventory_Value_Zero;
+        }
+
+        private Boolean Inventory_Value_Zero;
+
         public String getIdentifier_Code() {
             return Identifier_Code;
         }

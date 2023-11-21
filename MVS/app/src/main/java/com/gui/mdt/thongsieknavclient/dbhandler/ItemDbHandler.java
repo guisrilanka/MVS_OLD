@@ -51,6 +51,7 @@ public class ItemDbHandler {
         values.put(dbHelper.KEY_ITM_NET_INVOICED_QTY, item.getNetInvoicedQty());
         values.put(dbHelper.KEY_ITM_IDENTIFIER_CODE, item.getIdentifierCode());
         values.put(dbHelper.KEY_ITM_VAT_PROD_GROUP, item.getVatProdPostingGroup());
+        values.put(dbHelper.KEY_ITM_IS_ZERO_PRICE, item.isInventoryValueZero());
 
 
         // Inserting Row
@@ -87,6 +88,11 @@ public class ItemDbHandler {
             item.setItemCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_CODE)));
             item.setIdentifierCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_IDENTIFIER_CODE)));
             item.setVatProdPostingGroup(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_VAT_PROD_GROUP)));
+            if (c.getInt(c.getColumnIndex(dbHelper.KEY_ITM_IS_ZERO_PRICE)) == 0) {
+                item.setInventoryValueZero(false);
+            } else {
+                item.setInventoryValueZero(true);
+            }
         }
         c.close();
         return item;
@@ -230,7 +236,11 @@ public class ItemDbHandler {
         item.setItemCategoryCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_CATEGORY_CODE)));
         item.setItemCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_CODE)));
         item.setProductGroupCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_PRODUCT_GROUP_CODE)));
-
+        if (c.getInt(c.getColumnIndex(dbHelper.KEY_ITM_IS_ZERO_PRICE)) == 0) {
+            item.setInventoryValueZero(false);
+        } else {
+            item.setInventoryValueZero(true);
+        }
         c.close();
         return item;
     }
@@ -523,7 +533,11 @@ public class ItemDbHandler {
                 item.setItemCategoryCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_CATEGORY_CODE)));
                 item.setItemCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_CODE)));
                 item.setProductGroupCode(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_PRODUCT_GROUP_CODE)));
-
+                if (c.getInt(c.getColumnIndex(dbHelper.KEY_ITM_IS_ZERO_PRICE)) == 0) {
+                    item.setInventoryValueZero(false);
+                } else {
+                    item.setInventoryValueZero(true);
+                }
             }
         }
         c.close();

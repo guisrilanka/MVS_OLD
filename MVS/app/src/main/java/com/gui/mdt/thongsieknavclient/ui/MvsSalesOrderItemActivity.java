@@ -210,10 +210,14 @@ public class MvsSalesOrderItemActivity extends AppCompatActivity implements View
                 String selectedUom = mSpnUom.getSelectedItem().toString();
 
                 mTempSalesOrderLine.setUnitofMeasure(selectedUom);
+                if(mTempItem.isInventoryValueZero()){
+                    mTempSalesOrderLine.setUnitPrice(0.00f);
+                }else{
+                    unitPrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(),
+                            mTempCustomer.getCode(), selectedUom);
+                    mTempSalesOrderLine.setUnitPrice(unitPrice);
+                }
 
-                unitPrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(),
-                        mTempCustomer.getCode(), selectedUom);
-                mTempSalesOrderLine.setUnitPrice(unitPrice);
 
                 mTxtUnitPrice.setText(String.format("%.2f", mTempSalesOrderLine.getUnitPrice()));
                 totalPrice = quantity * mTempSalesOrderLine.getUnitPrice();
@@ -277,7 +281,7 @@ public class MvsSalesOrderItemActivity extends AppCompatActivity implements View
                     Toast.makeText(MvsSalesOrderItemActivity.this, "Item can not be added!, Item UOM is not " +
                             "available", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mTempSalesOrderLine.getUnitPrice() == 0f) {
+                    if (mTempSalesOrderLine.getUnitPrice() == 0f && !mTempItem.isInventoryValueZero()) {
                         Toast.makeText(MvsSalesOrderItemActivity.this, "Item can not be added!, Item unit price " +
                                 "is zero", Toast.LENGTH_SHORT).show();
                     } else {

@@ -3,6 +3,7 @@ package com.gui.mdt.thongsieknavclient.adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -114,17 +115,22 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
 
                         SalesPricesDbHandler spdb = new SalesPricesDbHandler(activity);
                         spdb.open();
-
-                        float unitPrice_ = spdb.getUnitPriceWithQuantity(sol.getNo(),
-                                tempCustomer.getCustomerPriceGroup(),
-                                tempCustomer.getCode(),
-                                sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure(),
-                                Integer.valueOf(viewHolder.mTxtExchQTY.getText().toString()),
-                                deliveryDate
-                        );
+                        Item mTempItem  = getItemByCode(sol.getNo(), activity);
+                        float itemUnitePrice = 0f;
+                        if(mTempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0f;
+                        }else {
+                            itemUnitePrice = spdb.getUnitPriceWithQuantity(sol.getNo(),
+                                    tempCustomer.getCustomerPriceGroup(),
+                                    tempCustomer.getCode(),
+                                    sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure(),
+                                    Integer.valueOf(viewHolder.mTxtExchQTY.getText().toString()),
+                                    deliveryDate
+                            );
+                        }
                         spdb.close();
 
-                        float unitPrice = floatRound(unitPrice_,2);
+                        float unitPrice = floatRound(itemUnitePrice,2);
 
                         float gstPresentage = getGstPercentage(tempCustomer.getCode(), sol.getNo());
 
@@ -248,17 +254,23 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
 
                         SalesPricesDbHandler spdb = new SalesPricesDbHandler(activity);
                         spdb.open();
+                        float itemUnitePrice = 0f;
+                        Item mTempItem  = getItemByCode(sol.getNo(), activity);
+                        if(mTempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0f;
+                        }else {
+                            itemUnitePrice = spdb.getUnitPriceWithQuantity(sol.getNo(),
+                                    tempCustomer.getCustomerPriceGroup(),
+                                    tempCustomer.getCode(),
+                                    sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure(),
+                                    Integer.valueOf(viewHolder.mTxtBillQTY.getText().toString()),
+                                    deliveryDate
+                            );
+                        }
 
-                        float unitPrice_ = spdb.getUnitPriceWithQuantity(sol.getNo(),
-                                tempCustomer.getCustomerPriceGroup(),
-                                tempCustomer.getCode(),
-                                sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure(),
-                                Integer.valueOf(viewHolder.mTxtBillQTY.getText().toString()),
-                                deliveryDate
-                        );
                         spdb.close();
 
-                        float unitPrice = floatRound(unitPrice_,2);
+                        float unitPrice = floatRound(itemUnitePrice,2);
 
                         float gstPresentage = getGstPercentage(tempCustomer.getCode(), sol.getNo());
 
@@ -338,6 +350,18 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
         result = Float.parseFloat(String.valueOf((double) tmp / factor));
 
         return result;
+    }
+
+    private Item getItemByCode(String itemCode, Context  activity) {
+        boolean status = false;
+        ItemDbHandler dbAdapter = new ItemDbHandler(activity);
+        dbAdapter.open();
+
+        Item mTempItem = dbAdapter.getItemByCode(itemCode);
+
+        dbAdapter.close();
+
+        return mTempItem;
     }
 
     //Apply color codes on Bill qty & Exch qty

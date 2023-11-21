@@ -1,6 +1,7 @@
 package com.gui.mdt.thongsieknavclient.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
@@ -106,17 +107,21 @@ public class MvsStockRequestItemAdapter extends RecyclerView.Adapter<MvsStockReq
 
                         SalesPricesDbHandler spdb = new SalesPricesDbHandler(activity);
                         spdb.open();
-
-                        float unitPrice_ = spdb.getUnitPriceWithQuantity(srl.getItemNo(),
+                        Item mTempItem  = getItemByCode(srl.getItemNo(), activity);
+                        float itemUnitePrice = 0f;
+                        if(mTempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0f;
+                        }else {
+                            itemUnitePrice = spdb.getUnitPriceWithQuantity(srl.getItemNo(),
                                 tempCustomer.getCustomerPriceGroup(),
                                 tempCustomer.getCode(),
                                 srl.getUnitofMeasureCode() == null ? "" : srl.getUnitofMeasureCode(),
                                 Integer.valueOf(viewHolder.txtQTY.getText().toString()),
                                 deliveryDate
-                        );
+                        ); }
                         spdb.close();
 
-                        float unitPrice = floatRound(unitPrice_,2);
+                        float unitPrice = floatRound(itemUnitePrice,2);
 
                         float gstPresentage = getGstPercentage(tempCustomer.getCode(), srl.getItemNo());
 
@@ -154,17 +159,21 @@ public class MvsStockRequestItemAdapter extends RecyclerView.Adapter<MvsStockReq
 
                         SalesPricesDbHandler spdb = new SalesPricesDbHandler(activity);
                         spdb.open();
-
-                        float unitPrice = spdb.getUnitPriceWithQuantity(srl.getItemNo(),
+                        Item mTempItem  = getItemByCode(srl.getItemNo(), activity);
+                        float itemUnitePrice = 0f;
+                        if(mTempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0f;
+                        }else {
+                            itemUnitePrice = spdb.getUnitPriceWithQuantity(srl.getItemNo(),
                                 tempCustomer.getCustomerPriceGroup(),
                                 tempCustomer.getCode(),
                                 srl.getUnitofMeasureCode() == null ? "" : srl.getUnitofMeasureCode(),
                                 Math.round(mEnteredQuantity),
                                 deliveryDate
-                        );
+                        ); }
                         spdb.close();
 
-                        srl.setUnitPrice(floatRound(unitPrice,2));
+                        srl.setUnitPrice(floatRound(itemUnitePrice,2));
 
                         srl.setQuantity(0f);
                         srl.setLineAmount(0f);
@@ -174,7 +183,7 @@ public class MvsStockRequestItemAdapter extends RecyclerView.Adapter<MvsStockReq
 
                         stockRequestLineList.set(position, srl);
 
-                        viewHolder.tvPrice.setText(String.format("%.2f", unitPrice));
+                        viewHolder.tvPrice.setText(String.format("%.2f", itemUnitePrice));
                         viewHolder.tvTotal.setText(String.format("%.2f", 0f));
 
                         applyColorCodes(srl.getQuantity(),viewHolder);
@@ -194,6 +203,18 @@ public class MvsStockRequestItemAdapter extends RecyclerView.Adapter<MvsStockReq
         }
 
         return viewHolder;
+    }
+
+    private Item getItemByCode(String itemCode, Context activity) {
+        boolean status = false;
+        ItemDbHandler dbAdapter = new ItemDbHandler(activity);
+        dbAdapter.open();
+
+        Item mTempItem = dbAdapter.getItemByCode(itemCode);
+
+        dbAdapter.close();
+
+        return mTempItem;
     }
 
     public float floatRound(float value_, int places) {

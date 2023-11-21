@@ -126,6 +126,7 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
 
             //setStockRequestNewFields
             else if (extras.containsKey(getResources().getString(R.string.stock_transfer_request_line))) {
+
                 setStockRequestNewFields();
 
             }
@@ -145,6 +146,17 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
         startItemBalanceDownload();
     }
 
+//    private void getItem(String Code) {
+//        boolean status = false;
+//        ItemDbHandler dbAdapter = new ItemDbHandler(this);
+//        dbAdapter.open();
+//
+//        mTempItem = dbAdapter.getItemByItemCode(Code);
+//
+//        dbAdapter.close();
+//    }
+
+
     @Override
     public void onAsyncTaskFinished(SyncStatus syncStatus) {
 
@@ -160,7 +172,7 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
                     Toast.makeText(MsoSalesOrderItemActivity.this, "Item can not be added!, Item UOM is not " +
                             "available", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (tempSalesOrderLine.getUnitPrice() == 0f) {
+                    if (tempSalesOrderLine.getUnitPrice() == 0f && !tempItem.isInventoryValueZero()) {
                         Toast.makeText(MsoSalesOrderItemActivity.this, "Item can not be added!, Item unit price " +
                                 "is zero", Toast.LENGTH_SHORT).show();
                     } else {
@@ -205,7 +217,7 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
                     Toast.makeText(MsoSalesOrderItemActivity.this, "Item can not be added!, Item UOM is non",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    if (tempStockRequestLine.getUnitPrice() == 0f) {
+                    if (tempStockRequestLine.getUnitPrice() == 0f && !tempItem.isInventoryValueZero()) {
                         Toast.makeText(MsoSalesOrderItemActivity.this, "Item can not be added!, Item unit price " +
                                 "is zero", Toast.LENGTH_SHORT).show();
                     } else {
@@ -272,12 +284,17 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
                     }
                     else
                     {
+                        if(tempItem.isInventoryValueZero()){
+                            tempSalesOrderLine.setUnitPrice(0.00f);
+                        }else {
                         unitPrice = getUnitPriceWithQuantity(tempSalesOrderLine.getNo()
                                                             , tempCustomer.getCustomerPriceGroup()
                                                             , tempCustomer.getCode()
                                                             , tempSalesOrderLine.getUnitofMeasure()
                                                             , Math.round(enteredQuantity));
                         tempSalesOrderLine.setUnitPrice(unitPrice);
+                        }
+
                         txtUnitPrice.setText(String.format("%.2f", tempSalesOrderLine.getUnitPrice()));
                         totalPrice = enteredQuantity * tempSalesOrderLine.getUnitPrice();
                     }
@@ -697,12 +714,17 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
 
                 //e_unitPrice = getUnitPrice(tempSalesOrderLine.getNo(), tempCustomer.getCustomerPriceGroup(),
                 //       tempCustomer.getCode(), selectedUom);
-                unitPrice = getUnitPriceWithQuantity(tempSalesOrderLine.getNo()
-                                                , tempCustomer.getCustomerPriceGroup()
-                                                , tempCustomer.getCode()
-                                                , selectedUom
-                                                , Math.round(tempSalesOrderLine.getQuantity()));
-                tempSalesOrderLine.setUnitPrice(unitPrice);
+                if(tempItem.isInventoryValueZero()){
+                    tempSalesOrderLine.setUnitPrice(0.00f);
+                }else {
+                    unitPrice = getUnitPriceWithQuantity(tempSalesOrderLine.getNo()
+                            , tempCustomer.getCustomerPriceGroup()
+                            , tempCustomer.getCode()
+                            , selectedUom
+                            , Math.round(tempSalesOrderLine.getQuantity()));
+                    tempSalesOrderLine.setUnitPrice(unitPrice);
+                }
+
 
                 txtUnitPrice.setText(String.format("%.2f", tempSalesOrderLine.getUnitPrice()));
                 totalPrice = quantity * tempSalesOrderLine.getUnitPrice();
@@ -872,14 +894,18 @@ public class MsoSalesOrderItemActivity extends AppCompatActivity implements View
 
                 /*e_unitPrice = getUnitPrice(tempStockRequestLine.getItemNo(), tempCustomer.getCustomerPriceGroup(),
                         tempCustomer.getCode(), selectedUom);*/
+                if(tempItem.isInventoryValueZero()){
+                    tempStockRequestLine.setUnitPrice(0.00f);
+                }else {
+                    unitPrice = getUnitPriceWithQuantity(tempStockRequestLine.getItemNo()
+                            , tempCustomer.getCustomerPriceGroup()
+                            , tempCustomer.getCode()
+                            , selectedUom
+                            , Math.round(quantity));
+                    tempStockRequestLine.setUnitPrice(unitPrice);
+                }
 
-                unitPrice = getUnitPriceWithQuantity(tempStockRequestLine.getItemNo()
-                        , tempCustomer.getCustomerPriceGroup()
-                        , tempCustomer.getCode()
-                        , selectedUom
-                        , Math.round(quantity));
-
-                tempStockRequestLine.setUnitPrice(unitPrice);
+//
 
                 txtUnitPrice.setText(String.format("%.2f", tempStockRequestLine.getUnitPrice()));
                 totalPrice = quantity * tempStockRequestLine.getUnitPrice();

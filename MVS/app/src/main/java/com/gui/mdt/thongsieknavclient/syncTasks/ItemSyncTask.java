@@ -185,7 +185,7 @@ public class ItemSyncTask extends AsyncTask<Void, Void, Boolean> {
                         item.setNetInvoicedQty(itemResult.getNet_Invoiced_Qty());
                         item.setIdentifierCode(itemResult.getIdentifier_Code());
                         item.setVatProdPostingGroup(itemResult.getVAT_Prod_Posting_Group());
-
+                        item.setInventoryValueZero(itemResult.getInventory_Value_Zero());
                         dbAdapter.addItems(item);
                         Log.d("SYNC_ITEM_ADDED: ", itemResult.getNo());
                         //delegate.onAsyncTaskFinished(itemResult.getNo() + " --DOWNLOADED-- ");

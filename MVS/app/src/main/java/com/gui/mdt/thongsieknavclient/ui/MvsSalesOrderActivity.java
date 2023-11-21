@@ -628,8 +628,13 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         int position = extraData.getInt(getResources().getString(R.string.adapter_position));
                         int index = 0;
+                        getItemByCode(mTempSalesOrderLine.getNo());
+                        if(mTempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0;
+                        }else{
+                            itemUnitePrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(), mTempCustomer.getCode(), mTempSalesOrderLine.getUnitofMeasure());
+                        }
 
-                        itemUnitePrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(), mTempCustomer.getCode(), mTempSalesOrderLine.getUnitofMeasure());
 
                         if (mSalesOrderLineList.size() == 0) {
                             mTempSalesOrderLine.setUnitPrice(itemUnitePrice);
@@ -949,14 +954,18 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                 SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
                 spDb.open();
-
-                float itemUnitePrice = spDb.getUnitPriceWithQuantity(ct.getItemNo(),
-                        mTempCustomer.getCustomerPriceGroup(),
-                        mTempCustomer.getCode(),
-                        ct.getItemUom(),
-                        Math.round(ct.getQuantity()),
-                        deliveryDate);
-
+                float itemUnitePrice = 0f;
+//                getItemByCode(ct.getItemNo());
+                if(mTempItem.isInventoryValueZero()){
+                    itemUnitePrice = 0f;
+                }else {
+                      itemUnitePrice = spDb.getUnitPriceWithQuantity(ct.getItemNo(),
+                            mTempCustomer.getCustomerPriceGroup(),
+                            mTempCustomer.getCode(),
+                            ct.getItemUom(),
+                            Math.round(ct.getQuantity()),
+                            deliveryDate);
+                }
                 spDb.close();
 
                 SalesOrderLine salesOrderLine = new SalesOrderLine();
@@ -1121,20 +1130,23 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                                 gstPresentage = getGstPercentage(mTempCustomer.getCode(), sol.getNo());
 
-                                SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
-                                spDb.open();
 
-                                float itemUnitePrice_ = spDb.getUnitPriceWithQuantity(sol.getNo(),
-                                        mTempCustomer.getCustomerPriceGroup(),
-                                        mTempCustomer.getCode(),
-                                        sol.getUnitofMeasure(),
-                                        Math.round(sol.getQuantity()),
-                                        deliveryDate);
+                                getItemByCode(sol.getNo());
+                                if(mTempItem.isInventoryValueZero()){
+                                    itemUnitePrice = 0f;
+                                }else{
+                                    SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
+                                    spDb.open();
+                                    itemUnitePrice = spDb.getUnitPriceWithQuantity(sol.getNo(),
+                                            mTempCustomer.getCustomerPriceGroup(),
+                                            mTempCustomer.getCode(),
+                                            sol.getUnitofMeasure(),
+                                            Math.round(sol.getQuantity()),
+                                            deliveryDate);
+                                    spDb.close();
+                                }
+                                itemUnitePrice = floatRound(itemUnitePrice, 2);
 
-                                spDb.close();
-
-                                //unit price
-                                itemUnitePrice = floatRound(itemUnitePrice_, 2);
 
                                 //line amount
                                 float lineAmount_ = Math.round(sol.getQuantity()) * itemUnitePrice;
@@ -1800,20 +1812,25 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     public void updateSalesOrderLineObject(SalesOrderLine sol) {
         float gstPresentage = 0f, totalVatAmount = 0f, totalAmountInclVAT = 0f;
         float itemUnitePrice = 0f, lineAmount = 0f;
+        getItemByCode(sol.getNo());
 
-        SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
-        spDb.open();
+        if(mTempItem.isInventoryValueZero()){
+            itemUnitePrice = floatRound(0, 2);
+        }else{
+            SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
+            spDb.open();
 
-        float itemUnitePrice_ = spDb.getUnitPriceWithQuantity(sol.getNo(),
-                mTempCustomer.getCustomerPriceGroup(),
-                mTempCustomer.getCode(),
-                sol.getUnitofMeasure(),
-                Math.round(sol.getQuantity()),
-                deliveryDate);
+            float itemUnitePrice_ = spDb.getUnitPriceWithQuantity(sol.getNo(),
+                    mTempCustomer.getCustomerPriceGroup(),
+                    mTempCustomer.getCode(),
+                    sol.getUnitofMeasure(),
+                    Math.round(sol.getQuantity()),
+                    deliveryDate);
 
-        spDb.close();
+            spDb.close();
+            itemUnitePrice = floatRound(itemUnitePrice_, 2);
+        }
 
-        itemUnitePrice = floatRound(itemUnitePrice_, 2);
 
         //Line Amount
         float lineAmount_ = Math.round(sol.getQuantity()) * itemUnitePrice;
@@ -2123,6 +2140,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         mTempItem = dbAdapter.getItemByIdentifierCodeAndPriceGroup(barCode, mTempCustomer.getCustomerPriceGroup());
         dbAdapter.close();
     }
+
 
     public void removeZeroTotalAmtItems() {
         List<SalesOrderLine> temparyRemoveSalesOrderLineList = new ArrayList<SalesOrderLine>();

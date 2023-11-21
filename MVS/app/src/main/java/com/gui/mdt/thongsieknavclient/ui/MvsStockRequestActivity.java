@@ -102,6 +102,7 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
     Bundle extras;
     String details = "", deliveryDate = "", srNo = "", todayDate = "", mPoComments = "";
     Customer tempCustomer;
+//    Item mTempItem;
 
     SimpleDateFormat dBDateFormat, uIDateFormat;
     private NavClientApp mApp;
@@ -375,7 +376,7 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
                                                         showMessageBox(getResources().getString(R.string.message_title_alert), getResources().getString(R.string.message_body_select_customer));
                                                     } else {
 
-                                                        getItem(txtScanCode.getText().toString());
+                                                        getItemByCode(txtScanCode.getText().toString());
                                                         if (tempItem.getItemCode() != null) {
                                                             addItem();
                                                         } else {
@@ -1300,11 +1301,14 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
 
                         int position = extraData.getInt(getResources().getString(R.string.adapter_position));
                         int index = 0;
-
+                        getItemByCode(tempStockRequestLine.getItemNo());
                         //itemUnitePrice = getUnitPrice(tempStockRequestLine.getItemNo(), tempCustomer.getCustomerPriceGroup(), tempCustomer.getCode(), tempStockRequestLine.getUnitofMeasureCode());
                         SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
                         spDb.open();
 
+                        if(tempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0;
+                        }else{
                         itemUnitePrice = spDb.getUnitPriceWithQuantity(tempStockRequestLine.getItemNo(),
                                 tempCustomer.getCustomerPriceGroup(),
                                 tempCustomer.getCode(),
@@ -1312,7 +1316,7 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
                                 Math.round(tempStockRequestLine.getQuantity()),
                                 deliveryDate
                         );
-
+                        }
                         spDb.close();
 
                         if (stockRequestLineList.size() == 0) {
@@ -1618,17 +1622,22 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
 
                 String key = ct.getItemNo() + srNo + "#" + ct.getItemUom();
 
+                getItemByCode(ct.getItemNo());
                 SalesPricesDbHandler spDb
                         = new SalesPricesDbHandler(getApplicationContext());
                 spDb.open();
+                float itemUnitePrice = 0;
+                if(tempItem.isInventoryValueZero()){
+                    itemUnitePrice = 0;
+                }else {
+                    itemUnitePrice = spDb.getUnitPriceWithQuantity(ct.getItemNo(),
+                            tempCustomer.getCustomerPriceGroup(),
+                            tempCustomer.getCode(),
+                            ct.getItemUom(),
+                            Math.round(ct.getQuantity()),
+                            deliveryDate);
 
-                float itemUnitePrice = spDb.getUnitPriceWithQuantity(ct.getItemNo(),
-                        tempCustomer.getCustomerPriceGroup(),
-                        tempCustomer.getCode(),
-                        ct.getItemUom(),
-                        Math.round(ct.getQuantity()),
-                        deliveryDate);
-
+                }
                 spDb.close();
 
                 StockRequestLine stockRequestLine = new StockRequestLine();
@@ -1712,23 +1721,29 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
         isSaved = false;
     }
 
+
     public void updateStockRequestLineObject(StockRequestLine srl) {
         float gstPresentage = 0, totalVatAmount = 0f, totalAmountInclVAT = 0f;
         float itemUnitePrice = 0f, lineAmount = 0f;
 
+        getItemByCode(srl.getItemNo());
         SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
         spDb.open();
 
-        float itemUnitePrice_ = spDb.getUnitPriceWithQuantity(srl.getItemNo(),
-                tempCustomer.getCustomerPriceGroup(),
-                tempCustomer.getCode(),
-                srl.getUnitofMeasureCode() == null ? ""
-                        : srl.getUnitofMeasureCode(),
-                Math.round(srl.getQuantity()),
-                deliveryDate
-        );
+        if(tempItem.isInventoryValueZero()){
+            itemUnitePrice = 0;
+        }else {
+            itemUnitePrice = spDb.getUnitPriceWithQuantity(srl.getItemNo(),
+                    tempCustomer.getCustomerPriceGroup(),
+                    tempCustomer.getCode(),
+                    srl.getUnitofMeasureCode() == null ? ""
+                            : srl.getUnitofMeasureCode(),
+                    Math.round(srl.getQuantity()),
+                    deliveryDate
+            );
+        }
 
-        itemUnitePrice = floatRound(itemUnitePrice_, 2);
+        itemUnitePrice = floatRound(itemUnitePrice, 2);
 
         spDb.close();
 
@@ -2133,18 +2148,22 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
 
                 for (int i = 0; i < stockRequestLineList.size(); i++) {
                     StockRequestLine srl = stockRequestLineList.get(i);
-
+                    getItemByCode(srl.getItemNo());
                     //get unit price
-                    float itemUnitePrice_ = spDb.getUnitPriceWithQuantity(
-                            srl.getItemNo(),
-                            tempCustomer.getCustomerPriceGroup(),
-                            tempCustomer.getCode(),
-                            srl.getUnitofMeasureCode() == null ? "" : srl.getUnitofMeasureCode(),
-                            Math.round(srl.getQuantity()),
-                            deliveryDate
-                    );
+                    if(tempItem.isInventoryValueZero()){
+                        itemUnitePrice = 0;
+                    }else {
+                        itemUnitePrice = spDb.getUnitPriceWithQuantity(
+                                srl.getItemNo(),
+                                tempCustomer.getCustomerPriceGroup(),
+                                tempCustomer.getCode(),
+                                srl.getUnitofMeasureCode() == null ? "" : srl.getUnitofMeasureCode(),
+                                Math.round(srl.getQuantity()),
+                                deliveryDate
+                        );
+                    }
 
-                    itemUnitePrice = floatRound(itemUnitePrice_, 2);
+                    itemUnitePrice = floatRound(itemUnitePrice, 2);
 
                     //line amount
                     float lineAmount_ = Math.round(srl.getQuantity()) * itemUnitePrice;

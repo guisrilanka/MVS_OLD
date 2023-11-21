@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    public static final int DATABASE_VERSION = 167;
+    public static final int DATABASE_VERSION = 168;
 
     // Database Name
     public static final String DATABASE_NAME = "thongsiek";
@@ -88,6 +88,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_ITM_NET_INVOICED_QTY = "netInvoicedQty";
     public static final String KEY_ITM_IDENTIFIER_CODE = "identifierCode";
     public static final String KEY_ITM_VAT_PROD_GROUP = "VatProdPostingGroup";
+
+    public static final String KEY_ITM_IS_ZERO_PRICE = "IsZeroPrice";
 
 
     //Item_Uom table columns
@@ -496,7 +498,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_ITM_UNIT_PRICE + " TEXT, "
                 + KEY_ITM_NET_INVOICED_QTY + " TEXT, "
                 + KEY_ITM_IDENTIFIER_CODE + " TEXT, "
-                + KEY_ITM_VAT_PROD_GROUP + " TEXT "
+                + KEY_ITM_VAT_PROD_GROUP + " TEXT, "
+                + KEY_ITM_IS_ZERO_PRICE + " TEXT "
                 + ")";
         db.execSQL(CREATE_ITEM_TABLE);
 
@@ -881,7 +884,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if exist
-        if (oldVersion == 166) {
+        if(oldVersion == 167){
+            db.execSQL("ALTER TABLE " + TABLE_ITEM + " ADD " + KEY_ITM_IS_ZERO_PRICE + " TEXT DEFAULT NULL ");
+        } else if (oldVersion == 166) {
             //this code only for this 166 version . if you new to this remove for
             // next versions
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUSTOMER);
