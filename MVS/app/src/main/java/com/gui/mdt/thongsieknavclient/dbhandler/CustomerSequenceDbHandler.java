@@ -40,4 +40,5 @@ public class CustomerSequenceDbHandler {
         int affectedRows =  db.delete(dbHelper.TABLE_CUSTOMER_SEQUENCE, null, null);
         return affectedRows >= 0;
     }
+//    public
 }
