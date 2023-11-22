@@ -48,7 +48,7 @@ public class CustomerSequenceClearAndDownloadSyncTask extends AsyncTask<Void,Voi
 
         apiCustomerSequenceParameter=new ApiCustomerSequenceParameter();
         apiCustomerSequenceParameter.setDriverCode(mApp.getmCurrentDriverCode().toUpperCase());
-        apiCustomerSequenceParameter.setDeliveryDate("2023-11-13");
+        apiCustomerSequenceParameter.setDeliveryDate(deliveryDate);
         logParams(apiCustomerSequenceParameter);
 
         // get previous sync details
@@ -65,7 +65,6 @@ public class CustomerSequenceClearAndDownloadSyncTask extends AsyncTask<Void,Voi
                 apiCustomerSequenceResponse = call.execute().body();
 
                 logResponse(apiCustomerSequenceResponse);
-                System.out.println("++++++++++++++++ : "+apiCustomerSequenceResponse.getRouteSequenceMvs());
                 deleteAllDownloadedCustomerSequence();
                 addCustomerRecords(true);
             }

@@ -43,10 +43,12 @@ import android.widget.Toast;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.adapters.MvsSalesOrderListAdapter;
+import com.gui.mdt.thongsieknavclient.datamodel.CustomerSequence;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrder;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderLine;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
+import com.gui.mdt.thongsieknavclient.dbhandler.CustomerSequenceDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
@@ -67,6 +69,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -77,6 +81,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     MvsSalesOrderListAdapter mMvsSalesOrderListAdapter;
     int date, month, year, mCreditLimitFaildCount = 0, mOverDueInvoiceCount = 0, mConfirmedCount = 0;
     List<SalesOrder> mSalesOrderList, mCheckedSoList;
+    List<CustomerSequence> mCustomerSequencesList;
     FloatingActionButton mFabAddNewItem;
     NavClientApp mApp;
     String mFilterCustomerCode = "",
@@ -788,6 +793,9 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
             try {
                 getSalesOrderList(mFilterDriverCode, mFilterCustomerCode,
                         mFilterCustomerName, mFilterSalesOrderNo, mFilterCreatedDate, mFilterStatus);
+                getCustomerSequence();
+                sortSalesOrderList();
+
             } catch (Exception e) {
                 logParams(getResources().getString(R.string.message_exception), e.getMessage());
                 Log.d("Exception", e.toString());
@@ -843,7 +851,53 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
                 mFilterSalesOrderNo, mFilterCreatedDate, mFilterStatus);
         dbAdapter.close();
     }
+    private void getCustomerSequence(){
+        CustomerSequenceDbHandler dbAdapter=new CustomerSequenceDbHandler(this);
+        dbAdapter.open();
+        mCustomerSequencesList=dbAdapter.getCustomerSequences();
+        dbAdapter.close();
+    }
+    public void sortSalesOrderList() {
+            if(mCustomerSequencesList != null &&!mCustomerSequencesList.isEmpty()){
+            Collections.sort(mSalesOrderList, new Comparator<SalesOrder>() {
+                private int getStatusOrder(String status) {
+                    switch (status) {
+                        case "0":
+                            return 0;
+                        case "2":
+                            return 1;
+                        case "3":
+                            return 2;
+                        case "1":
+                            return 3;
+                        default:
+                            return Integer.MAX_VALUE;
+                    }
+                }
+                @Override
+                public int compare(SalesOrder order1, SalesOrder order2) {
+                    int statusComparison = Integer.compare(getStatusOrder(order1.getStatus()), getStatusOrder(order2.getStatus()));
+                    if (statusComparison == 0) {
+                        CustomerSequence sequence1 = findCustomerSequence(order1.getSelltoCustomerNo(), mCustomerSequencesList);
+                        CustomerSequence sequence2 = findCustomerSequence(order2.getSelltoCustomerNo(), mCustomerSequencesList);
+                        return sequence1.getCode().compareTo(sequence2.getCode());
+                    } else {
+                        return statusComparison;
+                    }
+                }
+            });
+        }
 
+    }
+
+    private CustomerSequence findCustomerSequence(String customerCode, List<CustomerSequence> customerSequenceList) {
+        for (CustomerSequence sequence : customerSequenceList) {
+            if (sequence.getCode().equals(customerCode)) {
+                return sequence;
+            }
+        }
+        return null;
+    }
     public static int getScreenWidth(Activity activity) {
         Point size = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(size);
@@ -1125,5 +1179,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     private void logParams(String type, String params) {
         mLog.info(type + params);
     }
+
+
 
 }
