@@ -1,38 +1,31 @@
 package com.gui.mdt.thongsieknavclient.syncTasks;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
-import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceHeaderResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceWithMediaParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiSalesInvoiceWithMediaResponse;
-import com.gui.mdt.thongsieknavclient.datamodel.ApiSoImageUploadListResult;
-import com.gui.mdt.thongsieknavclient.datamodel.ApiSoImageUploadParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiSoMediaUploadParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrder;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderImageUploadStatus;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncConfiguration;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderImageUploadStatusDbHandler;
-import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
-import com.gui.mdt.thongsieknavclient.model.BaseResult;
-
 import org.apache.log4j.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +36,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, Boolean>  {
+
     public AsyncResponse delegate = null;
     NavClientApp mApp;
     boolean isForcedSync = false;
@@ -57,12 +51,16 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
     Map<String, SalesOrder> salesOrderMap;
     ApiSalesInvoiceWithMediaResponse apiSalesInvoiceWithMediaResponse;
     boolean isSuccess=false;
-    public SalesInvoiceWithMediaUploadSyncTask(Context context, boolean isForcedSync) {
+    private Activity activity;
+    private Bundle locationData;
+    public SalesInvoiceWithMediaUploadSyncTask(Activity activity, Context context, Bundle bundle, boolean isForcedSync) {
+        this.activity = activity;
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.mLog = Logger.getLogger(SalesInvoiceUploadSyncTask.class);
         this.salesOrderMap = new HashMap<String, SalesOrder>();
+        this.locationData = bundle;
     }
     @Override
     protected void onPreExecute() {
@@ -80,6 +78,8 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
                 salesOrdersSynced = dbAdapter.getSalesInvoiceForImageWithMediaUploading();
                 loadSalesOrderImageUploadStatus();
                 processSalesInvoiceWithMedia();
+
+//                GetCurrentLocation();
                 uploadImages();
 
                 isSuccess = changeUploadedSOImageStatus();
@@ -147,8 +147,11 @@ public class SalesInvoiceWithMediaUploadSyncTask extends AsyncTask<Void, Void, B
             apiParameter.setDocumentNo(salesOrder.getNo());
             apiParameter.setRemark("");
             apiParameter.setDeliveryDateTime(salesOrder.getDocumentDate());
-            apiParameter.setDeliverLatitude(salesOrder.getLatitude());
-            apiParameter.setDeliverLongitude(salesOrder.getLongitude());
+
+            double latitude =locationData.getDouble("latitude", 0.0);
+            double longitude =locationData.getDouble("longitude", 0.0);
+            apiParameter.setDeliverLatitude(latitude);
+            apiParameter.setDeliverLongitude(longitude);
 
             apiParameter.setStatus(4);
 //            apiParameter.setStatus(Integer.parseInt(salesOrder.getStatus()));

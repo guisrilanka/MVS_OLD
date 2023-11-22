@@ -568,7 +568,7 @@ public class SalesInvoiceUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
                     soLineParams.setDriver_Code(soLine.getDriverCode());
                     soLineParams.setCreated_DateTime(confirmedSalesOrder.getCreatedDateTime());
                     soLineParams.setLast_Modified_DateTime(confirmedSalesOrder.getLastModifiedDateTime());
-//soLineParams.setGen_Prod_Posting_Group(soLine.getTaxPercentage());
+                    //soLineParams.setGen_Prod_Posting_Group(soLine.getTaxPercentage());
 
                     if (confirmedSalesOrder.isTransferred())
                         transferred = "1";

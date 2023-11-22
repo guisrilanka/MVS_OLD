@@ -8,13 +8,20 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +47,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import com.google.android.gms.location.LocationServices;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.adapters.MvsSalesOrderListAdapter;
@@ -74,9 +85,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class MvsSalesOrderListActivity extends AppCompatActivity implements android.view.View.OnClickListener
+public class MvsSalesOrderListActivity extends AppCompatActivity implements android.view.View.OnClickListener, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener
         , AsyncResponse {
-
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     Toolbar mMvs_so_toolbar;
     MvsSalesOrderListAdapter mMvsSalesOrderListAdapter;
     int date, month, year, mCreditLimitFaildCount = 0, mOverDueInvoiceCount = 0, mConfirmedCount = 0;
@@ -113,7 +124,10 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     SalesInvoiceWithMediaUploadSyncTask salesInvoiceWithMediaUploadSyncTask;
     UserSetupRunningNoUploadTask userSetupRunningNoUploadTask;
     private Logger mLog;
-
+    GoogleApiClient mGoogleApiClient;
+    private Double mLatitudeText, mLongitudeText;
+    private boolean mLocationPermissionGranted;
+    private Location mLastLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -787,6 +801,21 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         return isValidDueDate;
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     private class getMvsSalesOrderListTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -1084,7 +1113,10 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
 
     ////-------------------- chamil 2023-10-13----------------------------------------------------
     private void startSalesInvoiceWithMediaUpload() {
-        SalesInvoiceWithMediaUploadSyncTask task = new SalesInvoiceWithMediaUploadSyncTask(getApplicationContext(), false);
+        Bundle bundle=new Bundle();
+        bundle.putDouble("latitude",mLatitudeText);
+        bundle.putDouble("longitude",mLongitudeText);
+        SalesInvoiceWithMediaUploadSyncTask task = new SalesInvoiceWithMediaUploadSyncTask(MvsSalesOrderListActivity.this,getApplicationContext(),bundle, false);
         task.execute();
 //        mProgressDialog.setMessage("Uploading Images to the server...");
 //        mProgressDialog.show();
@@ -1099,6 +1131,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
+                GetConnectGoogleApiClient();
                 if (getCheckedSoCountAndList() > 0) {
                     confirmSo();
                 }
@@ -1149,6 +1182,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
                             uploadSoImages();
 
                             ////////// updated bu chamil -------------------------------
+                            GetCurrentLocation();
                             startSalesInvoiceWithMediaUpload();
                         }
 
@@ -1181,5 +1215,57 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     }
 
 
+    private void GetCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(MvsSalesOrderListActivity.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(MvsSalesOrderListActivity.this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
 
+        if (mLocationPermissionGranted) {
+            if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
+                // GoogleApiClient is not connected, connect it
+                GetConnectGoogleApiClient();
+            } else {
+                // GoogleApiClient is already connected
+                GetLastLocation();
+            }
+        }
+    }
+    private void GetConnectGoogleApiClient() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(@Nullable Bundle bundle) {
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                            // Handle connection suspended
+                        }
+                    })
+                    .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            // Handle connection failed
+                        }
+                    })
+                    .addApi(LocationServices.API)
+                    .build();
+            mGoogleApiClient.connect();
+        }
+    }
+
+    private void GetLastLocation() {
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            mLatitudeText = mLastLocation.getLatitude();
+            mLongitudeText = mLastLocation.getLongitude();
+        }
+    }
 }
