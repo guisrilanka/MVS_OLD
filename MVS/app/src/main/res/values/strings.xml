@@ -4,9 +4,9 @@
     <!--UAT-->
     <!--    <string name="api_server">http://58.185.119.44:9050/</string>-->
     <!--    //uat-->
-    <string name="api_server">http://thongsiek.dyndns.biz:9020/</string>
+<!--    <string name="api_server">http://thongsiek.dyndns.biz:9020/</string>-->
     <!--    live-->
-<!--<string name="api_server">http://thongsiek.dyndns.biz:9060/</string>-->
+<string name="api_server">http://thongsiek.dyndns.biz:9060/</string>
 
     <!-- Strings related to login -->
     <string name="prompt_company">Company</string>
