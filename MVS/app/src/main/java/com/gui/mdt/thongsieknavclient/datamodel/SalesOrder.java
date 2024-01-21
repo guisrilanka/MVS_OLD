@@ -72,6 +72,8 @@ public class SalesOrder {
     String SINo;
     String vatPercentage;
 
+    double latitude;
+    double longitude;
 
     public String getVatPercentage() {
         return vatPercentage;
@@ -417,6 +419,16 @@ public class SalesOrder {
     public void setTotalBillQty(Integer totalBillQty) {
         TotalBillQty = totalBillQty;
     }
+
+    public double getLatitude() {return latitude;}
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() { return longitude;}
+
+    public void setLongitude(double longitude) {this.longitude = longitude;}
 
     //Gson
     public String toJson() {

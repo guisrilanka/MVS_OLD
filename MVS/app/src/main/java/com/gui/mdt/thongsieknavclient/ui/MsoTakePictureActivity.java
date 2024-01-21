@@ -201,6 +201,8 @@ public class MsoTakePictureActivity extends AppCompatActivity {
             if (isExternalStorageWritable()) {
 
                 out = new FileOutputStream(file);
+
+                System.out.println(out);
                 image.compress(Bitmap.CompressFormat.PNG, 100, out);
                 out.flush();
                 out.close();

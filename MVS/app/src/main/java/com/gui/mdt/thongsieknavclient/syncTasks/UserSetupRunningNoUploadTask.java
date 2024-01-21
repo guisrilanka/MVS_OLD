@@ -76,7 +76,6 @@ public class UserSetupRunningNoUploadTask extends AsyncTask<Void, Void, Boolean>
 
     @Override
     protected Boolean doInBackground(Void... params) {
-
         try {
             if(isNetworkAvailable()) {
                 Call<ApiPostRunningNumbersResponse> call = mApp.getNavBrokerService().PostRunningNumbers

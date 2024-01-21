@@ -342,7 +342,7 @@
                 android:clickable="true">
 
                 <ImageView
-                    android:id="@+id/imgsalesinvoicesummary"
+                    android:id="@+id/imgmvsnotificationinfo"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -366,7 +366,44 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+<!--            Notification info-->
+            <FrameLayout
+                android:id="@+id/btnNotification"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/rectangle_all_rounded_bg_bluecolor"
+                android:clickable="true">
+                <TextView
+                    android:id="@+id/txtMessageCount"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:background="@drawable/notification_badge_circle"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/imgsalesinvoicesummary"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="-15dp"
+                    android:src="@drawable/mso_home_notification_info_img" />
 
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center"
+                    android:text="Notification"
+                    android:textColor="@color/hockeyapp_text_white" />
+            </FrameLayout>
             <FrameLayout
                 android:id="@+id/btnstocktranferrequestin"
                 android:layout_width="0dp"
@@ -395,7 +432,9 @@
                     android:text="Transfer Request"
                     android:textColor="@color/hockeyapp_text_white" />
             </FrameLayout>
+
             <FrameLayout
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

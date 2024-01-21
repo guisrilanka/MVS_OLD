@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/oppoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="100dp"
+            >   
+            <TextView
+                android:id="@+id/oppoMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:background="@drawable/sender_message_bubble"
+                android:textColor="#424242"
+                android:text="This is sender message"
+
+                android:paddingBottom="20dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="10dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/oppoMessageTime"
+                android:textSize="9sp"
+                android:text="2023-11-07 06:12pm"
+                android:textColor="@color/md_grey_700"
+                android:layout_marginTop="-5dp"
+                android:layout_marginLeft="5dp"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+
+            android:orientation="vertical"
+            android:id="@+id/receiverLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="20dp"
+            >
+            <TextView
+                android:id="@+id/receiverMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:background="@drawable/receiver_message_bubble"
+                android:textColor="#424242"
+                android:text="This is sender message"
+                android:layout_gravity="end"
+                android:paddingBottom="10dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="10dp"
+                />
+            <TextView
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/receiverMessageTime"
+                android:textSize="9sp"
+                android:text="2023-11-07 06:12pm"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/md_grey_700"
+                android:layout_marginLeft="5dp"/>
+
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

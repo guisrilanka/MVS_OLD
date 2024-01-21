@@ -51,6 +51,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesInvoiceUploadSyncTask;
+import com.gui.mdt.thongsieknavclient.syncTasks.SalesInvoiceWithMediaUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderClearAndDownloadForMvsSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderImageUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.UserSetupRunningNoUploadTask;
@@ -102,6 +103,9 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
 
     SalesOrderClearAndDownloadForMvsSyncTask soDownloadSyncTask;
     SalesInvoiceUploadSyncTask salesInvoiceUploadSyncTask;
+
+    // added by c -----------------------------------------
+    SalesInvoiceWithMediaUploadSyncTask salesInvoiceWithMediaUploadSyncTask;
     UserSetupRunningNoUploadTask userSetupRunningNoUploadTask;
     private Logger mLog;
 
@@ -619,11 +623,9 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
     }
 
     private int getCheckedSoCountAndList() {
-
         DateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Date _dateobj = new Date();
         int checkedSoCount = 0;
-
         if (!mSalesOrderList.isEmpty()) {
             for (SalesOrder so : mSalesOrderList) {
                 if (so.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted)) &&
@@ -1026,6 +1028,14 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         mProgressDialog.show();
     }
 
+    ////-------------------- chamil 2023-10-13----------------------------------------------------
+    private void startSalesInvoiceWithMediaUpload() {
+        SalesInvoiceWithMediaUploadSyncTask task = new SalesInvoiceWithMediaUploadSyncTask(getApplicationContext(), false);
+        task.execute();
+//        mProgressDialog.setMessage("Uploading Images to the server...");
+//        mProgressDialog.show();
+    }
+    ////--------------------end code chamil 2023-10-13----------------------------------------------------
     public void uploadSoImages() {
         SalesOrderImageUploadSyncTask task = new SalesOrderImageUploadSyncTask(getApplicationContext(), false);
         task.execute();
@@ -1083,6 +1093,9 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
                             startSalesInvoiceUpload();
                             startUploadRunningNos();
                             uploadSoImages();
+
+                            ////////// updated bu chamil -------------------------------
+                            startSalesInvoiceWithMediaUpload();
                         }
 
                     } else {

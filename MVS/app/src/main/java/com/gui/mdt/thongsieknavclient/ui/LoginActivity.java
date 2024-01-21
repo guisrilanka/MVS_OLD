@@ -1,5 +1,4 @@
 package com.gui.mdt.thongsieknavclient.ui;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -37,6 +37,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import com.google.gson.Gson;
 import com.gui.mdt.thongsieknavclient.BuildConfig;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
@@ -45,7 +53,14 @@ import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.model.AuthenticateUserParameter;
 import com.gui.mdt.thongsieknavclient.model.AuthenticateUserResult;
+
+import com.gui.mdt.thongsieknavclient.services.LocationUpdateService;
 import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
@@ -55,6 +70,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -93,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_login);
 
         if (!canAccessCamera()||!canAccessStorage()||!canAccessLocation()) {
@@ -182,6 +199,13 @@ public class LoginActivity extends AppCompatActivity {
             finish();
             return;
         }
+        generateFCMToken();
+
+
+        if (!canAccessLocation()) {
+            requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+        }
+
 
     }
 
@@ -277,6 +301,8 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, password,isNetworkConnected());
             mAuthTask.execute((Void) null);
+
+            requestAppPermissions();
         }
 
     }
@@ -375,6 +401,7 @@ public class LoginActivity extends AppCompatActivity {
                                 new AuthenticateUserParameter(mSelectedCompany, mUserName, mPassword)
                         );
                         result = call.execute().body();
+
                     }
                     else
                     {
@@ -466,6 +493,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
+
     }
 
     public class InitializeActivityTask extends AsyncTask<Void, Void, Boolean> {
@@ -626,6 +654,13 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(this, "Location access allowed!", Toast.LENGTH_SHORT).show();
                     }
+//                    updated c 2023-10-20------------------------------
+//                    if (!canAccessLocation()) {
+//                        Toast.makeText(this, "Location access not allowed!", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(this, "Location access allowed!", Toast.LENGTH_SHORT).show();
+//                    }
+////                    end updated
                     break;
 
             }
@@ -634,13 +669,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private void configureLog4j() {
 
-        String fileName = Environment.getExternalStorageDirectory() + "/" + "log4j.log";
-        String filePattern = "%d - [%c] - %p : %m%n";
-        int maxBackupSize = 10;
-        long maxFileSize = 1024 * 1024;
+        try {
+            String fileName = Environment.getExternalStorageDirectory() + "/" + "log4j.log";
+            String filePattern = "%d - [%c] - %p : %m%n";
+            int maxBackupSize = 10;
+            long maxFileSize = 1024 * 1024;
 
-        if(canAccessStorage()) {
-            Log4jHelper.Configure(fileName, filePattern, maxBackupSize, maxFileSize);
+            if (canAccessStorage()) {
+                Log4jHelper.Configure(fileName, filePattern, maxBackupSize, maxFileSize);
+            } else {
+                Log.e("LoginActivity", "Cannot access external storage. Log4j configuration aborted.");
+            }
+        } catch (Exception e) {
+            Log.e("LoginActivity", "Exception configuring log system", e);
         }
     }
 
@@ -682,6 +723,47 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+    // updated c 2023-10-20------------------------------
+    private void requestAppPermissions() {
+        Dexter.withActivity(LoginActivity.this)
+                .withPermissions(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            startService(new Intent(LoginActivity.this, LocationUpdateService.class));
+                        }
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // permission is denied permenantly, navigate user to app settings
+//                            showSettingsDialog();
+                            //finish();
+                        }
+                    }
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
+    }
 
+    private void generateFCMToken(){
+        SharedPreferences.Editor editor =  mDefaultSharedPreferences.edit();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(instanceIdResult -> {
+                    String fcmToken = instanceIdResult.getToken();
+                    // Handle the token as needed
+                    System.out.println(">>>>>>>>>>> : "+fcmToken);
+                    Log.d("FCM", "FCM Token: " + fcmToken);
+                    editor.putString("fcm_token", fcmToken);
+                    editor.apply();
+
+                });
+    }
 }
 

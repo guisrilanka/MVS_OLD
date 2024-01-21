@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 28
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.gui.mvs.thongsieknavclient"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 127
+        versionCode 126
         versionName "2.2.7"
         multiDexEnabled true
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "2945ac6bc13c43e3b3a88f125bb7cedf"]
@@ -70,7 +69,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     // (v2.0.1)
-
     implementation 'net.hockeyapp.android:HockeySDK:4.1.1'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
@@ -91,7 +89,7 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     implementation 'com.google.android.gms:play-services-maps:11.0.4'
     implementation 'com.google.maps:google-maps-services:0.1.8'
-    implementation 'com.google.android.gms:play-services-location:11.0.4'
+    implementation 'com.google.android.gms:play-services-location:15.0.0'
     implementation 'com.github.orangegangsters:swipy:1.2.3@aar'
     implementation 'com.android.support:multidex:1.0.0'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
@@ -108,6 +106,22 @@ dependencies {
     implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.13.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.13.0'
+
+//    implementation 'com.google.android.gms:play-services-base:15.0.2'
+//    implementation "com.google.firebase:firebase-core:16.0.1"
+    implementation 'com.google.firebase:firebase-bom:18.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation "com.google.firebase:firebase-messaging:17.1.0"
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:support-compat:28.0.0' //
+    implementation 'com.android.support:support-core-utils:28.0.0'
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.github.marlonlom:timeago:4.0.1'
+
     //    implementation "com.mapzen.android:lost:3.0.2"
+
+
 
 }

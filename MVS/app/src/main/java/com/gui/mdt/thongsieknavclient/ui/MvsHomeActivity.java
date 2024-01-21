@@ -16,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,6 +35,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
@@ -44,6 +50,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.StockRequestDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.syncTasks.CustomerSalesCodeSyncTask;
+import com.gui.mdt.thongsieknavclient.syncTasks.CustomerSequenceClearAndDownloadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.CustomerSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.CustomerTemplateSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.GSTPostingSetupSyncTask;
@@ -75,7 +82,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
     NavClientApp mApp;
 
     FrameLayout mBtnStockRequest, mBtnSalesOrderInvoice, mBtnStockTranferRequestIn, mBtnMvsCustomerInfo,
-            mBtnMvsStockInfo, mBtnPrint, mBtnStockTranferRequestOut;
+            mBtnMvsStockInfo, mBtnPrint, mBtnStockTranferRequestOut,mBtnNotification;
     Toolbar myToolbar;
     Button mBtnSignOut;
     Button mBtnSync;
@@ -103,9 +110,11 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
     CustomerTemplateSyncTask customerTemplateSyncTask;
     SalesOrderImageUploadSyncTask salesOrderImageUploadSyncTask;
 
+    CustomerSequenceClearAndDownloadSyncTask customerSequenceClearAndDownloadSyncTask;
+
     String logSyncStatus;
-    int soPendingCount = 0, srPendingCount = 0, mVehicleQtyItemCount = 0;
-    TextView mTxtSrPendingCount, mTxtSoPendingCount, mTxtVclQtyItemCount;
+    int soPendingCount = 0, srPendingCount = 0, mVehicleQtyItemCount = 0,unreadCount=0;
+    TextView mTxtSrPendingCount, mTxtSoPendingCount, mTxtVclQtyItemCount,mTxtMessageCount;
     String mFilterCreatedDate = "";
     String mSelectedPrintOption = "";
 
@@ -113,6 +122,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
 
     SharedPrefHelper mPrefHelper;
     SharedPreferences mDefaultSharedPreferences;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +173,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         mTxtSrPendingCount = (TextView) findViewById(R.id.txtSrPendingCount);
         mTxtSoPendingCount = (TextView) findViewById(R.id.txtSoPendingCount);
         mTxtVclQtyItemCount = (TextView) findViewById(R.id.txtVclQtyItemCount);
+        mTxtMessageCount = (TextView) findViewById(R.id.txtMessageCount);
 
         mBtnStockRequest = (FrameLayout) findViewById(R.id.btnstockreqest);
         mBtnSalesOrderInvoice = (FrameLayout) findViewById(R.id.btnsalesorderinvoice);
@@ -171,6 +182,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         mBtnPrint = (FrameLayout) findViewById(R.id.btnPrintInvoiceSummary);
         mBtnStockTranferRequestIn = (FrameLayout) findViewById(R.id.btnstocktranferrequestin);
         mBtnStockTranferRequestOut = (FrameLayout) findViewById(R.id.btnstocktranferrequestout);
+        mBtnNotification=(FrameLayout) findViewById(R.id.btnNotification);
 
         mBtnStockTranferRequestIn.setOnClickListener(this);
         mBtnStockTranferRequestOut.setOnClickListener(this);
@@ -181,6 +193,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         mBtnPrint.setOnClickListener(this);
         mBtnSignOut.setOnClickListener(this);
         mBtnSync.setOnClickListener(this);
+        mBtnNotification.setOnClickListener(this);
 
         setPendingCount();
 
@@ -337,7 +350,10 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             startSalesOrdersDownload();
+
+
         }
+
 
         //end sales order download sync
         else if (syncStatus.getScope().equals(getResources().getString(R.string.SyncScopeDownLoadSO))) {
@@ -423,7 +439,6 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
 
             startSalesOrderImagesUpload();
         }
-
         //end So Image Upload
         else if (syncStatus.getScope().equals(getResources().getString(R.string
                 .SyncScopeUploadSOImage))) {
@@ -435,7 +450,20 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
                 logSyncStatus = logSyncStatus + '\n' +
                         String.format("%-21s %s", "Upload Sales Order Images", "(Failed)");
             }
+            startCustomerSequenceDownload();
 
+        }
+
+        //end customer sequence sync
+        else if (syncStatus.getScope().equals(getResources().getString(R.string
+                .SyncScopeDownLoadCustomerSequence))) {
+            if (syncStatus.isStatus()) {
+                logSyncStatus = logSyncStatus + '\n' +
+                        String.format("%-10s %s", "Customer Sequence", "(Done)");
+            } else {
+                logSyncStatus = logSyncStatus + '\n' +
+                        String.format("%-21s %s", "Customer Sequence", "Failed");
+            }
             mAlertDialogBuilder = new AlertDialog.Builder(MvsHomeActivity.this);
             mAlertDialogBuilder
                     .setTitle("Sync Completed")
@@ -561,6 +589,12 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
                         .setCancelable(false)
                         .show();
             }
+        } else if (findViewById(R.id.btnNotification)==v) {
+            Intent intent = new Intent(this, MvsConversationsListActivity.class);
+            startActivity(intent);
+//            Intent intent = new Intent(this, MvsConversationsMessageListActivity.class);
+//            startActivity(intent);
+
         }
     }
 
@@ -637,6 +671,13 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         salesOrderDownloadSyncTask.delegate = MvsHomeActivity.this;
         salesOrderDownloadSyncTask.execute((Void) null);
         mProgressDialog.setMessage("Downloading Sales Orders...");
+    }
+    // updated 2023-11-16
+    private void startCustomerSequenceDownload() {
+        customerSequenceClearAndDownloadSyncTask = new CustomerSequenceClearAndDownloadSyncTask(getApplicationContext(), true, isInitialSyncRun());
+        customerSequenceClearAndDownloadSyncTask.delegate = MvsHomeActivity.this;
+        customerSequenceClearAndDownloadSyncTask.execute((Void) null);
+        mProgressDialog.setMessage("Downloading Customer Sequence...");
     }
 
     private void startSalesOrdersUpload() {
@@ -940,6 +981,39 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         iDb.open();
         mVehicleQtyItemCount = iDb.getVehicleQtyItemCount(mApp.getmCurrentDriverCode());
         iDb.close();
+        unreadMessageCount();
+
+
+    }
+    public void unreadMessageCount(){
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("push-notifications").child(mApp.getCurrentUserName().toUpperCase());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                unreadCount=0;
+                for (DataSnapshot message : dataSnapshot.getChildren()) {
+                    boolean isRead = message.child("isRead").getValue(Boolean.class);
+                    String sender = message.child("sender").getValue(String.class);
+                    if(!sender.equals(mApp.getCurrentUserName().toUpperCase())){
+                        if (!isRead) {
+                            unreadCount++; // Increment the unread count
+                        }
+                    }
+
+                }
+                System.out.println("Unread Count: " + unreadCount);
+
+                updateNotificationCount();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors, if any
+                System.out.println("Error: " + databaseError.getMessage());
+            }
+        });
     }
 
     public void updatePendingCount() {
@@ -963,6 +1037,17 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             mTxtVclQtyItemCount.setVisibility(View.GONE);
         }
+    }
+
+    public void updateNotificationCount() {
+        if (unreadCount > 0) {
+            mTxtMessageCount.setVisibility(View.VISIBLE);
+            mTxtMessageCount.setText(String.valueOf(unreadCount));
+        } else {
+            mTxtMessageCount.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override
@@ -1048,6 +1133,9 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (salesOrderImageUploadSyncTask != null) {
             salesOrderImageUploadSyncTask.cancel(true);
+        }
+        if(customerSequenceClearAndDownloadSyncTask!=null){
+            customerSequenceClearAndDownloadSyncTask.cancel(true);
         }
     }
 

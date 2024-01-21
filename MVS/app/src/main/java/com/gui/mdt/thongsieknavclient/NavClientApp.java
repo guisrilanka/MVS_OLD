@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 import android.util.Log;
-
 import com.github.seanzor.prefhelper.SharedPrefHelper;
 import com.gui.mdt.thongsieknavclient.interfaces.NavBrokerService;
 import com.joanzapata.iconify.Iconify;
@@ -23,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NavClientApp extends SugarApp {
     private NavBrokerService mNavBrokerService;
+    private NavBrokerService mWhNavBrokerService;
     private String mCurrentUserName;
     private String mCurrentUserPassword;
     private String mUserCompany;
@@ -75,29 +75,61 @@ public class NavClientApp extends SugarApp {
         SharedPreferences mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPrefHelper mPrefHelper =  new SharedPrefHelper(getResources(), mDefaultSharedPreferences);
 
+//        String mServerString = mPrefHelper.getString(R.string.pref_api_server_key).replace(" ", "");
+//        String mWhServerString = mPrefHelper.getString(R.string.pref_api_wh_server_key).replace(" ", "");
+
+//        Log.d("IP ADDRESS", mServerString);
+//
+//        Retrofit retrofit = null;
+//
+//        if(mServerString != null && !mServerString.isEmpty())
+//        {
+//            OkHttpClient client = new OkHttpClient.Builder()
+//                    .connectTimeout(5, TimeUnit.MINUTES)
+//                    .readTimeout(5, TimeUnit.MINUTES)
+//                    .build();
+//
+//            retrofit = new Retrofit.Builder()
+//                    .baseUrl(mServerString)
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .client( client)
+//                    .build();
+//        }
+//
+//        if(retrofit != null)
+//        {
+//            mNavBrokerService = null;
+//            mNavBrokerService = retrofit.create(NavBrokerService.class);
+//        }
+
+
         String mServerString = mPrefHelper.getString(R.string.pref_api_server_key).replace(" ", "");
-        Log.d("IP ADDRESS", mServerString);
+//        String mWhServerString = String.valueOf(R.string.pref_api_wh_server_key);
+        String mWhServerString = getResources().getString(R.string.api_wh_server);
+//
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .build();
 
-        Retrofit retrofit = null;
-
-        if(mServerString != null && !mServerString.isEmpty())
-        {
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(5, TimeUnit.MINUTES)
-                    .readTimeout(5, TimeUnit.MINUTES)
-                    .build();
-
-            retrofit = new Retrofit.Builder()
+        if (mServerString != null && !mServerString.isEmpty()) {
+            Retrofit mNavBrokerRetrofit = new Retrofit.Builder() // Change the variable name
                     .baseUrl(mServerString)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client( client)
+                    .client(client)
                     .build();
+
+            mNavBrokerService = mNavBrokerRetrofit.create(NavBrokerService.class);
         }
 
-        if(retrofit != null)
-        {
-            mNavBrokerService = null;
-            mNavBrokerService = retrofit.create(NavBrokerService.class);
+        if (mWhServerString != null && !mWhServerString.isEmpty()) {
+            Retrofit mWhNavBrokerRetrofit = new Retrofit.Builder()
+                    .baseUrl(mWhServerString)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+
+            mWhNavBrokerService = mWhNavBrokerRetrofit.create(NavBrokerService.class);
         }
     }
 
@@ -117,8 +149,16 @@ public class NavClientApp extends SugarApp {
         this.mCurrentUserPassword = currentUserPassword;
     }
 
+//    public NavBrokerService getNavBrokerService() {
+//        return mNavBrokerService;
+//    }
+
     public NavBrokerService getNavBrokerService() {
         return mNavBrokerService;
+    }
+
+    public NavBrokerService getWhNavBrokerService() {
+        return mWhNavBrokerService;
     }
 
     public String getmUserCompany() {

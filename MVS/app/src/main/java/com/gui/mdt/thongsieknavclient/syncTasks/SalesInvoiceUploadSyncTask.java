@@ -81,6 +81,7 @@ public class SalesInvoiceUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
             if (salesOrdersToBeSync.size() > 0 && isNetworkAvailable()) {
 
                 isSuccess = uploadSalesInvoice();
+
                 if (isSuccess) {
                     syncConfig.setSuccess(true);
                 } else {
@@ -337,6 +338,8 @@ public class SalesInvoiceUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
 
                 apiSalesOrderHeaderResponse = headerUploadCall.execute().body();
                 logHeaderResponse(apiSalesOrderHeaderResponse);
+
+
 
                 //update so db
 //                saveUploadedSalesOrderHeaders();  2018/10/31

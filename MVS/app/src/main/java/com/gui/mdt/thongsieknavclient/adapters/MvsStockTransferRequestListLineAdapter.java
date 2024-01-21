@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.StockTransferRequestLine;
 import com.gui.mdt.thongsieknavclient.ui.MsoSalesOrderItemActivity;
@@ -19,8 +18,7 @@ import java.util.List;
  * Created by GUI-NB03 on 2017-09-20.
  */
 
-public class MvsStockTransferRequestListLineAdapter extends
-                            RecyclerView.Adapter<MvsStockTransferRequestListLineAdapter.ItemViewHolder> {
+public class MvsStockTransferRequestListLineAdapter extends RecyclerView.Adapter<MvsStockTransferRequestListLineAdapter.ItemViewHolder> {
 
     private static final int MVS_STOCK_TRANSFER_ITEM_ACTIVITY_RESULT_CODE = 2;
     private List<StockTransferRequestLine> transferInLineList;

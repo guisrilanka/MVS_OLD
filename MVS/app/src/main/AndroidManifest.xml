@@ -8,13 +8,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.gui.mdt.thongsieknavclient.permission.C2D_MESSAGE" />
+    <uses-permission android:name="your.package.name.permission.C2D_MESSAGE" />
 
     <application
         android:name=".NavClientApp"
@@ -26,6 +35,32 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
 
+        <service
+            android:name=".services.LocationUpdateService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+                <receiver
+                    android:name=".services.LocationUpdateAlarmReceiver"
+                    android:enabled="true"
+                    android:exported="false">
+                    <intent-filter>
+                        <action android:name="com.google.android.gms.location.sample.backgroundlocation.action.LOCATION_UPDATE" />
+                    </intent-filter>
+                </receiver>
+
+
+        <service
+            android:name=".services.FirebaseNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="FirebaseChannel" />
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
@@ -52,6 +87,7 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/app_name"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -358,6 +394,15 @@
             android:name=".ui.ScanQrActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MvsConversationsListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.MvsConversationsMessageListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

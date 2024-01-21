@@ -5,10 +5,16 @@ import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerListResult;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerLocations;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSalesCodeParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSalesCodeResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSequenceParameter;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerSequenceResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerTemplateParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiCustomerTemplateResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiDeviceTokenParameter;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiDeviceTokenResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiDriverParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiDriverResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiGPSLocationParameter;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiGPSLocationResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiGSTPostingSetupParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiGSTPostingSetupResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiItemBalancePDAListResult;
@@ -32,6 +38,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceHeaderP
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceHeaderResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceLineParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceLineResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileSalesInvoiceWithMediaParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileStockRequestHeaderParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileStockRequestHeaderResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostMobileStockRequestLineParameter;
@@ -48,6 +55,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.ApiPostedSalesInvoiceItemParamet
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostedSalesInvoiceItemResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostedSalesInvoiceParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiPostedSalesInvoiceResponse;
+import com.gui.mdt.thongsieknavclient.datamodel.ApiSalesInvoiceWithMediaResponse;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiSalesOrderHeaderParameter;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiSalesOrderResult;
 import com.gui.mdt.thongsieknavclient.datamodel.ApiSalesPricesListParameter;
@@ -712,4 +720,16 @@ public interface NavBrokerService {
 
     @GET
     Call<ApiCustomerLocations> GetCustomerCoordinate(@Url String url);
+
+
+    //updated by chamil--------------------------------
+    @POST("tsf_delivery_uat/public/api/updateMVSSaleOrders")
+    Call<ApiSalesInvoiceWithMediaResponse> updateMVSSaleOrders(@Body RequestBody requestBody);
+    @POST("tsf_delivery_uat/public/api/updateMVSDriverLocation")
+    Call<ApiGPSLocationResponse> updateMVSDriverLocation(@Body ApiGPSLocationParameter requestBody);
+    @POST("tsf_delivery_uat/public/api/updateDevicesTokenMVS")
+    Call<ApiDeviceTokenResponse> updateDeviceToken(@Body ApiDeviceTokenParameter requestBody);
+    @POST("tsf_delivery_uat/public/api/customerSeanceMVS")
+    Call<ApiCustomerSequenceResponse> getCustomerSequence(@Body ApiCustomerSequenceParameter requestBody);
+
 }
