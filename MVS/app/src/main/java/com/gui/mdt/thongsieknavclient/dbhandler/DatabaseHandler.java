@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    public static final int DATABASE_VERSION = 168;
+    public static final int DATABASE_VERSION = 167;
 
     // Database Name
     public static final String DATABASE_NAME = "thongsiek";
