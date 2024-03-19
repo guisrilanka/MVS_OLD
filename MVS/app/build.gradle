@@ -8,8 +8,8 @@ android {
         applicationId "com.gui.mvs.thongsieknavclient"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 128
-        versionName "2.2.8"
+        versionCode 129
+        versionName "2.2.9"
         multiDexEnabled true
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "2945ac6bc13c43e3b3a88f125bb7cedf"]
 

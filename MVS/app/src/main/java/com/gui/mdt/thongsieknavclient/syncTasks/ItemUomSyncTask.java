@@ -60,7 +60,7 @@ public class ItemUomSyncTask extends AsyncTask<Void, Void, Boolean> {
         mItemUomListParameter.setUserCompany(mApp.getmUserCompany());
         mItemUomListParameter.setUserName(mApp.getCurrentUserName());
         mItemUomListParameter.setPassword(mApp.getCurrentUserPassword());
-        mItemUomListParameter.setFilterItemCode(getItemCodes());
+//        mItemUomListParameter.setFilterItemCode(getItemCodes());
         String lastModified = getSyncConfiguration().getLastSyncDateTime();
         mItemUomListParameter.setFilterLastModifiedDate(lastModified == null ? "" : lastModified);
 
