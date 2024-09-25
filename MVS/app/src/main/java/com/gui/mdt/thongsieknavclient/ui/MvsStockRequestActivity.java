@@ -799,12 +799,12 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
 
                         /*if(Double.parseDouble(String.valueOf(f_subTotal))> tempCustomer.getMinimumSalesAmount())
                         {*/
-                        if (subTotal > 0f) {
+//                        if (subTotal > 0f) {
                             mSaveStockRequestTask = new SaveStockRequestTask();
                             mSaveStockRequestTask.execute((Void) null);
-                        } else {
-                            Toast.makeText(mApp, "Total amount should be greater than zero", Toast.LENGTH_SHORT).show();
-                        }
+//                        } else {
+//                            Toast.makeText(mApp, "Total amount should be greater than zero", Toast.LENGTH_SHORT).show();
+//                        }
 
 
                             /*if (saveStockRequest()) {
