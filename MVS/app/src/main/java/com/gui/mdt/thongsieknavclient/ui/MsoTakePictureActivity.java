@@ -14,15 +14,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -37,9 +37,8 @@ import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderImageUploadStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderImageUploadStatusDbHandler;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.theartofdev.edmodo.cropper.CropImage;
+//import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -101,7 +100,7 @@ public class MsoTakePictureActivity extends AppCompatActivity {
                 }
 
                 if (mAccessToStorageGranted == true) {
-                    CropImage.activity().start(MsoTakePictureActivity.this);
+//                    CropImage.activity().start(MsoTakePictureActivity.this);
                 }
             }
         });
@@ -126,27 +125,27 @@ public class MsoTakePictureActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == MsoTakePictureActivity.RESULT_OK) {
-                try {
-                    mBitmapImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
-
-                    if (mBitmapImage != null) {
-                        saveImagesTask = new saveImagesTask();
-                        saveImagesTask.execute((Void) null);
-
-                        //SaveImage(mBitmapImage);
-                        //AddImagesToGrid();
-                    }
-
-                } catch (Exception e) {
-
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//            if (resultCode == MsoTakePictureActivity.RESULT_OK) {
+//                try {
+//                    mBitmapImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
+//
+//                    if (mBitmapImage != null) {
+//                        saveImagesTask = new saveImagesTask();
+//                        saveImagesTask.execute((Void) null);
+//
+//                        //SaveImage(mBitmapImage);
+//                        //AddImagesToGrid();
+//                    }
+//
+//                } catch (Exception e) {
+//
+//                }
+//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Exception error = result.getError();
+//            }
+//        }
     }
 
     @Override

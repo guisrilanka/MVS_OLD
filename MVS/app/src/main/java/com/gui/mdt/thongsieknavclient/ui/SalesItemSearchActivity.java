@@ -25,12 +25,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputType;
@@ -843,7 +843,7 @@ public class SalesItemSearchActivity extends AppCompatActivity implements View.O
                             .setNegativeButton(android.R.string.no, null).show();
 
                 } else {
-                    new android.support.v7.app.AlertDialog.Builder(this)
+                    new androidx.appcompat.app.AlertDialog.Builder(this)
                             .setTitle(getResources().getString(R.string
                                     .notification_title_no_connection))
                             .setMessage(getResources().getString(R.string
@@ -888,7 +888,7 @@ public class SalesItemSearchActivity extends AppCompatActivity implements View.O
                 return true;
 
             case R.id.action_transfer_stock:
-                new android.support.v7.app.AlertDialog.Builder(this)
+                new androidx.appcompat.app.AlertDialog.Builder(this)
                         .setTitle("Stock Transfer")
                         .setMessage("Do you want to transfer stock?")
                         .setPositiveButton(getResources().getString(R.string.button_text_yes), new DialogInterface.OnClickListener() {
@@ -938,7 +938,7 @@ public class SalesItemSearchActivity extends AppCompatActivity implements View.O
             ssDb.close();
             startItemBalanceDownload();
         } else {
-            new android.support.v7.app.AlertDialog.Builder(this)
+            new androidx.appcompat.app.AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string
                             .notification_title_no_connection))
                     .setMessage(getResources().getString(R.string
@@ -1053,7 +1053,7 @@ public class SalesItemSearchActivity extends AppCompatActivity implements View.O
             mCreateStockBalanceSummaryPdfSyncTask.mDelegate = SalesItemSearchActivity.this;
             mCreateStockBalanceSummaryPdfSyncTask.execute((Void) null);
         } else {
-            new android.support.v7.app.AlertDialog.Builder(this)
+            new androidx.appcompat.app.AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string
                             .notification_title_no_connection))
                     .setMessage(getResources().getString(R.string

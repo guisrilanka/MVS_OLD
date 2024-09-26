@@ -7,7 +7,7 @@
     android:background="@color/backgroundGray"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -42,7 +42,7 @@
             </LinearLayout>
 
         </LinearLayout>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         <include layout="@layout/item_sales_order_detail_card_header"
             android:id="@+id/layoutHeder"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSalesCustomersInviceItemList"
             android:layout_width="match_parent"
             android:layout_below="@+id/layoutHeder"

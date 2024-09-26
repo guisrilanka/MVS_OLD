@@ -3,7 +3,7 @@ package com.gui.mdt.thongsieknavclient;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 import android.util.Log;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;

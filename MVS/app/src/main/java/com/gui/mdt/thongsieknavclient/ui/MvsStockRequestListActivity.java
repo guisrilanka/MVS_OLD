@@ -15,11 +15,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -230,7 +230,7 @@ public class MvsStockRequestListActivity extends AppCompatActivity implements an
                         .setNegativeButton(android.R.string.no, null).show();
 
             } else {
-                new android.support.v7.app.AlertDialog.Builder(this)
+                new androidx.appcompat.app.AlertDialog.Builder(this)
                         .setTitle(getResources().getString(R.string
                                 .notification_title_no_connection))
                         .setMessage(getResources().getString(R.string

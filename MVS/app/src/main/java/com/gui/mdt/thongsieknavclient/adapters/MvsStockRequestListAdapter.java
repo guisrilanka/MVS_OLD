@@ -2,7 +2,7 @@ package com.gui.mdt.thongsieknavclient.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gui.mdt.thongsieknavclient.R;
-import com.gui.mdt.thongsieknavclient.datamodel.SalesOrder;
 import com.gui.mdt.thongsieknavclient.datamodel.StockRequest;
 import com.gui.mdt.thongsieknavclient.ui.MvsStockRequestActivity;
 

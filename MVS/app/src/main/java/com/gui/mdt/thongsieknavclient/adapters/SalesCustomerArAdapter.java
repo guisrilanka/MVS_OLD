@@ -1,7 +1,7 @@
 package com.gui.mdt.thongsieknavclient.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.model.SalesCustomerArResponse;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

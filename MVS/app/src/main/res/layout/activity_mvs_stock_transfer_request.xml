@@ -6,7 +6,7 @@
     android:background="@color/backgroundGray"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -55,7 +55,7 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <!--Tab-->
     <LinearLayout
@@ -125,7 +125,7 @@
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewTransferDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -393,7 +393,7 @@
         </LinearLayout>
 
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabTopUpAddNewTransfer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

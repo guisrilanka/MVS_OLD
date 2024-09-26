@@ -4,24 +4,20 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;
-import com.google.gson.Gson;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.Customer;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrder;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderLine;
 import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
-import com.gui.mdt.thongsieknavclient.model.QrScanHeadModel;
 import com.gui.mdt.thongsieknavclient.utils.BluetoothPrinter;
 
 import java.text.SimpleDateFormat;

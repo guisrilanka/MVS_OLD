@@ -13,8 +13,8 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,7 +165,7 @@ public class LdsHomeActivity extends AppCompatActivity implements View.OnClickLi
                             .setNegativeButton(android.R.string.no, null).show();
 
                 } else {
-                    new android.support.v7.app.AlertDialog.Builder(LdsHomeActivity.this)
+                    new androidx.appcompat.app.AlertDialog.Builder(LdsHomeActivity.this)
                             .setTitle(getResources().getString(R.string
                                     .notification_title_no_connection))
                             .setMessage(getResources().getString(R.string

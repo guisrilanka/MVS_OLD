@@ -6,7 +6,7 @@
     android:background="@color/backgroundGray"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -43,7 +43,7 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <!--Tab-->
     <LinearLayout
@@ -115,7 +115,7 @@
                 tools:context=".ui.MvsStockRequestActivity"
                 tools:showIn="@layout/activity_mvs_stock_request">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewStockRequestItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -824,7 +824,7 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddNewItem"
         android:visibility="gone"
         android:layout_width="wrap_content"

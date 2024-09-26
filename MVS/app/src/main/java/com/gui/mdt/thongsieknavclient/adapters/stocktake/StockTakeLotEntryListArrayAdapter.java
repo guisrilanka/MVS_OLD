@@ -2,8 +2,8 @@ package com.gui.mdt.thongsieknavclient.adapters.stocktake;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.gui.mdt.thongsieknavclient.NotificationManager;
 import com.gui.mdt.thongsieknavclient.R;
-import com.gui.mdt.thongsieknavclient.model.AvailableLotNoResultData;
 import com.gui.mdt.thongsieknavclient.model.stocktakemodels.StockTakeEntry;
-import com.gui.mdt.thongsieknavclient.model.stocktakemodels.StockTakeEntryLineLotEntriesResultData;
 import com.gui.mdt.thongsieknavclient.model.sugarmodels.StockTakeItemLineEntries;
 import com.gui.mdt.thongsieknavclient.ui.StockTakeLotEntryActivity;
 import com.orm.SugarRecord;

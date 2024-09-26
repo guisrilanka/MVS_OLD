@@ -2,12 +2,10 @@ package com.gui.mdt.thongsieknavclient.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,9 +15,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.Customer;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrder;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderLine;
 import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
-import com.gui.mdt.thongsieknavclient.utils.BluetoothPrinter;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;

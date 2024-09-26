@@ -5,16 +5,14 @@ import android.bluetooth.BluetoothDevice;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.datamodel.ItemBalancePda;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
-import com.gui.mdt.thongsieknavclient.utils.BluetoothPrinter;
 
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
