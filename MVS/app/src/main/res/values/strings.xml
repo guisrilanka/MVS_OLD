@@ -9,10 +9,10 @@
 <!--<string name="api_server">http://thongsiek.dyndns.biz:9060/</string>-->
 
     <!--    //NEW PORT SETUP UAT-->
-<!--    <string name="api_server">http://thongsiek.dyndns.biz:29020/</string>-->
+    <string name="api_server">http://thongsiek.dyndns.biz:29020/</string>
 
     <!--    //NEW PORT SETUP LIVE-->
-    <string name="api_server">http://thongsiek.dyndns.biz:29060/</string>
+<!--    <string name="api_server">http://thongsiek.dyndns.biz:29060/</string>-->
 
     <!-- Strings related to login -->
     <string name="prompt_company">Company</string>
