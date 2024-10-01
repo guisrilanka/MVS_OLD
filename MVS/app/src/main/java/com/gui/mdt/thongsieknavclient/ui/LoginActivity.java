@@ -53,6 +53,7 @@ import net.hockeyapp.android.UpdateManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 
@@ -634,7 +635,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void configureLog4j() {
 
-        String fileName = Environment.getExternalStorageDirectory() + "/" + "log4j.log";
+//        String fileName = Environment.getExternalStorageDirectory() + "/" + "log4j.log";
+        String fileName = Objects.requireNonNull(getApplicationContext().getExternalFilesDir(null)).getAbsolutePath() + "/log4j.log";
+
         String filePattern = "%d - [%c] - %p : %m%n";
         int maxBackupSize = 10;
         long maxFileSize = 1024 * 1024;

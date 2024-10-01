@@ -497,6 +497,11 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         } else if (findViewById(R.id.btnSignOut) == v) {
 
+//            Intent intentTakePic = new Intent(this, MsoTakePictureActivity.class);
+//            intentTakePic.putExtra("soNo", " 0");
+//            intentTakePic.putExtra("status", " 2");
+//            this.startActivity(intentTakePic);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(MvsHomeActivity.this);
             builder.setTitle(getResources().getString(R.string.message_title_alert));
             builder.setMessage(getResources().getString(R.string.message_ask_log_out));

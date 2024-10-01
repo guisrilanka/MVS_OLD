@@ -2,6 +2,7 @@ package com.gui.mdt.thongsieknavclient.ui;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,11 +11,19 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+
 import android.provider.MediaStore;
+
+import com.canhub.cropper.CropImageContract;
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +46,6 @@ import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderImageUploadStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderImageUploadStatusDbHandler;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
-//import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,6 +53,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+
 
 public class MsoTakePictureActivity extends AppCompatActivity {
 
@@ -99,7 +109,9 @@ public class MsoTakePictureActivity extends AppCompatActivity {
                             PERMISSIONS_ACCESS_STORAGE);
                 }
 
-                if (mAccessToStorageGranted == true) {
+                if (mAccessToStorageGranted) {
+//                    Uri imageUri = getImageUriSomehow(); // You would need to obtain this URI, e.g., from camera or gallery pick
+                    startCrop();
 //                    CropImage.activity().start(MsoTakePictureActivity.this);
                 }
             }
@@ -123,9 +135,69 @@ public class MsoTakePictureActivity extends AppCompatActivity {
         AddImagesToGrid();
     }
 
+
+
+
+    // Register for CropImageContract to handle cropping result
+    private final ActivityResultLauncher<CropImageContractOptions> cropImageLauncher =
+            registerForActivityResult(new CropImageContract(), result -> {
+                if (result.isSuccessful()) {
+                    // Get the cropped image URI
+                    Uri resultUri = result.getUriContent();
+                    if (resultUri != null) {
+                        try {
+                            // Convert the URI to Bitmap
+                            mBitmapImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+
+                            if (mBitmapImage != null) {
+                                // Execute task to save the cropped image
+                                saveImagesTask = new saveImagesTask();
+                                saveImagesTask.execute();
+                            }
+
+                            //delete image that auto saved by library
+                            ContentResolver contentResolver = getContentResolver();
+                            contentResolver.delete(resultUri, null, null);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    // Handle the error case
+                    Exception error = result.getError();
+                    if (error != null) {
+                        error.printStackTrace();
+                    }
+                }
+
+
+//                AddImagesToGrid();
+            });
+
+    // Method to start cropping with the provided image Uri
+    private void startCrop() {
+        CropImageOptions cropImageOptions = new CropImageOptions();
+        cropImageOptions.imageSourceIncludeGallery = true;
+        cropImageOptions.imageSourceIncludeCamera = true;
+        cropImageOptions.activityTitle = "Crop Image";
+//        cropImageOptions.noOutputImage = true;
+        CropImageContractOptions options = new CropImageContractOptions(null, cropImageOptions);
+        cropImageLauncher.launch(options); // Launch the crop activity
+
+        // Launch with the options
+    }
+
+
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode != CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
 //            CropImage.ActivityResult result = CropImage.getActivityResult(data);
 //            if (resultCode == MsoTakePictureActivity.RESULT_OK) {
 //                try {
@@ -142,7 +214,7 @@ public class MsoTakePictureActivity extends AppCompatActivity {
 //                } catch (Exception e) {
 //
 //                }
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//            } else {
 //                Exception error = result.getError();
 //            }
 //        }
@@ -164,13 +236,16 @@ public class MsoTakePictureActivity extends AppCompatActivity {
     public void GetImagesFromSdcard() {
         String directoryName = GetDirectoryName();
         imageList = new ArrayList<MsoTakePictureImage>();
-        File file = new File(Environment.getExternalStorageDirectory() + "/CapturedImages/" +
+        File file =new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/CapturedImages/" +
                 soNo + "_" + directoryName);
+//        File file = new File(Environment.getExternalStorageDirectory() + "/CapturedImages/" +
+//                soNo + "_" + directoryName);
+//        File file = new File(String.valueOf(Environment.getDataDirectory()));
         if (file.isDirectory()) {
             listFile = file.listFiles();
-            for (int i = 0; i < listFile.length; i++) {
+            for (File value : listFile) {
                 MsoTakePictureImage imgeItem = new MsoTakePictureImage();
-                imgeItem.setItemImageUrl(listFile[i].getAbsolutePath());
+                imgeItem.setItemImageUrl(value.getAbsolutePath());
                 imageList.add(imgeItem);
             }
         }
@@ -179,7 +254,9 @@ public class MsoTakePictureActivity extends AppCompatActivity {
     private void SaveImage(Bitmap image) {
 
         String directoryName = GetDirectoryName();
-        File directory = new File(Environment.getExternalStorageDirectory() + "/CapturedImages/" +
+//        File directory = new File(Environment.getExternalStorageDirectory() + "/CapturedImages/" +
+//                soNo + "_" + directoryName);
+        File directory = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES) + "/CapturedImages/" +
                 soNo + "_" + directoryName);
 
         if (!directory.exists()) {
@@ -224,14 +301,12 @@ public class MsoTakePictureActivity extends AppCompatActivity {
 
     private String GetFileName() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String timeStamp = sdf.format(new Date());
-        return timeStamp;
+        return sdf.format(new Date());
     }
 
     private String GetDirectoryName() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String timeStamp = sdf.format(new Date());
-        return timeStamp;
+        return sdf.format(new Date());
     }
 
     private int dpToPx(int dp) {
@@ -239,10 +314,8 @@ public class MsoTakePictureActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    public void updateImageDetailsToDb(String soNo_, String imageName, String imageUrl, Bitmap image)
-    {
-        try
-        {
+    public void updateImageDetailsToDb(String soNo_, String imageName, String imageUrl, Bitmap image) {
+        try {
             SalesOrderImageUploadStatus salesOrderImageUploadStatus = new SalesOrderImageUploadStatus();
             salesOrderImageUploadStatus.setSoNo(soNo_);
             salesOrderImageUploadStatus.setImageName(imageName);
@@ -254,10 +327,8 @@ public class MsoTakePictureActivity extends AppCompatActivity {
             db.addItems(salesOrderImageUploadStatus);
             Log.d("SOImageStatus Added :", soNo_);
             db.close();
-        }
-        catch (Exception ee)
-        {
-            Log.d("SOImageStatus","Exception :" +ee.getMessage());
+        } catch (Exception ee) {
+            Log.d("SOImageStatus", "Exception :" + ee.getMessage());
         }
     }
 
@@ -296,11 +367,14 @@ public class MsoTakePictureActivity extends AppCompatActivity {
         }
     }
 
+
+
     private class saveImagesTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
+                System.out.println("Saving image...");
                 SaveImage(mBitmapImage);
             } catch (Exception e) {
                 return false;
@@ -320,7 +394,9 @@ public class MsoTakePictureActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             if (success) {
                 try {
+                    System.out.println("Image saved successfully!");
                     AddImagesToGrid();
+
                     mProgressDialog.dismiss();
                 } catch (Exception ex) {
                 }
