@@ -46,6 +46,7 @@ import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.adapters.MvsSalesOrderAdapter;
 import com.gui.mdt.thongsieknavclient.datamodel.Customer;
 import com.gui.mdt.thongsieknavclient.datamodel.CustomerTemplate;
+import com.gui.mdt.thongsieknavclient.datamodel.ExchangeItem;
 import com.gui.mdt.thongsieknavclient.datamodel.Item;
 import com.gui.mdt.thongsieknavclient.datamodel.ItemBalancePda;
 import com.gui.mdt.thongsieknavclient.datamodel.ItemCrossReference;
@@ -54,6 +55,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderLine;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesPrices;
 import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.CustomerTemplateDbHandler;
+import com.gui.mdt.thongsieknavclient.dbhandler.ExchangeItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.GSTPostingSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemCrossReferenceDbHandler;
@@ -85,7 +87,11 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
     private static final int SALES_CUSTOMER_LIST_ACTIVITY_RESULT_CODE = 1;
     private static final int SALES_ITEM_ACTIVITY_RESULT_CODE = 2;
+
+    private static final int EXCHANGE_ITEM_ACTIVITY_RESULT_CODE = 4;
     private static final int MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE = 3;
+
+    private static final int MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE = 5;
 
     Toolbar mTbMVSSalesOrder;
     LinearLayout llItem, llSummary;
@@ -94,7 +100,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     RecyclerView mRecyclerViewSalesOrderDetails;
     Button mBtnSearchCus, mBtnAddressCus, mBtnContactCus, mBtnDtpicker, mBtnClear, mBtnSave, mBtnSummary, mBtnItem;
 
-    FloatingActionButton mFabAddNewItem;
+    FloatingActionButton mFabAddNewItem, mFabAddNewExcItem;
 
     Drawable mCusSearchDrawable, mDtPickerDrawable, mContactCusDrawable, mAddressCusDrawable, mMenuDots, mBackArrow;
     int date, month, year, mNoOfItems = 0;
@@ -296,8 +302,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         return true;
     }
 
+//    mFabAddNewExcItem.
     @Override
     public void onClick(View v) {
+
 
         if (findViewById(R.id.btnSearchCus) == v) {
             if (mSalesOrderLineList.size() > 0) {
@@ -528,6 +536,26 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 startActivityForResult(intent, SALES_ITEM_ACTIVITY_RESULT_CODE);
             }
         }
+
+        if (findViewById(R.id.fabAddNewExchangeItem) == v) {
+
+            if (mTempCustomer.getCode() == null) {
+                showMessageBox(getResources().getString(R.string.message_title_alert), getResources().getString(R.string.message_body_select_customer));
+                if (mTempCustomer.getCode() == null) {
+                    mTxtCustomerCode.setError(getResources().getString(R.string.message_body_select_customer));
+                }
+
+            } else {
+                String customerJsonObj = mTempCustomer.toJson();
+                Intent intent = new Intent(getApplication(), ExchangeItemSearchActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(getResources().getString(R.string.intent_extra_form_name), getResources().getString(R.string.form_name_mvs_sales_order));
+                intent.putExtra(getResources().getString(R.string.customer_json_obj), customerJsonObj);
+                intent.putExtra(getResources().getString(R.string.delivery_date), deliveryDate);
+                intent.putExtra(getResources().getString(R.string.intent_extra_details), getResources().getString(R.string.intent_extra_add_new_item));
+                startActivityForResult(intent, EXCHANGE_ITEM_ACTIVITY_RESULT_CODE);
+            }
+        }
     }
 
     @Override
@@ -600,6 +628,23 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 }
             }
         }
+        //exchange item list
+        if (requestCode == EXCHANGE_ITEM_ACTIVITY_RESULT_CODE) {  //Add exchange item to sales line
+            if (resultCode == RESULT_OK) {
+
+                Bundle extraData = data.getExtras();
+
+                if (extraData != null) {
+                    if (extraData.containsKey(getResources().getString(R.string.item_json_obj))) {
+
+                        String objAsJson = extraData.getString(getResources().getString(R.string.item_json_obj));
+                        mTempItem = Item.fromJson(objAsJson);
+
+                        addExchangeItem();
+                    }
+                }
+            }
+        }
         if (requestCode == MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE) { //Updating Qty on specific item
             if (resultCode == RESULT_OK) {
 
@@ -634,6 +679,221 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                         }else{
                             itemUnitePrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(), mTempCustomer.getCode(), mTempSalesOrderLine.getUnitofMeasure());
                         }
+
+
+                        if (mSalesOrderLineList.size() == 0) {
+                            mTempSalesOrderLine.setUnitPrice(itemUnitePrice);
+
+                            mTempSalesOrderLine.setKey(key);
+                            updateSalesOrderLineObject(mTempSalesOrderLine);
+                            mSalesOrderLineList.add(mTempSalesOrderLine);
+                            mTempSalesOrderLine.setLineNo(String.valueOf(mSalesOrderLineList.size()));
+
+                            if (mSalesOrderLineList.size() == 1) {
+
+                                mMvsSalesOrderAdapter = new MvsSalesOrderAdapter(mSalesOrderLineList
+                                        , R.layout.item_mvs_sales_order_detail_card
+                                        , MvsSalesOrderActivity.this
+                                        , mTempSalesOrder.getStatus(), mTempCustomer, deliveryDate);
+
+                                mRecyclerViewSalesOrderDetails.setAdapter(mMvsSalesOrderAdapter);
+                            }
+
+                            updateSummeryValues(mSalesOrderLineList);
+                            mMvsSalesOrderAdapter.notifyDataSetChanged();
+                            mRecyclerViewSalesOrderDetails.smoothScrollToPosition(mSalesOrderLineList.size());
+
+                        } else {
+                            ArrayList<SalesOrderLine> indexSOLArray = new ArrayList<SalesOrderLine>();
+                            for (int i = 0; i < mSalesOrderLineList.size(); i++) {
+                                SalesOrderLine sol = mSalesOrderLineList.get(i);
+
+                                if (sol.getNo().equals(mTempSalesOrderLine.getNo())) {
+
+                                    index = i;
+                                    indexSOLArray.add(sol);
+                                }
+                            }
+
+                            if (position > -1) //for Old Items
+                            {
+                                if (indexSOLArray.size() == 1) {
+                                    SalesOrderLine sol = mSalesOrderLineList.get(position);
+
+                                    SalesOrderLine tempSRLine = new SalesOrderLine(sol);
+                                    mRemoveSalesOrderLineList.add(tempSRLine);
+
+                                    sol.setUnitPrice(itemUnitePrice);
+                                    sol.setKey(key); //new
+                                    lineAmount = mTempSalesOrderLine.getQuantity() * mTempSalesOrderLine.getUnitPrice();
+
+                                    sol.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
+                                    sol.setQuantity(mTempSalesOrderLine.getQuantity());
+                                    sol.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
+
+                                    updateSalesOrderLineObject(sol);
+
+                                    //Setting SalesOrderLine item to the list
+                                    mSalesOrderLineList.set(position, sol);
+
+                                    updateSummeryValues(mSalesOrderLineList);
+                                    mMvsSalesOrderAdapter.notifyDataSetChanged();
+                                }
+                                if (indexSOLArray.size() > 1) {
+                                    SalesOrderLine duplicateSOLObject = new SalesOrderLine(),
+                                            existSRLObject = new SalesOrderLine();
+
+                                    boolean itemExist = false;
+                                    for (int i = 0; i < indexSOLArray.size(); i++) {
+                                        SalesOrderLine sol = indexSOLArray.get(i);
+
+                                        if (sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())) {
+                                            isADuplicateRecord = true;
+                                            duplicateSOLObject = sol;
+                                        }
+                                        if (sol.getNo().equals(mTempSalesOrderLine.getNo()) &&
+                                                sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())) {
+
+                                            itemExist = true;
+                                            existSRLObject = sol;
+                                        }
+                                    }
+
+                                    if (isADuplicateRecord) {
+                                        for (int i = 0; i < indexSOLArray.size(); i++) {
+                                            SalesOrderLine srl = indexSOLArray.get(i);
+
+                                            if (srl.getKey().equals(mTempSalesOrderLine.getKey())) {
+                                                mRemoveSalesOrderLineList.add(srl);
+                                                mSalesOrderLineList.remove(srl);
+                                            }
+                                        }
+                                        mRemoveSalesOrderLineList.add(duplicateSOLObject);// --
+                                        mSalesOrderLineList.remove(duplicateSOLObject);
+
+                                        mTempSalesOrderLine.setUnitPrice(itemUnitePrice);
+                                        mTempSalesOrderLine.setKey(key); //new
+
+                                        updateSalesOrderLineObject(mTempSalesOrderLine);
+
+                                        mSalesOrderLineList.add(mTempSalesOrderLine);
+                                        mMvsSalesOrderAdapter.notifyDataSetChanged();
+                                    } else {
+                                        if (existSRLObject.getKey() != null) {
+                                            existSRLObject.setUnitPrice(itemUnitePrice);
+                                            existSRLObject.setKey(key); //new
+
+
+                                            existSRLObject.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
+                                            existSRLObject.setQuantity(mTempSalesOrderLine.getQuantity());
+                                            existSRLObject.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
+
+                                            updateSalesOrderLineObject(existSRLObject);
+                                            //Setting SalesOrderLine item to the list
+                                            mSalesOrderLineList.set(position, existSRLObject);
+
+                                            updateSummeryValues(mSalesOrderLineList);
+                                            mMvsSalesOrderAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+
+                            } else {  //  For New items
+                                isExist = false;
+                                for (int i = 0; i < mSalesOrderLineList.size(); i++) {
+                                    SalesOrderLine sol = mSalesOrderLineList.get(i);
+                                    if (sol.getNo().equals(mTempSalesOrderLine.getNo()) && sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())) {
+                                        isExist = true;
+                                        index = i;
+                                    }
+                                }
+
+                                if (isExist) {
+                                    SalesOrderLine sol = mSalesOrderLineList.get(index);
+
+                                    /*List<SalesOrderLine> clonedSalesOrderLineList = new ArrayList<SalesOrderLine>();
+                                    clonedSalesOrderLineList = cloneList(salesOrderLineList);*/
+
+                                    final SalesOrderLine fSol = new SalesOrderLine(sol);
+                                    mRemoveSalesOrderLineList.add(fSol);
+
+                                    sol.setUnitPrice(itemUnitePrice);
+                                    sol.setKey(key); //new
+
+
+                                    sol.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
+                                    sol.setQuantity(mTempSalesOrderLine.getQuantity());
+                                    sol.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
+
+                                    updateSalesOrderLineObject(sol);
+
+                                    //Setting SalesOrderLine item to the list
+                                    mSalesOrderLineList.set(index, sol);
+
+                                    updateSummeryValues(mSalesOrderLineList);
+                                    mMvsSalesOrderAdapter.notifyDataSetChanged();
+
+                                } else {
+                                    mTempSalesOrderLine.setUnitPrice(itemUnitePrice);
+
+                                    mTempSalesOrderLine.setKey(key);
+
+                                    updateSalesOrderLineObject(mTempSalesOrderLine);
+
+                                    mSalesOrderLineList.add(mTempSalesOrderLine);
+
+                                    updateSummeryValues(mSalesOrderLineList);
+                                    mMvsSalesOrderAdapter.notifyDataSetChanged();
+                                    mRecyclerViewSalesOrderDetails.smoothScrollToPosition(mSalesOrderLineList.size());
+                                }
+                            }
+                        }
+                        updateSummeryValues(mSalesOrderLineList);
+
+                        updateItemCrossRefDetails();
+                        mMvsSalesOrderAdapter.notifyDataSetChanged();
+
+                        Toast.makeText(mApp, getResources().getString(R.string.message_updated), Toast.LENGTH_SHORT).show();
+                        isSaved = false;
+                    }
+                }
+            }
+        }
+
+        if (requestCode == MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE) { //Updating Qty on specific item
+            if (resultCode == RESULT_OK) {
+
+                Bundle extraData = data.getExtras();
+
+                if (extraData != null) {
+                    if (extraData.containsKey(getResources().getString(R.string.sales_order_line_obj))) {
+
+                        float lineAmount = 0, itemUnitePrice = 0;
+                        String objAsJson = "", timeStamp = "", key = "";
+                        boolean isExist = false, isADuplicateRecord = false;
+
+                        objAsJson = extraData.getString(getResources().getString(R.string.sales_order_line_obj));
+
+                        mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
+
+                        if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusComplete))) {
+                            mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusComplete));
+                        } else if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusVoid))) {
+                            mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusVoid));
+                        } else {
+                            mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusPending));
+                        }
+
+                        key = mTempSalesOrderLine.getNo() + soNo + "#" + mTempSalesOrderLine.getUnitofMeasure();
+
+                        int position = extraData.getInt(getResources().getString(R.string.adapter_position));
+                        int index = 0;
+                        getItemByCode(mTempSalesOrderLine.getNo());
+//                        if(mTempItem.isInventoryValueZero()){
+//                            itemUnitePrice = 0;
+//                        }else{
+//                            itemUnitePrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(), mTempCustomer.getCode(), mTempSalesOrderLine.getUnitofMeasure());
+//                        }
 
 
                         if (mSalesOrderLineList.size() == 0) {
@@ -1279,6 +1539,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mFabAddNewItem.setVisibility(View.GONE);
             mFabAddNewItem.setEnabled(false);
             mFabAddNewItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+            mFabAddNewExcItem.setVisibility(View.GONE);
+            mFabAddNewExcItem.setEnabled(false);
+            mFabAddNewExcItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+
             mTxtPoComments.setEnabled(false);
             mTxtScanCode.setEnabled(false);
 
@@ -1293,6 +1557,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mFabAddNewItem.setEnabled(true);
             mFabAddNewItem.setBackgroundTintList(
                     ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+            mFabAddNewExcItem.setEnabled(true);
+            mFabAddNewExcItem.setBackgroundTintList(
+                    ColorStateList.valueOf(getResources().getColor(R.color.yellow)));
             mTxtPoComments.setEnabled(true);
             mTxtScanCode.setEnabled(true);
         }
@@ -1304,6 +1571,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mFabAddNewItem.setVisibility(View.GONE);
             mFabAddNewItem.setEnabled(false);
             mFabAddNewItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+            mFabAddNewExcItem.setVisibility(View.GONE);
+            mFabAddNewExcItem.setEnabled(false);
+            mFabAddNewExcItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
             mTxtPoComments.setEnabled(false);
             mTxtScanCode.setEnabled(false);
             Toast.makeText(mApp, getResources().getString(R.string.not_allowed_to_edit), Toast.LENGTH_SHORT).show();
@@ -1318,6 +1588,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 mFabAddNewItem.setEnabled(true);
                 mFabAddNewItem.setBackgroundTintList(
                         ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                mFabAddNewExcItem.setEnabled(true);
+                mFabAddNewExcItem.setBackgroundTintList(
+                        ColorStateList.valueOf(getResources().getColor(R.color.yellow)));
                 mTxtPoComments.setEnabled(true);
                 mTxtScanCode.setEnabled(true);
 
@@ -1328,6 +1601,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 mBtnSave.setEnabled(true);
                 mFabAddNewItem.setEnabled(true);
                 mFabAddNewItem.setBackgroundTintList(
+                        ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                mFabAddNewExcItem.setEnabled(true);
+                mFabAddNewExcItem.setBackgroundTintList(
                         ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 mTxtPoComments.setEnabled(true);
                 mTxtScanCode.setEnabled(true);
@@ -1520,10 +1796,12 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         mBtnItem = (Button) view.findViewById(R.id.btnItem);
 
         mFabAddNewItem = (FloatingActionButton) view.findViewById(R.id.fabAddNewItem);
+        mFabAddNewExcItem = (FloatingActionButton) view.findViewById(R.id.fabAddNewExchangeItem);
     }
 
     public void initComponents() {
         mFabAddNewItem.bringToFront();
+        mFabAddNewExcItem.bringToFront();
 
         mDBDateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format_yyyy_MM_dd));
         mUIDateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format_dd_MM_yyyy));
@@ -1582,6 +1860,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
     public void setClickListeners() {
         mFabAddNewItem.setOnClickListener(this);
+        mFabAddNewExcItem.setOnClickListener(this);
         mBtnSearchCus.setOnClickListener(this);
         mBtnAddressCus.setOnClickListener(this);
         mBtnDtpicker.setOnClickListener(this);
@@ -1807,6 +2086,100 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         intent.putExtra(getResources().getString(R.string.delivery_date), deliveryDate);
         intent.putExtra(getResources().getString(R.string.exist_sales_order_line_jason_obj), existSalesOrderLineJasonObj);
         startActivityForResult(intent, MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE);
+    }
+
+    public void addExchangeItem() {
+
+        SalesOrderLine existSalesOrderLine = new SalesOrderLine();
+
+        // if item exist
+        if (!mSalesOrderLineList.isEmpty()) {
+
+            for (SalesOrderLine sol : mSalesOrderLineList) {
+                if (sol.getNo().equals(mTempItem.getItemCode())) {
+                    existSalesOrderLine = sol;
+                    break;
+                }
+            }
+        }
+        String existSalesOrderLineJasonObj = existSalesOrderLine.toJson();
+
+        SalesOrderLine salesOrderLine = new SalesOrderLine();
+//        String timeStamp = new SimpleDateFormat(getResources().getString(R.string.date_format_yyyy_MM_dd_HH_mm_ss)).format(new Date());
+        String key = mTempItem.getItemCode()
+                + soNo
+                + getResources().getString(R.string.hash_symbol)
+                + mTempItem.getItemBaseUom();
+        int adapterPosition = -1;
+
+        salesOrderLine.setKey(key);
+        salesOrderLine.setType(2);
+        salesOrderLine.setNo(mTempItem.getItemCode());
+        salesOrderLine.setDriverCode(mApp.getmCurrentDriverCode());
+        salesOrderLine.setDescription(mTempItem.getDescription());
+        salesOrderLine.setQuantity(0f);  //New item
+        salesOrderLine.setUnitofMeasure(mTempItem.getItemBaseUom());
+        salesOrderLine.setSalesPriceExist(false);
+
+        salesOrderLine.setUnitPrice(0f);
+        salesOrderLine.setLineAmount(0);  //Quantity is 0  (new Item)
+        salesOrderLine.setSalesLineDiscExists(false);
+        salesOrderLine.setLineDiscountPercent(getResources().getString(R.string.double_amount_zero));
+        salesOrderLine.setLineDiscountAmount(0.0f);
+        salesOrderLine.setQtytoInvoice(0f);
+        salesOrderLine.setQuantityInvoiced(0f);
+        salesOrderLine.setDocumentNo(mTempSalesOrder.getNo());
+
+        salesOrderLine.setTotalAmountExclVAT(0f); //line Amount
+        salesOrderLine.setTotalVATAmount(0f);   //line amount X 7%(Prescentage)
+        salesOrderLine.setTotalAmountInclVAT(0f); //line amount + line amount X 7%(Prescentage)
+
+//        float gstPresentage = getGstPercentage(mTempCustomer.getCode(), mTempItem.getItemCode());
+
+        salesOrderLine.setTaxPercentage("0");
+        salesOrderLine.setExchangedQty(0f);
+
+        //update cross reference on item
+        ItemCrossReferenceDbHandler icrDb =
+                new ItemCrossReferenceDbHandler(getApplicationContext());
+
+        icrDb.open();
+        ItemCrossReference itemCrossReference_ = icrDb.getItemCrossreference(salesOrderLine.getNo()
+                , salesOrderLine.getUnitofMeasure(), mTempCustomer.getCode());
+
+        icrDb.close();
+
+        if (itemCrossReference_.getItemCrossReferenceNo() != null) {
+            salesOrderLine.setItemCrossReferenceNo(itemCrossReference_.getItemCrossReferenceNo());
+        } else {
+            salesOrderLine.setItemCrossReferenceNo(salesOrderLine.getNo());
+        }
+
+        if (itemCrossReference_.getDescription() != null) {
+            salesOrderLine.setItemCrossReferenceDescription(itemCrossReference_.getDescription());
+        } else {
+            salesOrderLine.setItemCrossReferenceDescription(salesOrderLine.getDescription());
+        }
+        //
+
+        if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusComplete))) {
+            mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusComplete));
+        } else if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusVoid))) {
+            mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusVoid));
+        } else {
+            mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusPending));
+        }
+
+        String jasonObj = salesOrderLine.toJson();
+        String customerJsonObj = mTempCustomer.toJson();
+
+        Intent intent = new Intent(this, MvsExchangeOrderItemActivity.class);
+        intent.putExtra(getResources().getString(R.string.sales_order_line_obj), jasonObj);
+        intent.putExtra(getResources().getString(R.string.customer_json_obj), customerJsonObj);
+        intent.putExtra(getResources().getString(R.string.adapter_position), adapterPosition);
+        intent.putExtra(getResources().getString(R.string.delivery_date), deliveryDate);
+        intent.putExtra(getResources().getString(R.string.exist_sales_order_line_jason_obj), existSalesOrderLineJasonObj);
+        startActivityForResult(intent, MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE);
     }
 
     public void updateSalesOrderLineObject(SalesOrderLine sol) {
@@ -3013,6 +3386,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                 updateItemBalencePda(mSalesOrderLineList, false);
                 mTempSalesOrder.setLineItems(mSalesOrderLineList);
+                updateExchangeItem(mSalesOrderLineList);
                 openReport(mTempSalesOrder);
             }
         } else {
@@ -3022,12 +3396,48 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+
+    private void updateExchangeItem(List<SalesOrderLine> lines){
+        ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(this);
+
+        for (SalesOrderLine line: lines) {
+
+            if(line.isExchangeItem()){
+                ExchangeItem item = new ExchangeItem();
+                item.setItemCode(line.getNo());
+                item.setUom(line.getUnitofMeasure());
+                item.setBalanceQty(line.getExchangedQty());
+                item.setTotalQty(line.getExchangedQty());
+                item.setIssueQty(line.getQuantity());
+                exchangeHandler.updateIssueQty(item);
+
+            } else if(!line.isExchangeItem() && line.getExchangedQty() >= 1){
+                ExchangeItem item = new ExchangeItem();
+                item.setItemCode(line.getNo());
+                item.setUom(line.getUnitofMeasure());
+                item.setBalanceQty(line.getExchangedQty());
+                item.setTotalQty(line.getExchangedQty());
+                item.setIssueQty(0);
+
+
+                if(exchangeHandler.isItemExist(line.getNo(),line.getUnitofMeasure())){
+                    exchangeHandler.updateTotalAndBalanceQty(item);
+                }else{
+                    exchangeHandler.addItems(item);
+                }
+
+            }
+        }
+
+    }
+
     private void setItemTab() {
         mBtnItem.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mBtnSummary.setBackgroundColor(getResources().getColor(R.color.hockeyapp_background_light));
         llItem.setVisibility(View.VISIBLE);
         llSummary.setVisibility(View.GONE);
         mFabAddNewItem.setVisibility(View.VISIBLE);
+        mFabAddNewExcItem.setVisibility(View.VISIBLE);
     }
 
     private void setSummaryTab() {
@@ -3036,6 +3446,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         llSummary.setVisibility(View.VISIBLE);
         llItem.setVisibility(View.GONE);
         mFabAddNewItem.setVisibility(View.GONE);
+        mFabAddNewExcItem.setVisibility(View.GONE);
     }
 
     private void getDestination() {

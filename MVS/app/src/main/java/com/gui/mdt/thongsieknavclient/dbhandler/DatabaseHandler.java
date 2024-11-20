@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    public static final int DATABASE_VERSION = 167;
+    public static final int DATABASE_VERSION = 168;
 
     // Database Name
     public static final String DATABASE_NAME = "thongsiek";
@@ -39,6 +39,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String TABLE_CUSTOMER_SALES_CODE = "customerSalesCode";
     public static final String TABLE_CUSTOMER_TEMPLATE = "customerTemplate";
     public static final String TABLE_STOCK_STATUS = "stockStatus";
+
+    public static final String TABLE_EXCHANGE_ITEM = "exchangeItem";
 
 
     //customer table columns
@@ -195,6 +197,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_SO_LINE_TOT_AMT_INCL_VAT = "TotalAmountInclVAT";
     public static final String KEY_SO_LINE_TAX_PERCENTAGE = "TaxPercentage";
     public static final String KEY_SO_LINE_EXCHANGED_QTY = "ExchangedQty";
+
+    public static final String KEY_SO_LINE_IS_EXCHANGE_ITEM = "IsExchangeItem";
 
     //Sales Prices table columns
     public static final String KEY_SALES_PRICES_KEY = "key";
@@ -418,6 +422,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_SS_IS_DISPATCHED = "isDispatched";
     public static final String KEY_SS_DISPATCHED_TIME = "dispatchedTime";
 
+
+    //exchange table columans
+    public static final String KEY_EXCHANGE_ID = "id";
+
+    public static final String KEY_EXCHANGE_ITEM_CODE = "itemCode";
+
+    public static final String KEY_EXCHANGE_ITEM_UOM = "unitOfMeasure";
+
+    public static final String KEY_EXCHANGE_ITEM_QTY = "totalQty";
+
+    public static final String KEY_EXCHANGE_ITEM_ISSUE_QTY = "issueQty";
+
+    public static final String KEY_EXCHANGE_ITEM_BALANCE_QTY = "balanceQty";
+
     /*public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
@@ -618,7 +636,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_SO_LINE_TOT_VAT_AMOUNT + " TEXT, "
                 + KEY_SO_LINE_TOT_AMT_INCL_VAT + " TEXT, "
                 + KEY_SO_LINE_TAX_PERCENTAGE + " TEXT, "
-                + KEY_SO_LINE_EXCHANGED_QTY + " TEXT "
+                + KEY_SO_LINE_EXCHANGED_QTY + " TEXT, "
+                + KEY_SO_LINE_IS_EXCHANGE_ITEM + " TEXT "
                 + ")";
         db.execSQL(CREATE_SO_LINE_TABLE);
 
@@ -879,12 +898,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_SS_DISPATCHED_TIME + " TEXT "
                 + ")";
         db.execSQL(CREATE_STOCK_STATUS_TABLE);
+
+        //stockStatus table create
+        String CREATE_EXCHANGE_ITEM_TABLE = "CREATE TABLE " + TABLE_EXCHANGE_ITEM + "("
+                + KEY_EXCHANGE_ID + " INTEGER PRIMARY KEY, "
+                + KEY_EXCHANGE_ITEM_CODE + " TEXT,"
+                + KEY_EXCHANGE_ITEM_UOM + " TEXT,"
+                + KEY_EXCHANGE_ITEM_QTY + " TEXT, "
+                + KEY_EXCHANGE_ITEM_ISSUE_QTY + " TEXT, "
+                + KEY_EXCHANGE_ITEM_BALANCE_QTY + " TEXT "
+                + ")";
+        db.execSQL(CREATE_EXCHANGE_ITEM_TABLE);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if exist
-        if(oldVersion == 167){
+        if(newVersion == 168) {
+            String CREATE_EXCHANGE_ITEM_TABLE = "CREATE TABLE " + TABLE_EXCHANGE_ITEM + "("
+                    + KEY_EXCHANGE_ID + " INTEGER PRIMARY KEY, "
+                    + KEY_EXCHANGE_ITEM_CODE + " TEXT, "
+                    + KEY_EXCHANGE_ITEM_UOM + " TEXT, "
+                    + KEY_EXCHANGE_ITEM_QTY + " TEXT, "
+                    + KEY_EXCHANGE_ITEM_ISSUE_QTY + " TEXT, "
+                    + KEY_EXCHANGE_ITEM_BALANCE_QTY + " TEXT "
+                    + ")";
+            db.execSQL("ALTER TABLE " + TABLE_SO_LINE + " ADD " + KEY_SO_LINE_IS_EXCHANGE_ITEM + " TEXT DEFAULT NULL ");
+
+            db.execSQL(CREATE_EXCHANGE_ITEM_TABLE);
+        } else if (oldVersion == 167) {
             db.execSQL("ALTER TABLE " + TABLE_ITEM + " ADD " + KEY_ITM_IS_ZERO_PRICE + " TEXT DEFAULT NULL ");
         } else if (oldVersion == 166) {
             //this code only for this 166 version . if you new to this remove for

@@ -63,6 +63,8 @@ public class SalesOrderLine {
     String itemCrossReferenceNo;
     String itemCrossReferenceDescription;
 
+    boolean isExchangeItem;
+
 
     public SalesOrderLine(){}
 
@@ -99,6 +101,15 @@ public class SalesOrderLine {
         this.itemCrossReferenceNo = s.getItemCrossReferenceNo();
         this.itemCrossReferenceDescription = s.getItemCrossReferenceDescription();
     }
+
+    public boolean isExchangeItem() {
+        return isExchangeItem;
+    }
+
+    public void setExchangeItem(boolean exchangeItem) {
+        isExchangeItem = exchangeItem;
+    }
+
 
     public String getTaxPercentage() {
         return taxPercentage;
