@@ -26,13 +26,17 @@ import androidx.appcompat.widget.Toolbar;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.Customer;
+import com.gui.mdt.thongsieknavclient.datamodel.ExchangeItem;
 import com.gui.mdt.thongsieknavclient.datamodel.Item;
 import com.gui.mdt.thongsieknavclient.datamodel.ItemBalancePda;
+import com.gui.mdt.thongsieknavclient.datamodel.ItemUom;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesOrderLine;
 import com.gui.mdt.thongsieknavclient.datamodel.SalesPrices;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
+import com.gui.mdt.thongsieknavclient.dbhandler.ExchangeItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemDbHandler;
+import com.gui.mdt.thongsieknavclient.dbhandler.ItemUomDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesPricesDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 //import com.gui.mdt.thongsieknavclient.syncTasks.ItemBalancePdaSyncTask;
@@ -56,7 +60,7 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
     ImageView mItemImg;
     Button mBtnAdd;
     Drawable mBackArrow;
-    SalesOrderLine mTempSalesOrderLine;
+//    SalesOrderLine mTempSalesOrderLine;
     String uom, itemNo, header, deliveryDate = "";
     float totalPrice = 0, quantity = 0, unitPrice = 0f, enteredQuantity = 0f;
     int position = 0;
@@ -64,9 +68,14 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
     List<SalesPrices> mSalesPricesList;
     private Item mTempItem;
     private Customer mTempCustomer;
-    private SalesOrderLine mExistSalesOrderLine = new SalesOrderLine();
+//    private SalesOrderLine mExistSalesOrderLine = new SalesOrderLine();
+    private ExchangeItem mExistExchangeItem = new ExchangeItem();
+    ExchangeItem mTempExchangeItem;
 //    private ItemBalancePdaSyncTask itemBalancePdaSyncTask;
     private NavClientApp mApp;
+    private List<ItemUom> uomList;
+    private List<ExchangeItem> exchangeItemList;
+//    ExchangeItem exchangeItem;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,29 +105,37 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 
         extras = getIntent().getExtras();
 
+//        String objAsJson = extras.getString(getResources().getString(R.string.item_json_obj));
+//         exchangeItem= ExchangeItem.fromJson(objAsJson);
         if (extras != null) {
-            if (extras.containsKey("deliveryDate")) {
-                deliveryDate = extras.getString("deliveryDate");
-            }
-
-            if (extras.containsKey("existSalesOrderLineJasonObj")) {
-                mExistSalesOrderLine =
-                        SalesOrderLine.fromJson(extras.getString("existSalesOrderLineJasonObj"));
-            }
-
-            if (extras.containsKey(getResources().getString(R.string.customer_json_obj))) {
-                mTempCustomer = Customer.fromJson(extras.getString(getResources().getString(R.string.customer_json_obj)));
-            }
-
-            if (extras.containsKey(getResources().getString(R.string.sales_order_line_obj))) {
-                initSalesOrderLine();
-            }
+//            if(extras.containsKey(getResources().getString(R.string.item_json_obj))){
+//                mTvItemNo.setText(exchangeItem.getItemCode());
+//                mTxtItemDesc.setText(exchangeItem.getDescription());
+//                mTxtExchangeQTY.setText(String.valueOf(exchangeItem.getTotalQty()));
+//                mTxtAvailableExchangeQTY.setText(String.valueOf(exchangeItem.getBalanceQty()));
+//            }
+//            if (extras.containsKey("deliveryDate")) {
+//                deliveryDate = extras.getString("deliveryDate");
+//            }
+//
+//            if (extras.containsKey("existSalesOrderLineJasonObj")) {
+//                mExistSalesOrderLine =
+//                        SalesOrderLine.fromJson(extras.getString("existSalesOrderLineJasonObj"));
+//            }
+//
+//            if (extras.containsKey(getResources().getString(R.string.customer_json_obj))) {
+//                mTempCustomer = Customer.fromJson(extras.getString(getResources().getString(R.string.customer_json_obj)));
+//            }
+//
+//            if (extras.containsKey(getResources().getString(R.string.sales_order_line_obj))) {
+//                initSalesOrderLine();
+//            }
         }
 
         mBtnAdd.setOnClickListener(this);
 
         initSalesQtyTextListner();
-
+        initSalesOrderLine();
         //Forcus Sales Qty onLoad
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mTxtExchangeQTY.requestFocus();
@@ -136,22 +153,37 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 //        mSalesPricesList = new ArrayList<SalesPrices>();
     }
 
+
     public void initSalesOrderLine() {
 
-        String objAsJson = extras.getString(getResources().getString(R.string.sales_order_line_obj));
+//        String objAsJson = extras.getString(getResources().getString(R.string.sales_order_line_obj));
 
+//        //Selected Item postion in the List. do not change this value !!
+//        position = extras.getInt(getResources().getString(R.string.adapter_position));
+//
+//        if (mExistSalesOrderLine != null) {
+//            if (mExistSalesOrderLine.getNo() != null) {
+//                mTempSalesOrderLine = mExistSalesOrderLine;
+//
+//            } else {
+//                mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
+//            }
+//        } else {
+//            mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
+//        }
+
+
+        String objAsJson = extras.getString(getResources().getString(R.string.item_json_obj));
         //Selected Item postion in the List. do not change this value !!
-        position = extras.getInt(getResources().getString(R.string.adapter_position));
-
-        if (mExistSalesOrderLine != null) {
-            if (mExistSalesOrderLine.getNo() != null) {
-                mTempSalesOrderLine = mExistSalesOrderLine;
-
+//        position = extras.getInt(getResources().getString(R.string.adapter_position));
+        if (mExistExchangeItem != null) {
+            if (mExistExchangeItem.getId() != null) {
+                mTempExchangeItem = mExistExchangeItem;
             } else {
-                mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
+                mTempExchangeItem = ExchangeItem.fromJson(objAsJson);
             }
         } else {
-            mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
+            mTempExchangeItem = ExchangeItem.fromJson(objAsJson);
         }
 
         //update item balence pda
@@ -161,41 +193,51 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 //                mTempSalesOrderLine.getUnitofMeasure(),
 //                mApp.getmCurrentDriverCode()));
 
-        getItem(mTempSalesOrderLine.getNo());
+//        getItem(mTempExchangeItem.getNo());
 
-        header = mTempSalesOrderLine.getItemCrossReferenceNo();
-        if (mTempItem.getIdentifierCode() != null) {
-            if (!mTempItem.getIdentifierCode().isEmpty()) {
-                header = header + " - " + mTempItem.getIdentifierCode();
-            }
-        }
+//        header = mTempExchangeItem.getItemCrossReferenceNo();
+//        if (mTempItem.getIdentifierCode() != null) {
+//            if (!mTempItem.getIdentifierCode().isEmpty()) {
+//                header = header + " - " + mTempItem.getIdentifierCode();
+//            }
+//        }
 
-        quantity = mTempSalesOrderLine.getQuantity();
+//        quantity = mTempExchangeItem.getQuantity();
 
-        mTvHeader.setText(header);
-        mTxtItemDesc.setText(mTempSalesOrderLine.getItemCrossReferenceDescription());
-        mTvItemNo.setText(mTempSalesOrderLine.getNo());
+//        mTvHeader.setText(header);
+        mTxtItemDesc.setText(mTempExchangeItem.getDescription());
+        mTvItemNo.setText(mTempExchangeItem.getItemCode());
 
         //Get uom list base on itemCode and salesCode
         List<String> uomList = new ArrayList<String>();
-        getUomList(mTempSalesOrderLine.getNo(), mTempCustomer);
-        if (!mSalesPricesList.isEmpty()) {
-            for (SalesPrices sp : mSalesPricesList) {
-                if (sp.getUnitOfMeasureCode() == null) {
+        getExchangeItemListByItemNo(mTempExchangeItem.getItemCode());
+
+        if(!exchangeItemList.isEmpty()){
+            for(ExchangeItem ei:exchangeItemList){
+                if(ei.getUom()==null){
                     uomList.add("");
-                } else {
-                    uomList.add(sp.getUnitOfMeasureCode());
+                }else{
+                    uomList.add(ei.getUom());
                 }
             }
         }
-
+//        if (!mSalesPricesList.isEmpty()) {
+//            for (SalesPrices sp : mSalesPricesList) {
+//                if (sp.getUnitOfMeasureCode() == null) {
+//                    uomList.add("");
+//                } else {
+//                    uomList.add(sp.getUnitOfMeasureCode());
+//                }
+//            }
+//        }
+//
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, uomList);
-
+//
         //Setting uom adapter to Spinner
         mSpnUom.setAdapter(adapter);
 
         // Setting default item in spinner
-        int getDegaultItemPosition = adapter.getPosition(mTempSalesOrderLine.getUnitofMeasure());
+        int getDegaultItemPosition = adapter.getPosition(mTempExchangeItem.getUom());
         mSpnUom.setSelection(getDegaultItemPosition);
 
         // Get seleted uom  from Spinner
@@ -204,19 +246,22 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedUom = mSpnUom.getSelectedItem().toString();
 
-                mTempSalesOrderLine.setUnitofMeasure(selectedUom);
+                setSelectedExchangeItemByUom(selectedUom);
+//                mTempExchangeItem.setUom(selectedUom);
+
 //                if(mTempItem.isInventoryValueZero()){
-//                    mTempSalesOrderLine.setUnitPrice(0.00f);
+//                    mTempExchangeItem.setTotalQty(0.00f);
 //                }else{
-//                    unitPrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(),
+//                    unitPrice = getUnitPrice(mTempExchangeItem.getNo(), mTempCustomer.getCustomerPriceGroup(),
 //                            mTempCustomer.getCode(), selectedUom);
-//                    mTempSalesOrderLine.setUnitPrice(unitPrice);
+//                    mTempExchangeItem.setUnitPrice(unitPrice);
 //                }
 
 
 //                mTxtUnitPrice.setText(String.format("%.2f", mTempSalesOrderLine.getUnitPrice()));
 //                totalPrice = quantity * mTempSalesOrderLine.getUnitPrice();
-//                mTxtTotalPrice.setText(String.format("%.2f", totalPrice));
+                mTxtExchangeQTY.setText(String.format("%.2f", mTempExchangeItem.getTotalQty()));
+                mTxtAvailableExchangeQTY.setText(String.format("%.2f", mTempExchangeItem.getBalanceQty()));
             }
 
             @Override
@@ -224,18 +269,18 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
             }
 
         });
-
-//        mTxtUnitPrice.setText(String.valueOf(String.format("%.2f", mTempSalesOrderLine.getUnitPrice())));
-        mTxtExchangeQTY.setText(String.valueOf(Math.round(mTempSalesOrderLine.getQuantity()
-                                            + mTempSalesOrderLine.getExchangedQty())));
-        mTxtAvailableExchangeQTY.setText(String.valueOf(Math.round(mTempSalesOrderLine.getExchangedQty())));
-        //Total Price
-//        totalPrice = mTempSalesOrderLine.getQuantity() * mTempSalesOrderLine.getUnitPrice();
-//        mTxtTotalPrice.setText(String.format("%.2f", totalPrice));
-
-        mItemImg.setImageBitmap(loadImageFromStorage(mTempSalesOrderLine.getNo()));
-
-//        mTxtWarehouseQTY.setText(getItemWarehouseQty(mTempSalesOrderLine.getNo()));
+//
+////        mTxtUnitPrice.setText(String.valueOf(String.format("%.2f", mTempSalesOrderLine.getUnitPrice())));
+//        mTxtExchangeQTY.setText(String.valueOf(Math.round(mTempSalesOrderLine.getQuantity()
+//                                            + mTempSalesOrderLine.getExchangedQty())));
+//        mTxtAvailableExchangeQTY.setText(String.valueOf(Math.round(mTempSalesOrderLine.getExchangedQty())));
+//        //Total Price
+////        totalPrice = mTempSalesOrderLine.getQuantity() * mTempSalesOrderLine.getUnitPrice();
+////        mTxtTotalPrice.setText(String.format("%.2f", totalPrice));
+//
+        mItemImg.setImageBitmap(loadImageFromStorage(mTempExchangeItem.getItemCode()));
+//
+////        mTxtWarehouseQTY.setText(getItemWarehouseQty(mTempSalesOrderLine.getNo()));
     }
 
     private void initSalesQtyTextListner() {
@@ -270,66 +315,66 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
     @Override
     public void onClick(View v) {
 
-        if (findViewById(R.id.btnAdd) == v) {
-            if (extras.containsKey(getResources().getString(R.string.sales_order_line_obj))) {
-                if (mTempSalesOrderLine.getUnitofMeasure().equals("")) {
-                    Toast.makeText(MvsExchangeOrderItemActivity.this, "Item can not be added!, Item UOM is not " +
-                            "available", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (mTempSalesOrderLine.getUnitPrice() == 0f && !mTempItem.isInventoryValueZero()) {
-                        Toast.makeText(MvsExchangeOrderItemActivity.this, "Item can not be added!, Item unit price " +
-                                "is zero", Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        /*if (quantity == 0f) {
-                            Toast.makeText(MvsSalesOrderItemActivity.this, "Item can not be added!, QTY can not " +
-                                    "be zero", Toast.LENGTH_SHORT).show();
-                        } else {*/
-                            float salesQty = 0f;
-                            if(mTxtExchangeQTY.getText().toString().equals(""))
-                            {
-                                salesQty = 0f;
-                            }
-                            else
-                            {
-                                salesQty = Float.parseFloat(mTxtExchangeQTY.getText().toString());
-                            }
-
-                            if(mTxtAvailableExchangeQTY.getText().toString().equals(""))
-                            {
-                                mTempSalesOrderLine.setExchangedQty(0f);
-                            }
-                            else {
-                                mTempSalesOrderLine.setExchangedQty(Float.parseFloat(mTxtAvailableExchangeQTY.getText().toString()));
-                            }
-
-                            float billQty = salesQty - mTempSalesOrderLine.getExchangedQty();
-                            float lineAmount = billQty * mTempSalesOrderLine.getUnitPrice();
-
-                            if(salesQty >= mTempSalesOrderLine.getExchangedQty())
-                            {
-                                mTempSalesOrderLine.setQuantity(billQty);
-                                mTempSalesOrderLine.setQtytoInvoice(billQty);
-                                mTempSalesOrderLine.setLineAmount(lineAmount);
-
-                                String objAsJson = mTempSalesOrderLine.toJson();
-
-                                Intent intent = new Intent();
-                                intent.putExtra(getResources().getString(R.string.sales_order_line_obj), objAsJson);
-                                intent.putExtra(getResources().getString(R.string.adapter_position), position);
-                                setResult(RESULT_OK, intent);
-                                finish();
-                            }
-                            else {
-                                Toast.makeText(MvsExchangeOrderItemActivity.this
-                                        , "Item can not be added!, Exchange quantity is greater than sales quantity"
-                                        , Toast.LENGTH_SHORT).show();
-                            }
-                       /* }*/
-                    }
-                }
-            }
-        }
+//        if (findViewById(R.id.btnAdd) == v) {
+//            if (extras.containsKey(getResources().getString(R.string.sales_order_line_obj))) {
+//                if (mTempSalesOrderLine.getUnitofMeasure().equals("")) {
+//                    Toast.makeText(MvsExchangeOrderItemActivity.this, "Item can not be added!, Item UOM is not " +
+//                            "available", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    if (mTempSalesOrderLine.getUnitPrice() == 0f && !mTempItem.isInventoryValueZero()) {
+//                        Toast.makeText(MvsExchangeOrderItemActivity.this, "Item can not be added!, Item unit price " +
+//                                "is zero", Toast.LENGTH_SHORT).show();
+//                    } else {
+//
+//                        /*if (quantity == 0f) {
+//                            Toast.makeText(MvsSalesOrderItemActivity.this, "Item can not be added!, QTY can not " +
+//                                    "be zero", Toast.LENGTH_SHORT).show();
+//                        } else {*/
+//                            float salesQty = 0f;
+//                            if(mTxtExchangeQTY.getText().toString().equals(""))
+//                            {
+//                                salesQty = 0f;
+//                            }
+//                            else
+//                            {
+//                                salesQty = Float.parseFloat(mTxtExchangeQTY.getText().toString());
+//                            }
+//
+//                            if(mTxtAvailableExchangeQTY.getText().toString().equals(""))
+//                            {
+//                                mTempSalesOrderLine.setExchangedQty(0f);
+//                            }
+//                            else {
+//                                mTempSalesOrderLine.setExchangedQty(Float.parseFloat(mTxtAvailableExchangeQTY.getText().toString()));
+//                            }
+//
+//                            float billQty = salesQty - mTempSalesOrderLine.getExchangedQty();
+//                            float lineAmount = billQty * mTempSalesOrderLine.getUnitPrice();
+//
+//                            if(salesQty >= mTempSalesOrderLine.getExchangedQty())
+//                            {
+//                                mTempSalesOrderLine.setQuantity(billQty);
+//                                mTempSalesOrderLine.setQtytoInvoice(billQty);
+//                                mTempSalesOrderLine.setLineAmount(lineAmount);
+//
+//                                String objAsJson = mTempSalesOrderLine.toJson();
+//
+//                                Intent intent = new Intent();
+//                                intent.putExtra(getResources().getString(R.string.sales_order_line_obj), objAsJson);
+//                                intent.putExtra(getResources().getString(R.string.adapter_position), position);
+//                                setResult(RESULT_OK, intent);
+//                                finish();
+//                            }
+//                            else {
+//                                Toast.makeText(MvsExchangeOrderItemActivity.this
+//                                        , "Item can not be added!, Exchange quantity is greater than sales quantity"
+//                                        , Toast.LENGTH_SHORT).show();
+//                            }
+//                       /* }*/
+//                    }
+//                }
+//            }
+//        }
     }
 
 //    private String getItemWarehouseQty(String itemCode) {
@@ -469,21 +514,35 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 //        return unitprice;
 //    }
 
-    public void getUomList(String itemNo, Customer customer) {
-        mSalesPricesList = new ArrayList<SalesPrices>();
-        if (customer != null) {
-            SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
-            spDb.open();
-            String customerPriceGroup = customer.getCustomerPriceGroup();
 
-            //if customer price group is "" then sales type is 0.
-            if (customer.getCustomerPriceGroup().equals("")) {
-                customerPriceGroup = customer.getCode();
-            }
+    public void getExchangeItemListByItemNo(String itemNo) {
+        uomList = new ArrayList<ItemUom>();
+        ExchangeItemDbHandler dbAdapter=new ExchangeItemDbHandler(this);
+        dbAdapter.open();
+        exchangeItemList=dbAdapter.getExchangeItemByItemCode(itemNo);
+        dbAdapter.close();
 
-            mSalesPricesList = spDb.getAllPriceList(customerPriceGroup, itemNo);
-
-            spDb.close();
+////        if (customer != null) {
+//            ItemUomDbHandler dbAdapter = new ItemUomDbHandler(this);
+//            dbAdapter.open();
+//            uomList = dbAdapter.getUomListbyItemCode(itemNo);
+////            String customerPriceGroup = customer.getCustomerPriceGroup();
+//
+//            //if customer price group is "" then sales type is 0.
+////            if (customer.getCustomerPriceGroup().equals("")) {
+////                customerPriceGroup = customer.getCode();
+////            }
+//
+////            mSalesPricesList = uom.getAllPriceList(customerPriceGroup, itemNo);
+//
+//            dbAdapter.close();
+////        }
+    }
+    public void setSelectedExchangeItemByUom(String uom){
+        for (ExchangeItem ei : exchangeItemList) {
+                if (ei.getUom() == uom) {
+                    mTempExchangeItem=ei;
+                }
         }
     }
 

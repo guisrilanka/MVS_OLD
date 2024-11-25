@@ -61,8 +61,33 @@ public class ExchangeItemDbHandler {
         cursor.close();
         return count > 0 ? true : false;
     }
+//    get exchange items by itemCode
+    public List<ExchangeItem> getExchangeItemByItemCode(String code) {
+        List<ExchangeItem> itemList = new ArrayList<ExchangeItem>();
+        db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT * FROM " + dbHelper.TABLE_EXCHANGE_ITEM + " WHERE " + dbHelper.KEY_EXCHANGE_ITEM_CODE + " = ?";
+        Cursor c = db.rawQuery(query, new String[]{code});
 
 
+//        c.moveToFirst();
+        if (c.moveToFirst()) {
+            do {
+                ExchangeItem item = new ExchangeItem();
+                item.setId(Integer.parseInt(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ID))));
+                item.setItemCode(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_CODE)));
+//                item.setDescription(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_DESCRIPTION)));
+                item.setUom(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_UOM)));
+                item.setTotalQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_QTY)));
+                item.setIssueQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_ISSUE_QTY)));
+                item.setBalanceQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_BALANCE_QTY)));
+
+                itemList.add(item);
+            } while (c.moveToNext());
+        }
+            c.close();
+            return itemList;
+    }
     // Getting All Items
     public List<ExchangeItem> getAllItems() {
 
