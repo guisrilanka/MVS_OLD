@@ -899,6 +899,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
 
                             mTempSalesOrderLine.setKey(key);
+                            mTempSalesOrderLine.setExchangeItem(true);
 //                            updateSalesOrderLineObject(mTempSalesOrderLine);
                             mSalesOrderLineList.add(mTempSalesOrderLine);
                             mTempSalesOrderLine.setLineNo(String.valueOf(mSalesOrderLineList.size()));
@@ -943,6 +944,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                                     sol.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
                                     sol.setQuantity(mTempSalesOrderLine.getQuantity());
+                                    sol.setExchangeItem(true);
 //                                    sol.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
 
 //                                    updateSalesOrderLineObject(sol);
@@ -966,7 +968,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 //                                            duplicateSOLObject = sol;
 //                                        }
                                         if (sol.getNo().equals(mTempSalesOrderLine.getNo()) &&
-                                                sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())) {
+                                                sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure()) && sol.isExchangeItem()) {
 
 //                                            itemExist = true;
                                             existSRLObject = sol;
@@ -1000,6 +1002,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                                             existSRLObject.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
                                             existSRLObject.setQuantity(mTempSalesOrderLine.getQuantity());
+                                            existSRLObject.setExchangeItem(true);
 //                                            existSRLObject.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
 
 //                                            updateSalesOrderLineObject(existSRLObject);
@@ -1016,7 +1019,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                 isExist = false;
                                 for (int i = 0; i < mSalesOrderLineList.size(); i++) {
                                     SalesOrderLine sol = mSalesOrderLineList.get(i);
-                                    if (sol.getNo().equals(mTempSalesOrderLine.getNo()) && sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())) {
+                                    if (sol.getNo().equals(mTempSalesOrderLine.getNo()) && sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())
+                                     && sol.isExchangeItem()) {
                                         isExist = true;
                                         index = i;
                                     }
@@ -1037,6 +1041,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                                     sol.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
                                     sol.setQuantity(mTempSalesOrderLine.getQuantity());
+                                    sol.setExchangeItem(true);
 //                                    sol.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
 
 //                                    updateSalesOrderLineObject(sol);
@@ -1051,7 +1056,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 //                                    mTempSalesOrderLine.setUnitPrice(itemUnitePrice);
 
                                     mTempSalesOrderLine.setKey(key);
-
+                                    mTempSalesOrderLine.setExchangeItem(true);
 //                                    updateSalesOrderLineObject(mTempSalesOrderLine);
 
                                     mSalesOrderLineList.add(mTempSalesOrderLine);

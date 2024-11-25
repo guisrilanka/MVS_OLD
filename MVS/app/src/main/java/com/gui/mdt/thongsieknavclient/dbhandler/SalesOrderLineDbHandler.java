@@ -125,7 +125,7 @@ public class SalesOrderLineDbHandler {
                 soLine.setTotalAmountInclVAT(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LINE_TOT_AMT_INCL_VAT)));
                 soLine.setTaxPercentage(c.getString(c.getColumnIndex(dbHelper.KEY_SO_LINE_TAX_PERCENTAGE)));
                 soLine.setExchangedQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_SO_LINE_EXCHANGED_QTY)));
-
+                soLine.setExchangeItem(c.getInt(c.getColumnIndex(dbHelper.KEY_SO_LINE_IS_EXCHANGE_ITEM)) > 0);
                 salesOrderLines.add(soLine);
             } while (c.moveToNext());
         }
