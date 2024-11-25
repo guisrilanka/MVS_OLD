@@ -9,13 +9,16 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/all_rectangle_white_background_blue_border"
         android:padding="1dp" >
         <TableLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+            >
 
         <TableRow
             android:layout_width="match_parent"
@@ -142,6 +145,7 @@
                 </TableRow>
             </TableLayout>
         </TableRow>
-    </TableLayout>
+    </TableLayout
+            >
     </LinearLayout>
 </LinearLayout>

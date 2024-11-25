@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gui.mdt.thongsieknavclient.R;
@@ -445,6 +446,13 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
         holder.mTvItemDescroption.setText( salesOrderLineList.get(position).getNo()+" - "+
                 salesOrderLineList.get(position).getItemCrossReferenceDescription());
 
+        // Check if the item is an exchanged item
+        if (salesOrderLineList.get(position).isExchangeItem()) {
+            holder.mLayout.setBackgroundResource(R.drawable.all_rectangle_yellow_background_blue_border);
+        } else {
+            holder.mLayout.setBackgroundResource(R.drawable.all_rectangle_white_background_blue_border);
+        }
+
         applyColorCodes(salesOrderLineList.get(position).getQuantity(),
                 salesOrderLineList.get(position).getExchangedQty(),
                 holder);
@@ -459,6 +467,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
 
         TextView mTvNo, mTvItemNo, mTvPrice, mTvUom, mTvTotal, mTvItemDescroption;
         EditText mTxtExchQTY, mTxtBillQTY;
+        LinearLayout mLayout;
 
         public SalesItemViewHolder(View v) {
             super(v);
@@ -471,6 +480,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
             mTvTotal = (TextView) v.findViewById(R.id.tvTotal);
             mTvItemDescroption = (TextView) v.findViewById(R.id.tvItemDescroption);
             mTxtExchQTY = (EditText) v.findViewById(R.id.txtExchQTY);
+            mLayout = (LinearLayout) v.findViewById(R.id.mainLayout);
 
             //set maximum num length on ExchQuantity field
             mTxtExchQTY.setFilters(new InputFilter[] { new InputFilter.LengthFilter(9) });
