@@ -19,6 +19,14 @@ public class ExchangeItem {
     public float issueQty;
     public float balanceQty;
 
+    public String locationCode;
+    public String getLocationCode() {
+        return locationCode;
+    }
+    public void setLocationCode(String locationCode) {
+        this.locationCode = locationCode;
+    }
+
     public String getDescription() {
         return Description;
     }

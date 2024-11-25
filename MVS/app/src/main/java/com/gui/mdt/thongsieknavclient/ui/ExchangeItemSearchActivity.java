@@ -483,7 +483,11 @@ public class ExchangeItemSearchActivity extends AppCompatActivity implements Vie
 
                 if (!itemSearchText.isEmpty()) {
 
-                    mProgressDialog.show();
+                    //mProgressDialog.show();
+
+
+
+
 
 //                    if (mApp.getmCurrentModule().equals(getResources().getString(R.string.module_mso))) {
 //                        salesItemSearchAdapter = new SalesItemSearchAdapter(getSearchResult()
@@ -1265,26 +1269,32 @@ public class ExchangeItemSearchActivity extends AppCompatActivity implements Vie
 
 
     public void searchItems() {
+
         ExchangeItemDbHandler dbAdapter = new ExchangeItemDbHandler(this);
-        dbAdapter.open();
+        try {
+            dbAdapter.open();
+            itemList = new ArrayList<ExchangeItem>();
+            itemList = dbAdapter.getAllItems();
 
-        itemList = new ArrayList<ExchangeItem>();
-        itemList = dbAdapter.getAllItems();
 
-        //set image url
 
-        for (int i = 0; i < itemList.size(); i++) {
-            ExchangeItem tempItem = itemList.get(i);
-            tempItem.setItemImageUrl(getItemImageUrl(tempItem.getItemCode().toString()));
-            itemList.set(i, tempItem);
+            if (itemList != null && !itemList.isEmpty()) {
+                for (int i = 0; i < itemList.size(); i++) {
+                    ExchangeItem tempItem = itemList.get(i);
+                    tempItem.setItemImageUrl(getItemImageUrl(tempItem.getItemCode()));
+                    itemList.set(i, tempItem);
+                }
+            } else {
+
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (dbAdapter != null) {
+                dbAdapter.close();
+            }
         }
 
-        /*for (Item itemResult : itemList) {
-            Log.d("Searched Item: ",
-                    itemResult.getDescription() + " \n");
-        }*/
-
-        dbAdapter.close();
     }
 
 //    public void searchItemsBySalesPriceForMvsSI(String categoryCode,

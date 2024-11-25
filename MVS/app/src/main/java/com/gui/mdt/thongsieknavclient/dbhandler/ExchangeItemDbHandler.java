@@ -69,15 +69,19 @@ public class ExchangeItemDbHandler {
         List<ExchangeItem> itemList = new ArrayList<ExchangeItem>();
         db = dbHelper.getReadableDatabase();
 
-        String selectQuery = "SELECT  * FROM " + dbHelper.TABLE_ITEM;
+        String selectQuery = "SELECT * FROM " + dbHelper.TABLE_EXCHANGE_ITEM + " ei"
+                + " LEFT JOIN " + dbHelper.TABLE_ITEM + " i "
+                + " ON ei." + dbHelper.KEY_EXCHANGE_ITEM_CODE + " = i." + dbHelper.KEY_ITM_CODE;
+
         Cursor c = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
                 ExchangeItem item = new ExchangeItem();
-                item.setId(Integer.parseInt(c.getString(c.getColumnIndex(dbHelper.TABLE_EXCHANGE_ITEM))));
+                item.setId(Integer.parseInt(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ID))));
                 item.setItemCode(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_CODE)));
+                item.setDescription(c.getString(c.getColumnIndex(dbHelper.KEY_ITM_DESCRIPTION)));
                 item.setUom(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_UOM)));
                 item.setTotalQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_QTY)));
                 item.setIssueQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_ISSUE_QTY)));
@@ -101,7 +105,7 @@ public class ExchangeItemDbHandler {
         float qty = item.getTotalQty();
         boolean success = false;
 
-        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom());
+        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom(),item.getLocationCode());
         float totalQty = existingObj.getTotalQty()+qty;
         float balanceQty = existingObj.getTotalQty()+qty;
 
@@ -112,10 +116,10 @@ public class ExchangeItemDbHandler {
 
 
 
-        if (db.update(dbHelper.TABLE_ITEM_BALANCE_PDA, contentValues,
+        if (db.update(dbHelper.TABLE_EXCHANGE_ITEM, contentValues,  // prevous table is TABLE_ITEM_BALANCE_PDA
                 " "+  dbHelper.KEY_EXCHANGE_ITEM_CODE + " =? "
                 + " AND " + dbHelper.KEY_EXCHANGE_ITEM_UOM + " = ?",
-                new String[]{itemNo}) == 1)
+                new String[]{itemNo,item.getUom()}) == 1)
             success = true;
         else
             success = false;
@@ -128,7 +132,7 @@ public class ExchangeItemDbHandler {
         float qty = item.getIssueQty();
         boolean success = false;
 
-        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom());
+        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom(),item.getLocationCode());
         float issueQty = existingObj.getIssueQty()-qty;
 
 
@@ -148,15 +152,15 @@ public class ExchangeItemDbHandler {
         return success;
     }
 
-    public ExchangeItem getItemBalance(String itemNo,String locationCode) {
+    public ExchangeItem getItemBalance(String itemNo,String Uom,String locationCode) {
 
         ExchangeItem item = new ExchangeItem();
         db=dbHelper.getReadableDatabase();
         String qty = "0";
         String query = "SELECT * FROM " + dbHelper.TABLE_EXCHANGE_ITEM
-                + " WHERE "+ dbHelper.KEY_ITEM_BAL_PDA_LOC_CODE+" = ?"
-                + " AND "+ dbHelper.KEY_ITEM_BAL_PDA_ITEM_NO+" = ?";
-        Cursor cursor = db.rawQuery(query, new String[] {locationCode,itemNo});
+                + " WHERE "+ dbHelper.KEY_EXCHANGE_ITEM_UOM+" = ?"
+                + " AND "+ dbHelper.KEY_EXCHANGE_ITEM_CODE+" = ?";
+        Cursor cursor = db.rawQuery(query, new String[] {Uom,itemNo});
 
 
         if (cursor.moveToFirst()) {
@@ -173,7 +177,7 @@ public class ExchangeItemDbHandler {
 
     private ExchangeItem getExchangeItemBalanceFromCursor(ExchangeItem item, Cursor c)
     {
-        item.setId(Integer.parseInt(c.getString(c.getColumnIndex(dbHelper.TABLE_EXCHANGE_ITEM))));
+        item.setId(Integer.parseInt(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ID))));
         item.setItemCode(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_CODE)));
         item.setUom(c.getString(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_UOM)));
         item.setTotalQty(c.getFloat(c.getColumnIndex(dbHelper.KEY_EXCHANGE_ITEM_QTY)));

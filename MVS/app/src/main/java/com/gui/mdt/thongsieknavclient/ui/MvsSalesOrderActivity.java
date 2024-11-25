@@ -3398,8 +3398,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
 
     private void updateExchangeItem(List<SalesOrderLine> lines){
-        ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(this);
-
+        ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(getApplicationContext());
+        try {
+            exchangeHandler.open();
         for (SalesOrderLine line: lines) {
 
             if(line.isExchangeItem()){
@@ -3418,7 +3419,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 item.setBalanceQty(line.getExchangedQty());
                 item.setTotalQty(line.getExchangedQty());
                 item.setIssueQty(0);
-
+                item.setLocationCode(line.getDriverCode());//set location code
 
                 if(exchangeHandler.isItemExist(line.getNo(),line.getUnitofMeasure())){
                     exchangeHandler.updateTotalAndBalanceQty(item);
@@ -3427,6 +3428,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 }
 
             }
+        }
+        }finally {
+            exchangeHandler.close();
         }
 
     }
