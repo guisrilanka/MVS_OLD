@@ -120,6 +120,7 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 //
 //            if (extras.containsKey("existSalesOrderLineJasonObj")) {
 //                mExistSalesOrderLine =
+//                mExistSalesOrderLine =
 //                        SalesOrderLine.fromJson(extras.getString("existSalesOrderLineJasonObj"));
 //            }
 //

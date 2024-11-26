@@ -343,6 +343,11 @@
         <activity
             android:name=".ui.PrintStockBalanceSummaryRP4Activity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.PrintExchangeItemSummaryActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.EmailStockBalanceSummaryActivity"
             android:screenOrientation="portrait" />
