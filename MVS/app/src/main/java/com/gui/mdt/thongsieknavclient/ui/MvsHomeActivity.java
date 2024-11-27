@@ -744,7 +744,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
         dialog.setCancelable(false);
 
         final Spinner dropdown = (Spinner) dialog.findViewById(R.id.spinnerStatus);
-        String[] items = new String[]{"Sales Invoice Summary", "Stock Balance Summary"};
+        String[] items = new String[]{"Sales Invoice Summary", "Stock Balance Summary","Exchange Item Summery"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
@@ -796,6 +796,20 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
                         }
 //                        Intent intent = new Intent(MvsHomeActivity.this, PrintStockBalanceSummaryActivity.class);
                         //intent.putExtra("filterCreatedDate", mFilterCreatedDate);
+                        intent.putExtra("details", "");
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }else if (mSelectedPrintOption.equals("Exchange Item Summery")) {
+
+                        Intent intent;
+                        String selectedPrinter = mPrefHelper.getString(R.string.pref_select_printer_key);
+                        if (selectedPrinter.equals(getResources().getString(R.string.printer_honeywell))) {
+                            intent
+                                    = new Intent(MvsHomeActivity.this, PrintExchangeItemSummaryActivity.class);
+                        } else {
+                            intent
+                                    = new Intent(MvsHomeActivity.this, PrintExchangeItemSummaryActivity.class);
+                        }
                         intent.putExtra("details", "");
                         startActivity(intent);
                         dialog.dismiss();
