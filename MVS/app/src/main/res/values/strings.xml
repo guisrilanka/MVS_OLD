@@ -357,7 +357,7 @@
     <string name="message_ask_log_out">Are you sure want to log out?</string>
     <string name="message_so_unable_to_convert_vcl_bal_qty">Sales order is unable to convert. Following items have exceeded the vehicle balance quantity</string>
     <string name="message_converted_success">Converted successfully!</string>
-    <string name="message_so_unable_to_save_vcl_bal_qty">Sales order is unable to save. Following items have exceeded the vehicle balance quantity</string>
+    <string name="message_so_unable_to_save_vcl_bal_qty">Sales order is unable to save. Following items have exceeded the vehicle or Exchange balance quantity</string>
     <string name="message_voided_success">Voided successfully!</string>
     <string name="message_ask_so_delete">Do you want to delete this sales order?</string>
     <string name="message_not_allow_delete">Not allow to delete!</string>

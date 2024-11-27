@@ -26,6 +26,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.GSTPostingSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesPricesDbHandler;
+import com.gui.mdt.thongsieknavclient.ui.MvsExchangeOrderItemActivity;
 import com.gui.mdt.thongsieknavclient.ui.MvsSalesOrderActivity;
 import com.gui.mdt.thongsieknavclient.ui.MvsSalesOrderItemActivity;
 
@@ -39,6 +40,8 @@ import java.util.List;
 public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdapter.SalesItemViewHolder> {
 
     private static final int MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE = 3;
+
+    private static final int MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE = 5;
     private List<SalesOrderLine> salesOrderLineList;
     private int rowLayout;
     private Activity activity;
@@ -66,15 +69,26 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                     String ObjToJason = msoSalesOrderLineObj.toJson();
                     if (tempCustomer != null) {
                         String customerJsonObj = tempCustomer.toJson();
+                        if(msoSalesOrderLineObj.isExchangeItem()){
+                            Intent intent = new Intent(activity, MvsExchangeOrderItemActivity.class);
+                            intent.putExtra(activity.getResources().getString(R.string.sales_order_line_obj), ObjToJason);
+                            intent.putExtra(activity.getResources().getString(R.string.adapter_position), position);
+                            intent.putExtra(activity.getResources().getString(R.string.customer_json_obj), customerJsonObj);
+                            intent.putExtra("deliveryDate", deliveryDate);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                        Intent intent = new Intent(activity, MvsSalesOrderItemActivity.class);
-                        intent.putExtra(activity.getResources().getString(R.string.sales_order_line_obj), ObjToJason);
-                        intent.putExtra(activity.getResources().getString(R.string.adapter_position), position);
-                        intent.putExtra(activity.getResources().getString(R.string.customer_json_obj), customerJsonObj);
-                        intent.putExtra("deliveryDate", deliveryDate);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            activity.startActivityForResult(intent, MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE);
+                        }else{
+                            Intent intent = new Intent(activity, MvsSalesOrderItemActivity.class);
+                            intent.putExtra(activity.getResources().getString(R.string.sales_order_line_obj), ObjToJason);
+                            intent.putExtra(activity.getResources().getString(R.string.adapter_position), position);
+                            intent.putExtra(activity.getResources().getString(R.string.customer_json_obj), customerJsonObj);
+                            intent.putExtra("deliveryDate", deliveryDate);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                        activity.startActivityForResult(intent, MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE);
+                            activity.startActivityForResult(intent, MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE);
+                        }
+
 
                     }
                 }
@@ -258,6 +272,8 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                         float itemUnitePrice = 0f;
                         Item mTempItem  = getItemByCode(sol.getNo(), activity);
                         if(mTempItem.isInventoryValueZero()){
+                            itemUnitePrice = 0f;
+                        }else if(sol.isExchangeItem()){
                             itemUnitePrice = 0f;
                         }else {
                             itemUnitePrice = spdb.getUnitPriceWithQuantity(sol.getNo(),
@@ -448,9 +464,11 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
 
         // Check if the item is an exchanged item
         if (salesOrderLineList.get(position).isExchangeItem()) {
-            holder.mLayout.setBackgroundResource(R.drawable.all_rectangle_yellow_background_blue_border);
+            holder.mTxtExchQTY.setEnabled(false);
+            holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.yellowAccent));
         } else {
-            holder.mLayout.setBackgroundResource(R.drawable.all_rectangle_white_background_blue_border);
+            holder.mTxtExchQTY.setEnabled(true);
+            holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.white));
         }
 
         applyColorCodes(salesOrderLineList.get(position).getQuantity(),

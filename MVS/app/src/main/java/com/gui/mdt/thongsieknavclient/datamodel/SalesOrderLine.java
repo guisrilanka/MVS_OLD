@@ -97,7 +97,7 @@ public class SalesOrderLine {
         this.lastTransferredDateTime=s.getLastTransferredDateTime();
         this.taxPercentage=s.getTaxPercentage();
         this.ExchangedQty=s.getExchangedQty();
-
+        this.isExchangeItem= s.isExchangeItem();
         this.itemCrossReferenceNo = s.getItemCrossReferenceNo();
         this.itemCrossReferenceDescription = s.getItemCrossReferenceDescription();
     }

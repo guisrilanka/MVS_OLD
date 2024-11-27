@@ -116,6 +116,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     List<SalesOrderLine> mSalesOrderLineList, mRemoveSalesOrderLineList, mTempSalesOrderLineList;
     List<SalesPrices> salesPricesListBaseOnItemTemSeq;
     Item mTempItem;
+    ExchangeItem mExchangeItem;
     float totalQty = 0, subTotal = 0, totalVatAmount = 0, grandTotal = 0;
     MvsSalesOrderAdapter mMvsSalesOrderAdapter;
     SalesOrderLine mTempSalesOrderLine;
@@ -638,7 +639,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     if (extraData.containsKey(getResources().getString(R.string.item_json_obj))) {
 
                         String objAsJson = extraData.getString(getResources().getString(R.string.item_json_obj));
-                        mTempItem = Item.fromJson(objAsJson);
+                        mExchangeItem = ExchangeItem.fromJson(objAsJson);
 
                         addExchangeItem();
                     }
@@ -802,7 +803,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                 isExist = false;
                                 for (int i = 0; i < mSalesOrderLineList.size(); i++) {
                                     SalesOrderLine sol = mSalesOrderLineList.get(i);
-                                    if (sol.getNo().equals(mTempSalesOrderLine.getNo()) && sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure())) {
+                                    if (sol.getNo().equals(mTempSalesOrderLine.getNo()) && sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure()) && !sol.isExchangeItem() && !isExist) {
                                         isExist = true;
                                         index = i;
                                     }
@@ -883,7 +884,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                             mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusPending));
                         }
 
-                        key = mTempSalesOrderLine.getNo() + soNo + "#" + mTempSalesOrderLine.getUnitofMeasure();
+                        key = mTempSalesOrderLine.getNo() + soNo + "#" + mTempSalesOrderLine.getUnitofMeasure()+"-EX";
 
                         int position = extraData.getInt(getResources().getString(R.string.adapter_position));
                         int index = 0;
@@ -894,7 +895,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 //                            itemUnitePrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(), mTempCustomer.getCode(), mTempSalesOrderLine.getUnitofMeasure());
 //                        }
 //                        mTempSalesOrderLine.setUnitPrice(0);
-
+                        System.out.println("example unit price 2---"+ mTempSalesOrderLine.getUnitPrice());
                         if (mSalesOrderLineList.size() == 0) {
 
 
@@ -1071,7 +1072,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         updateItemCrossRefDetails();
                         mMvsSalesOrderAdapter.notifyDataSetChanged();
-
+                        System.out.println("example unit price 3---"+ mTempSalesOrderLine.getUnitPrice());
                         Toast.makeText(mApp, getResources().getString(R.string.message_updated), Toast.LENGTH_SHORT).show();
                         isSaved = false;
                     }
@@ -1287,16 +1288,24 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     for (int i = 0; i < mSalesOrderLineList.size(); i++) {
                         SalesOrderLine sol = mSalesOrderLineList.get(i);
 
-                        if (sol.getNo().equals(tempSol.getNo()) && sol.getUnitofMeasure().equals(tempSol.getUnitofMeasure())) {
+                        if (sol.getNo().equals(tempSol.getNo()) && sol.getUnitofMeasure().equals(tempSol.getUnitofMeasure()) && !tempSol.isExchangeItem()) {
                             sol.setQuantity(tempSol.getQuantity());
 
                             //update price details unit price, total ext...
                             updateSalesOrderLineObject(sol);
                             mSalesOrderLineList.set(i, sol);
                         } else {
+
                             //updateSalesOrderLineObject(srl);
                             //stockRequestLineList.add(srl);
                         }
+                    }
+                }
+                for (SalesOrderLine tempSol : mTempSalesOrderLineList) {
+                    if (tempSol.isExchangeItem()) {
+
+                        mSalesOrderLineList.add(tempSol);
+
                     }
                 }
             }
@@ -1386,7 +1395,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         if (mTempCustomer != null) {
                             for (SalesOrderLine sol : mSalesOrderLineList) {
-
+                                System.out.println("example unit price 6 " +sol.getUnitPrice());
                                 // Escape early if cancel() is called
                                 if (isCancelled()) break;
 
@@ -1397,6 +1406,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                                 getItemByCode(sol.getNo());
                                 if(mTempItem.isInventoryValueZero()){
+                                    itemUnitePrice = 0f;
+                                }else if(sol.isExchangeItem()){
                                     itemUnitePrice = 0f;
                                 }else{
                                     SalesPricesDbHandler spDb = new SalesPricesDbHandler(getApplicationContext());
@@ -1545,7 +1556,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mFabAddNewItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
             mFabAddNewExcItem.setVisibility(View.GONE);
             mFabAddNewExcItem.setEnabled(false);
-            mFabAddNewExcItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+            mFabAddNewExcItem.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
 
             mTxtPoComments.setEnabled(false);
             mTxtScanCode.setEnabled(false);
@@ -1577,7 +1588,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mFabAddNewItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
             mFabAddNewExcItem.setVisibility(View.GONE);
             mFabAddNewExcItem.setEnabled(false);
-            mFabAddNewExcItem.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+            mFabAddNewExcItem.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
             mTxtPoComments.setEnabled(false);
             mTxtScanCode.setEnabled(false);
             Toast.makeText(mApp, getResources().getString(R.string.not_allowed_to_edit), Toast.LENGTH_SHORT).show();
@@ -1608,7 +1619,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                         ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                 mFabAddNewExcItem.setEnabled(true);
                 mFabAddNewExcItem.setBackgroundTintList(
-                        ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+                        ColorStateList.valueOf(getResources().getColor(R.color.yellow)));
                 mTxtPoComments.setEnabled(true);
                 mTxtScanCode.setEnabled(true);
             }
@@ -2100,7 +2111,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         if (!mSalesOrderLineList.isEmpty()) {
 
             for (SalesOrderLine sol : mSalesOrderLineList) {
-                if (sol.getNo().equals(mTempItem.getItemCode())) {
+                if (sol.getNo().equals(mExchangeItem.getItemCode()) && sol.isExchangeItem()) {
                     existSalesOrderLine = sol;
                     break;
                 }
@@ -2110,19 +2121,19 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
         SalesOrderLine salesOrderLine = new SalesOrderLine();
 //        String timeStamp = new SimpleDateFormat(getResources().getString(R.string.date_format_yyyy_MM_dd_HH_mm_ss)).format(new Date());
-        String key = mTempItem.getItemCode()
+        String key = mExchangeItem.getItemCode()
                 + soNo
                 + getResources().getString(R.string.hash_symbol)
-                + mTempItem.getItemBaseUom();
+                + mExchangeItem.getUom();
         int adapterPosition = -1;
 
         salesOrderLine.setKey(key);
         salesOrderLine.setType(2);
-        salesOrderLine.setNo(mTempItem.getItemCode());
+        salesOrderLine.setNo(mExchangeItem.getItemCode());
         salesOrderLine.setDriverCode(mApp.getmCurrentDriverCode());
-        salesOrderLine.setDescription(mTempItem.getDescription());
+        salesOrderLine.setDescription(mExchangeItem.getDescription());
         salesOrderLine.setQuantity(0f);  //New item
-        salesOrderLine.setUnitofMeasure(mTempItem.getItemBaseUom());
+        salesOrderLine.setUnitofMeasure(mExchangeItem.getUom());
         salesOrderLine.setSalesPriceExist(false);
 
         salesOrderLine.setUnitPrice(0f);
@@ -2183,6 +2194,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         intent.putExtra(getResources().getString(R.string.adapter_position), adapterPosition);
         intent.putExtra(getResources().getString(R.string.delivery_date), deliveryDate);
         intent.putExtra(getResources().getString(R.string.exist_sales_order_line_jason_obj), existSalesOrderLineJasonObj);
+        System.out.println("example unit price 1---"+ salesOrderLine.getUnitPrice());
         startActivityForResult(intent, MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE);
     }
 
@@ -3322,27 +3334,52 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         boolean status = true;
         if (!solList.isEmpty()) {
             for (SalesOrderLine sol : solList) {
-                ItemBalancePda itemPdaObj;
-                ItemBalancePdaDbHandler ibpDb
-                        = new ItemBalancePdaDbHandler(context);
-                ibpDb.open();
 
-                itemPdaObj = ibpDb.getItemBalencePda(sol.getNo()
-                        , sol.getUnitofMeasure()
-                        , driverCode);
-                ibpDb.close();
+                if(sol.isExchangeItem()){
+                    ExchangeItem itemPdaObj;
+                    ExchangeItemDbHandler ibpDb
+                            = new ExchangeItemDbHandler(context);
+                    ibpDb.open();
 
-                float vehicleAvailableQty = itemPdaObj.getOpenQty() - itemPdaObj.getQuantity();
-                float salesQty = sol.getQuantity() + sol.getExchangedQty();
+                    itemPdaObj = ibpDb.getItemBalance(sol.getNo()
+                            , sol.getUnitofMeasure());
+                    ibpDb.close();
 
-                if (salesQty > vehicleAvailableQty) {
-                    status = false;
-                    mInValidItems = mInValidItems
-                            + sol.getItemCrossReferenceNo()
-                            + " - " + sol.getNo()
-                            + " - " + sol.getItemCrossReferenceDescription()
-                            + '\n';
+                    float availableExchangeQty = itemPdaObj.getTotalQty() - itemPdaObj.getIssueQty();
+                    float salesQty = sol.getQuantity() + sol.getExchangedQty();
+
+                    if (salesQty > availableExchangeQty) {
+                        status = false;
+                        mInValidItems = mInValidItems
+                                + sol.getItemCrossReferenceNo()
+                                + " - " + sol.getNo()
+                                + " - " + sol.getItemCrossReferenceDescription()
+                                + '\n';
+                    }
+                }else{
+                    ItemBalancePda itemPdaObj;
+                    ItemBalancePdaDbHandler ibpDb
+                            = new ItemBalancePdaDbHandler(context);
+                    ibpDb.open();
+
+                    itemPdaObj = ibpDb.getItemBalencePda(sol.getNo()
+                            , sol.getUnitofMeasure()
+                            , driverCode);
+                    ibpDb.close();
+
+                    float vehicleAvailableQty = itemPdaObj.getOpenQty() - itemPdaObj.getQuantity();
+                    float salesQty = sol.getQuantity() + sol.getExchangedQty();
+
+                    if (salesQty > vehicleAvailableQty) {
+                        status = false;
+                        mInValidItems = mInValidItems
+                                + sol.getItemCrossReferenceNo()
+                                + " - " + sol.getNo()
+                                + " - " + sol.getItemCrossReferenceDescription()
+                                + '\n';
+                    }
                 }
+
             }
         }
         return status;
@@ -3390,7 +3427,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                 updateItemBalencePda(mSalesOrderLineList, false);
                 mTempSalesOrder.setLineItems(mSalesOrderLineList);
-                updateExchangeItem(mSalesOrderLineList);
+//                updateExchangeItem(mSalesOrderLineList);
                 openReport(mTempSalesOrder);
             }
         } else {
@@ -3414,7 +3451,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 item.setBalanceQty(line.getExchangedQty());
                 item.setTotalQty(line.getExchangedQty());
                 item.setIssueQty(line.getQuantity());
-                exchangeHandler.updateIssueQty(item);
+                exchangeHandler.updateIssueQty(item, false);
 
             } else if(!line.isExchangeItem() && line.getExchangedQty() >= 1){
                 ExchangeItem item = new ExchangeItem();
@@ -3426,7 +3463,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 item.setLocationCode(line.getDriverCode());//set location code
 
                 if(exchangeHandler.isItemExist(line.getNo(),line.getUnitofMeasure())){
-                    exchangeHandler.updateTotalAndBalanceQty(item);
+                    exchangeHandler.updateTotalAndBalanceQty(item, false);
                 }else{
                     exchangeHandler.addItems(item);
                 }
@@ -3473,21 +3510,54 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     public void updateItemBalencePda(List<SalesOrderLine> lineList, boolean isVoid_) {
         if (lineList != null) {
             if (!lineList.isEmpty()) {
+                ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(getApplicationContext());
+                exchangeHandler.open();
+
                 for (SalesOrderLine sol : lineList) {
-                    float qty_ = sol.getQuantity() + sol.getExchangedQty();
-                    ItemBalancePdaDbHandler ibpDb
-                            = new ItemBalancePdaDbHandler(getApplicationContext());
-                    ibpDb.open();
+                    if(sol.isExchangeItem()){
+                        ExchangeItem item = new ExchangeItem();
+                        item.setItemCode(sol.getNo());
+                        item.setUom(sol.getUnitofMeasure());
+                        item.setBalanceQty(sol.getExchangedQty());
+                        item.setTotalQty(sol.getExchangedQty());
+                        item.setIssueQty(sol.getQuantity());
+                        exchangeHandler.updateIssueQty(item, isVoid_);
 
-                    ibpDb.updateItemBalencePdaByMvsSo(sol.getNo()
-                            , sol.getUnitofMeasure()
-                            , sol.getDriverCode()
-                            , qty_
-                            , sol.getExchangedQty()
-                            , isVoid_);
+                    }else{
 
-                    ibpDb.close();
+                        float qty_ = sol.getQuantity() + sol.getExchangedQty();
+                        ItemBalancePdaDbHandler ibpDb
+                                = new ItemBalancePdaDbHandler(getApplicationContext());
+                        ibpDb.open();
+
+                        ibpDb.updateItemBalencePdaByMvsSo(sol.getNo()
+                                , sol.getUnitofMeasure()
+                                , sol.getDriverCode()
+                                , qty_
+                                , sol.getExchangedQty()
+                                , isVoid_);
+
+                        ibpDb.close();
+
+                        if(sol.getExchangedQty() >= 1){
+                            ExchangeItem item = new ExchangeItem();
+                            item.setItemCode(sol.getNo());
+                            item.setUom(sol.getUnitofMeasure());
+                            item.setBalanceQty(sol.getExchangedQty());
+                            item.setTotalQty(sol.getExchangedQty());
+                            item.setIssueQty(0);
+                            item.setLocationCode(sol.getDriverCode());//set location code
+
+                            if(exchangeHandler.isItemExist(sol.getNo(),sol.getUnitofMeasure())){
+                                exchangeHandler.updateTotalAndBalanceQty(item,isVoid_);
+                            }else{
+                                exchangeHandler.addItems(item);
+                            }
+                        }
+                    }
+
                 }
+                exchangeHandler.close();
             }
         }
     }

@@ -59,6 +59,7 @@ public class SalesOrderLineDbHandler {
         values.put(dbHelper.KEY_SO_LINE_TOT_AMT_INCL_VAT, String.format("%.2f", soLine.getTotalAmountInclVAT()));
         values.put(dbHelper.KEY_SO_LINE_TAX_PERCENTAGE, soLine.getTaxPercentage());
         values.put(dbHelper.KEY_SO_LINE_EXCHANGED_QTY, soLine.getExchangedQty());
+        values.put(dbHelper.KEY_SO_LINE_IS_EXCHANGE_ITEM, soLine.isExchangeItem());
 
         // Inserting Row
         db = dbHelper.getWritableDatabase();

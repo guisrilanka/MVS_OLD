@@ -125,14 +125,23 @@ public class ExchangeItemDbHandler {
         return db.delete(dbHelper.TABLE_EXCHANGE_ITEM, null, null)>=0;
     }
 
-    public boolean updateTotalAndBalanceQty(ExchangeItem item){
+    public boolean updateTotalAndBalanceQty(ExchangeItem item, boolean isVoid){
         String itemNo = item.getItemCode();
         float qty = item.getTotalQty();
         boolean success = false;
 
-        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom(),item.getLocationCode());
-        float totalQty = existingObj.getTotalQty()+qty;
-        float balanceQty = existingObj.getTotalQty()+qty;
+        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom());
+        float totalQty = 0f;
+        float balanceQty = 0f;
+
+        if(isVoid){
+            totalQty = existingObj.getTotalQty()-qty;
+            balanceQty = existingObj.getBalanceQty()-qty;
+        }else{
+            totalQty = existingObj.getTotalQty()+qty;
+            balanceQty = existingObj.getBalanceQty()+qty;
+        }
+
 
         db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -152,24 +161,36 @@ public class ExchangeItemDbHandler {
         return success;
     }
 
-    public boolean updateIssueQty(ExchangeItem item){
+    public boolean updateIssueQty(ExchangeItem item, boolean isVoid){
         String itemNo = item.getItemCode();
-        float qty = item.getIssueQty();
+
         boolean success = false;
 
-        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom(),item.getLocationCode());
-        float issueQty = existingObj.getIssueQty()-qty;
+        ExchangeItem existingObj = getItemBalance(itemNo,item.getUom());
+        float issueQty = 0f;
+        float balanceQty = 0f;
+
+
+        if(isVoid){
+            issueQty = item.getIssueQty()-item.getIssueQty();
+            balanceQty = existingObj.getBalanceQty()+item.getIssueQty();
+        } else {
+            issueQty = existingObj.getIssueQty()+ item.getIssueQty();
+            balanceQty = existingObj.getBalanceQty()-item.getIssueQty();
+        }
+
 
 
         db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(dbHelper.KEY_EXCHANGE_ITEM_ISSUE_QTY, (String.valueOf(issueQty)));
+        contentValues.put(dbHelper.KEY_EXCHANGE_ITEM_BALANCE_QTY, (String.valueOf(balanceQty)));
 
 
-        if (db.update(dbHelper.TABLE_ITEM_BALANCE_PDA, contentValues,
+        if (db.update(dbHelper.TABLE_EXCHANGE_ITEM, contentValues,
                 " "+  dbHelper.KEY_EXCHANGE_ITEM_CODE + " =? "
                         + " AND " + dbHelper.KEY_EXCHANGE_ITEM_UOM + " = ?",
-                new String[]{itemNo}) == 1)
+                new String[]{itemNo,item.getUom()}) == 1)
             success = true;
         else
             success = false;
@@ -177,7 +198,7 @@ public class ExchangeItemDbHandler {
         return success;
     }
 
-    public ExchangeItem getItemBalance(String itemNo,String Uom,String locationCode) {
+    public ExchangeItem getItemBalance(String itemNo,String Uom) {
 
         ExchangeItem item = new ExchangeItem();
         db=dbHelper.getReadableDatabase();

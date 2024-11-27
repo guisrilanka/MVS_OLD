@@ -12,7 +12,7 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/all_rectangle_white_background_blue_border"
+        android:background="@drawable/all_rectangle_yellow_background_blue_border"
         android:padding="1dp" >
         <TableLayout
 

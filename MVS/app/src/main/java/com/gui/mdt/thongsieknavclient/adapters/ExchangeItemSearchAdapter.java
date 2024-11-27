@@ -113,13 +113,12 @@ public class ExchangeItemSearchAdapter extends RecyclerView.Adapter<ExchangeItem
 //                else if(formName.equals(activity.getResources().getString(R.string.form_name_mvs_sales_order))
 //                        && details.equals(activity.getResources().getString(R.string.intent_extra_add_new_item)))
 //                {
-                    Intent intent = new Intent(activity, MvsExchangeOrderItemActivity.class);
+                    Intent intent = new Intent();
                     intent.putExtra(activity.getResources().getString(R.string.item_json_obj),objAsJson);
-
-//                    intent.putExtra("deliveryDate", deliveryDate);
-//                    activity.setResult(RESULT_OK, intent);
-//                    activity.finish();
-                    activity.startActivity(intent);
+                    intent.putExtra("deliveryDate", deliveryDate);
+                    activity.setResult(RESULT_OK, intent);
+                    activity.finish();
+//                    activity.startActivity(intent);
 //                }
 //                else {
 //                    Intent intent = new Intent(activity, SalesItemDetailActivity.class);

@@ -442,11 +442,11 @@ public class ExchangeItemSearchActivity extends AppCompatActivity implements Vie
 //            textScanCode.setEnabled(false);
 //            textScanCode.setVisibility(View.GONE);
 //        }
-//        if (formName.equals(getResources().getString(R.string.form_name_mvs_sales_order)) &&
-//                details.equals(getResources().getString(R.string.intent_extra_add_new_item))) {
-//            textScanCode.setEnabled(false);
-//            textScanCode.setVisibility(View.GONE);
-//        }
+        if (formName.equals(getResources().getString(R.string.form_name_mvs_sales_order)) &&
+                details.equals(getResources().getString(R.string.intent_extra_add_new_item))) {
+            textScanCode.setEnabled(false);
+            textScanCode.setVisibility(View.GONE);
+        }
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateObj = new Date();
