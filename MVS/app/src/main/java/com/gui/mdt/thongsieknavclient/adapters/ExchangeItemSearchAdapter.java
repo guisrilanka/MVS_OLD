@@ -68,64 +68,12 @@ public class ExchangeItemSearchAdapter extends RecyclerView.Adapter<ExchangeItem
                 ExchangeItem itemObj = itemList.get(position);
                 String objAsJson = itemObj.toJson();
 
-//                if ( formName.equals(activity.getResources().getString(R.string.form_name_mso_sales_order))
-//                        && details.equals(activity.getResources().getString(R.string.intent_extra_add_new_item)) ) //from MsoSaleOrderActivity  -> Add New Item
-//                {
-//                    Intent intent = new Intent();
-//                    intent.putExtra(activity.getResources().getString(R.string.item_json_obj),objAsJson);
-//                    intent.putExtra("deliveryDate", deliveryDate);
-//                    activity.setResult(RESULT_OK, intent);
-//                    activity.finish();
-//                }
-//                else if (formName.equals("MsoHome")) //from MsoHome -> Stock Info -> SalesItemDetailActivity
-//                {
-//                    Intent intent = new Intent(activity, SalesItemDetailActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    intent.putExtra("formName", "MsoSalesItemSearch");
-//                    intent.putExtra("_itemObject", objAsJson);
-//                    activity.startActivity(intent);
-//                }
-//                else if(formName.equals(activity.getResources().getString(R.string.form_name_mvs_stock_transfer_in))
-//                        && details.equals(activity.getResources().getString(R.string.intent_extra_add_new_item)) ) //from MvsTransferInActivity  -> Add New Item
-//                {
-//                    Intent intent = new Intent();
-//                    intent.putExtra(activity.getResources().getString(R.string.item_json_obj),objAsJson);
-//                    activity.setResult(RESULT_OK, intent);
-//                    activity.finish();
-//                }
-//                else if(formName.equals(activity.getResources().getString(R.string.form_name_mvs_stock_transfer_in)))
-//                {
-//                    Intent intent = new Intent(activity, SalesItemDetailActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.putExtra("formName", "MvsSalesItemSearch");
-//                    intent.putExtra("_itemObject", objAsJson);
-//                    activity.startActivity(intent);
-//                }
-//                else if(formName.equals(activity.getResources().getString(R.string.form_name_mvs_stock_Request))
-//                        && details.equals(activity.getResources().getString(R.string.intent_extra_add_new_item)))
-//                {
-//                    Intent intent = new Intent();
-//                    intent.putExtra(activity.getResources().getString(R.string.item_json_obj),objAsJson);
-//                    intent.putExtra("deliveryDate", deliveryDate);
-//                    activity.setResult(RESULT_OK, intent);
-//                    activity.finish();
-//                }
-//                else if(formName.equals(activity.getResources().getString(R.string.form_name_mvs_sales_order))
-//                        && details.equals(activity.getResources().getString(R.string.intent_extra_add_new_item)))
-//                {
                     Intent intent = new Intent();
                     intent.putExtra(activity.getResources().getString(R.string.item_json_obj),objAsJson);
                     intent.putExtra("deliveryDate", deliveryDate);
                     activity.setResult(RESULT_OK, intent);
                     activity.finish();
-//                    activity.startActivity(intent);
-//                }
-//                else {
-//                    Intent intent = new Intent(activity, SalesItemDetailActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.putExtra("_itemObject", objAsJson);
-//                    activity.startActivity(intent);
-//                }
+
             }
         });
         return viewHolder;
@@ -165,12 +113,9 @@ public class ExchangeItemSearchAdapter extends RecyclerView.Adapter<ExchangeItem
             holder.item_code.setText(item.getItemCode());
             holder.itemDescription.setText(item.getDescription());
             setItemImage(holder,itemList.get(position).getItemImageUrl());
-//            String vehicleQty = "Vehicle Qty: " + "<b>" + Math.round(item.getQty()) + "</b> ";
-//            holder.mTvVehicleQTY.setText(Html.fromHtml(vehicleQty));
             String exchQty = "Exchange Qty: " + "<b>" + Math.round(item.getBalanceQty() )+ "</b> ";
             holder.mTvExchQTY.setText(Html.fromHtml(exchQty));
-//            holder.mTxtItemBarcode.setText(itemList.get(position).getIdentifierCode() == null ?
-//                    "" : itemList.get(position).getIdentifierCode());
+
 
     }
 
@@ -189,22 +134,12 @@ public class ExchangeItemSearchAdapter extends RecyclerView.Adapter<ExchangeItem
             super(v);
             mApp = (NavClientApp) context;
 
-//            if(mApp.getmCurrentModule().equals(context.getResources().getString(R.string.module_mso)))
-//            {
-//                item_code = (TextView) v.findViewById(R.id.item_code);
-//                itemDescription = (TextView) v.findViewById(R.id.itemDescription);
-//                imgitem = (ImageView) v.findViewById(R.id.imgitem1);
-//            }
-//            else
-//            {
+
                 item_code = (TextView) v.findViewById(R.id.item_code);
                 itemDescription = (TextView) v.findViewById(R.id.itemDescription);
                 imgitem = (ImageView) v.findViewById(R.id.imgitem1);
-
-//                mTvVehicleQTY=(TextView) v.findViewById(R.id.txtVehicleQTY);
                 mTvExchQTY=(TextView) v.findViewById(R.id.txtExchQTY);
-//                mTxtItemBarcode = (TextView) v.findViewById(R.id.txtItemBarcode);
-//            }
+
 
         }
     }

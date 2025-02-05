@@ -566,6 +566,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             isSaved = false;
         }
         if (isSaved == false) {
+
             AlertDialog.Builder builder = new AlertDialog.Builder(MvsSalesOrderActivity.this);
 
             builder.setTitle(getResources().getString(R.string.message_title_alert));
@@ -574,6 +575,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int which) {
+                    isSaved = true;
                     finish();
                 }
             });
@@ -888,20 +890,12 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         int position = extraData.getInt(getResources().getString(R.string.adapter_position));
                         int index = 0;
-//                        getItemByCode(mTempSalesOrderLine.getNo());
-//                        if(mTempItem.isInventoryValueZero()){
-//                            itemUnitePrice = 0;
-//                        }else{
-//                            itemUnitePrice = getUnitPrice(mTempSalesOrderLine.getNo(), mTempCustomer.getCustomerPriceGroup(), mTempCustomer.getCode(), mTempSalesOrderLine.getUnitofMeasure());
-//                        }
-//                        mTempSalesOrderLine.setUnitPrice(0);
-                        System.out.println("example unit price 2---"+ mTempSalesOrderLine.getUnitPrice());
+
                         if (mSalesOrderLineList.size() == 0) {
 
 
                             mTempSalesOrderLine.setKey(key);
                             mTempSalesOrderLine.setExchangeItem(true);
-//                            updateSalesOrderLineObject(mTempSalesOrderLine);
                             mSalesOrderLineList.add(mTempSalesOrderLine);
                             mTempSalesOrderLine.setLineNo(String.valueOf(mSalesOrderLineList.size()));
 
@@ -915,7 +909,6 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                 mRecyclerViewSalesOrderDetails.setAdapter(mMvsSalesOrderAdapter);
                             }
 
-//                            updateSummeryValues(mSalesOrderLineList);
                             mMvsSalesOrderAdapter.notifyDataSetChanged();
                             mRecyclerViewSalesOrderDetails.smoothScrollToPosition(mSalesOrderLineList.size());
 
@@ -939,21 +932,17 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                     SalesOrderLine tempSRLine = new SalesOrderLine(sol);
                                     mRemoveSalesOrderLineList.add(tempSRLine);
 
-//                                    sol.setUnitPrice(itemUnitePrice);
+
                                     sol.setKey(key); //new
-//                                    lineAmount = mTempSalesOrderLine.getQuantity() * mTempSalesOrderLine.getUnitPrice();
 
                                     sol.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
                                     sol.setQuantity(mTempSalesOrderLine.getQuantity());
                                     sol.setExchangeItem(true);
-//                                    sol.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
 
-//                                    updateSalesOrderLineObject(sol);
 
                                     //Setting SalesOrderLine item to the list
                                     mSalesOrderLineList.set(position, sol);
 
-//                                    updateSummeryValues(mSalesOrderLineList);
                                     mMvsSalesOrderAdapter.notifyDataSetChanged();
                                 }
                                 else if (indexSOLArray.size() > 1) {
@@ -1004,13 +993,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                             existSRLObject.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
                                             existSRLObject.setQuantity(mTempSalesOrderLine.getQuantity());
                                             existSRLObject.setExchangeItem(true);
-//                                            existSRLObject.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
 
-//                                            updateSalesOrderLineObject(existSRLObject);
                                             //Setting SalesOrderLine item to the list
                                             mSalesOrderLineList.set(position, existSRLObject);
 
-//                                            updateSummeryValues(mSalesOrderLineList);
                                             mMvsSalesOrderAdapter.notifyDataSetChanged();
                                         }
 //                                    }
@@ -1036,30 +1022,23 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                     final SalesOrderLine fSol = new SalesOrderLine(sol);
                                     mRemoveSalesOrderLineList.add(fSol);
 
-//                                    sol.setUnitPrice(itemUnitePrice);
                                     sol.setKey(key); //new
 
 
                                     sol.setUnitofMeasure(mTempSalesOrderLine.getUnitofMeasure());
                                     sol.setQuantity(mTempSalesOrderLine.getQuantity());
                                     sol.setExchangeItem(true);
-//                                    sol.setExchangedQty(mTempSalesOrderLine.getExchangedQty());
 
-//                                    updateSalesOrderLineObject(sol);
 
                                     //Setting SalesOrderLine item to the list
                                     mSalesOrderLineList.set(index, sol);
 
-//                                    updateSummeryValues(mSalesOrderLineList);
                                     mMvsSalesOrderAdapter.notifyDataSetChanged();
 
                                 } else {
-//                                    mTempSalesOrderLine.setUnitPrice(itemUnitePrice);
 
                                     mTempSalesOrderLine.setKey(key);
                                     mTempSalesOrderLine.setExchangeItem(true);
-//                                    updateSalesOrderLineObject(mTempSalesOrderLine);
-
                                     mSalesOrderLineList.add(mTempSalesOrderLine);
 
 //                                    updateSummeryValues(mSalesOrderLineList);

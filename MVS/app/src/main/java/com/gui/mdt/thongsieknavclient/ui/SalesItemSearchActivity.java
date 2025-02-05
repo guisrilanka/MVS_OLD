@@ -67,6 +67,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.ItemBalancePda;
 import com.gui.mdt.thongsieknavclient.datamodel.ItemCategory;
 import com.gui.mdt.thongsieknavclient.datamodel.StockStatus;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
+import com.gui.mdt.thongsieknavclient.dbhandler.ExchangeItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemCategoryDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemDbHandler;
@@ -1507,6 +1508,13 @@ public class SalesItemSearchActivity extends AppCompatActivity implements View.O
         isSuccess = ibpDb.resetItemBalancePda(mApp.getmCurrentDriverCode());
 
         ibpDb.close();
+
+        ExchangeItemDbHandler ieiDb
+                = new ExchangeItemDbHandler(context);
+        ieiDb.open();
+
+        ieiDb.deleteAllRecords();
+        ieiDb.close();
 
         if (isSuccess) {
             if (!itemList.isEmpty()) {

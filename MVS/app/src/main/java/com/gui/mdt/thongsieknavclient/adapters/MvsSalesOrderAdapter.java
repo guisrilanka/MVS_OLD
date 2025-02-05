@@ -77,7 +77,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                             intent.putExtra("deliveryDate", deliveryDate);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                            activity.startActivityForResult(intent, MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE);
+                            activity.startActivityForResult(intent, MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE);
                         }else{
                             Intent intent = new Intent(activity, MvsSalesOrderItemActivity.class);
                             intent.putExtra(activity.getResources().getString(R.string.sales_order_line_obj), ObjToJason);
@@ -86,7 +86,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                             intent.putExtra("deliveryDate", deliveryDate);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                            activity.startActivityForResult(intent, MVS_EXCHANGE_ORDER_ITEM_ACTIVITY_RESULT_CODE);
+                            activity.startActivityForResult(intent, MVS_SALES_ORDER_ITEM_ACTIVITY_RESULT_CODE);
                         }
 
 
@@ -316,7 +316,13 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                         viewHolder.mTvPrice.setText(String.format("%.2f", unitPrice));
                         viewHolder.mTvTotal.setText(String.format("%.2f", mTotalPrice));
 
-                        applyColorCodes(sol.getQuantity(), sol.getExchangedQty(), viewHolder);
+                        if (salesOrderLineList.get(position).isExchangeItem()) {
+                            applyColorCodesForExchange(salesOrderLineList.get(position).getQuantity(),viewHolder);
+                        } else {
+                            applyColorCodes(salesOrderLineList.get(position).getQuantity(),
+                                    salesOrderLineList.get(position).getExchangedQty(),
+                                    viewHolder);
+                        }
 
                         MvsSalesOrderActivity mvsSalesOrderActivity = (MvsSalesOrderActivity) activity;
                         mvsSalesOrderActivity.updateSummeryValues(salesOrderLineList);
@@ -335,7 +341,16 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                         viewHolder.mTvPrice.setText(String.format("%.2f", sol.getUnitPrice()));
                         viewHolder.mTvTotal.setText(String.format("%.2f", 0f));
 
-                        applyColorCodes(sol.getQuantity(), sol.getExchangedQty(), viewHolder);
+//                        applyColorCodes(sol.getQuantity(), sol.getExchangedQty(), viewHolder);
+
+                        if (salesOrderLineList.get(position).isExchangeItem()) {
+                            applyColorCodesForExchange(salesOrderLineList.get(position).getQuantity(),viewHolder);
+                        } else {
+                            applyColorCodes(salesOrderLineList.get(position).getQuantity(),
+                                    salesOrderLineList.get(position).getExchangedQty(),
+                                    viewHolder);
+                        }
+
 
                         MvsSalesOrderActivity mvsSalesOrderActivity = (MvsSalesOrderActivity) activity;
                         mvsSalesOrderActivity.updateSummeryValues(salesOrderLineList);
@@ -397,6 +412,22 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
         } else {
             holder.mTxtExchQTY.setBackgroundColor(activity.getResources().getColor(R.color.white));
         }
+
+    }
+
+    public void applyColorCodesForExchange(float qty
+            , MvsSalesOrderAdapter.SalesItemViewHolder holder) {
+
+        if (Math.round(qty) != 0) {
+            holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.orange));
+            holder.mTxtBillQTY.setBackgroundColor(activity.getResources().getColor(R.color.orange));
+        } else {
+            holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.white));
+            holder.mTxtBillQTY.setBackgroundColor(activity.getResources().getColor(R.color.white));
+
+        }
+
+
 
     }
 
@@ -465,15 +496,17 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
         // Check if the item is an exchanged item
         if (salesOrderLineList.get(position).isExchangeItem()) {
             holder.mTxtExchQTY.setEnabled(false);
-            holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.yellowAccent));
+            holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.orange));
+            applyColorCodesForExchange(salesOrderLineList.get(position).getQuantity(),holder);
         } else {
             holder.mTxtExchQTY.setEnabled(true);
             holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.white));
+            applyColorCodes(salesOrderLineList.get(position).getQuantity(),
+                    salesOrderLineList.get(position).getExchangedQty(),
+                    holder);
         }
 
-        applyColorCodes(salesOrderLineList.get(position).getQuantity(),
-                salesOrderLineList.get(position).getExchangedQty(),
-                holder);
+
     }
 
     @Override

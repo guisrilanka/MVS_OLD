@@ -85,7 +85,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String[] INITIAL_PERMS={
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.BLUETOOTH_ADMIN
     };
 
     private static final int INITIAL_REQUEST=1337;

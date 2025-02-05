@@ -13,9 +13,7 @@ import android.widget.Toast;
 
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.datamodel.ExchangeItem;
-import com.gui.mdt.thongsieknavclient.datamodel.ItemBalancePda;
 import com.gui.mdt.thongsieknavclient.dbhandler.ExchangeItemDbHandler;
-import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.utils.BluetoothPrinter;
 
 import java.nio.charset.StandardCharsets;
@@ -140,7 +138,7 @@ public class PrintExchangeItemSummaryActivity extends AppCompatActivity {
                         mPrinter.btOutputStream.write(g);
 
                         //title
-                        mPrinter.btOutputStream.write("{PRINT,:@40,200:MF107|ITEM BALANCE SUMMARY|}".getBytes());
+                        mPrinter.btOutputStream.write("{PRINT,:@40,200:MF107|EXCHANGE ITEM SUMMARY|}".getBytes());
 
                         //date
                         printCommand = "{PRINT,:@30,250:MF107|" + date + "|}";
@@ -166,8 +164,8 @@ public class PrintExchangeItemSummaryActivity extends AppCompatActivity {
                                         , "Description"
                                         , "ItemCode"
                                         , "UOM"
-                                        , "Vehicle Qty"
-                                        , "Exch. Qty")+"|}";
+                                        , "Total Qty"
+                                        , "Issue Qty")+"|}";
                         mPrinter.btOutputStream.write(printCommand.getBytes());
 
                         //table lower line
@@ -201,8 +199,8 @@ public class PrintExchangeItemSummaryActivity extends AppCompatActivity {
                                         , ""
                                         , ib.getItemCode()
                                         , ib.getUom()
-                                        , String.valueOf(Math.round(qty))
-                                        , String.valueOf(Math.round(ib.getBalanceQty()))) + "|}";
+                                        , String.valueOf(Math.round(ib.getTotalQty()))
+                                        , String.valueOf(Math.round(ib.getIssueQty()))) + "|}";
                                 mPrinter.btOutputStream.write(printCommand.getBytes(StandardCharsets.UTF_8));
 
                             }

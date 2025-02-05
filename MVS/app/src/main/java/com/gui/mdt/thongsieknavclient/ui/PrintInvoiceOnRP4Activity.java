@@ -297,7 +297,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                         //check sales qty zero items
                         float salesQty = sol.getExchangedQty() + sol.getQuantity();
 
-                        if (salesQty > new Float(0) && sol.getUnitPrice() > 0f) {
+                        if ((salesQty > new Float(0) && sol.getUnitPrice() > 0f) || sol.isExchangeItem()) {
 
                             String itemUOM = sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure();
                             String exchQty = sol.getExchangedQty() == 0f ? ""

@@ -808,7 +808,7 @@ public class MvsHomeActivity extends AppCompatActivity implements View.OnClickLi
                                     = new Intent(MvsHomeActivity.this, PrintExchangeItemSummaryActivity.class);
                         } else {
                             intent
-                                    = new Intent(MvsHomeActivity.this, PrintExchangeItemSummaryActivity.class);
+                                    = new Intent(MvsHomeActivity.this, PrintExchangeItemSummaryRP4Activity.class);
                         }
                         intent.putExtra("details", "");
                         startActivity(intent);

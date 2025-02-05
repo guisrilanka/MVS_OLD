@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
-                    android:paddingBottom="40dp"
+                    android:paddingBottom="110dp"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>

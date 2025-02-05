@@ -60,21 +60,19 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
     Button mBtnAdd;
     Drawable mBackArrow;
     SalesOrderLine mTempSalesOrderLine;
-//    String uom, itemNo, header, deliveryDate = "";
+
     float totalPrice = 0, quantity = 0, unitPrice = 0f, enteredQuantity = 0f;
     int position = 0;
     Bundle extras;
-//    List<SalesPrices> mSalesPricesList;
-//    private Item mTempItem;
-//    private Customer mTempCustomer;
+
     private SalesOrderLine mExistSalesOrderLine = new SalesOrderLine();
-//    private ExchangeItem mExistExchangeItem = new ExchangeItem();
+
     ExchangeItem mTempExchangeItem;
-//    private ItemBalancePdaSyncTask itemBalancePdaSyncTask;
+
     private NavClientApp mApp;
     private List<ItemUom> uomList;
     private List<ExchangeItem> exchangeItemList;
-//    ExchangeItem exchangeItem;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,54 +83,33 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 
         mTvHeader = (TextView) findViewById(R.id.tvHeader);
         mTxtItemDesc = (TextView) findViewById(R.id.txtItemDesc);
-//        mTxtUnitPrice = (TextView) findViewById(R.id.txtUnitPrice);
-//        mTxtVehicleQTY = (TextView) findViewById(R.id.txtVehicleQTY);
-//        mTxtWarehouseQTY = (TextView) findViewById(R.id.txtWarehouseQTY);
-//        mTxtTotalPrice = (TextView) findViewById(R.id.txtTotalPrice);
         mTvItemNo = (TextView) findViewById(R.id.tvItemNo);
 
         mTxtExchangeQTY = (EditText) findViewById(R.id.txtExchangeQTY);
         mTxtAvailableExchangeQTY = (TextView) findViewById(R.id.txtAvailableExchangeQTY);
 
         mSpnUom = (Spinner) findViewById(R.id.spnUom);
-
         mItemImg = (ImageView) findViewById(R.id.itemImg);
-
         mBtnAdd = (Button) findViewById(R.id.btnAdd);
 
         initComponent();
 
         extras = getIntent().getExtras();
 
-//        String objAsJson = extras.getString(getResources().getString(R.string.item_json_obj));
-//         exchangeItem= ExchangeItem.fromJson(objAsJson);
         if (extras != null) {
-//            if (extras.containsKey("deliveryDate")) {
-//                deliveryDate = extras.getString("deliveryDate");
-//            }
-
             if (extras.containsKey("existSalesOrderLineJasonObj")) {
                 mExistSalesOrderLine =
                         SalesOrderLine.fromJson(extras.getString("existSalesOrderLineJasonObj"));
             }
-
-//            if (extras.containsKey(getResources().getString(R.string.customer_json_obj))) {
-//                mTempCustomer = Customer.fromJson(extras.getString(getResources().getString(R.string.customer_json_obj)));
-//            }
-
-//            if (extras.containsKey(getResources().getString(R.string.sales_order_line_obj))) {
-//                initSalesOrderLine();
-//            }
         }
 
         mBtnAdd.setOnClickListener(this);
 
         initSalesQtyTextListner();
         initSalesOrderLine();
-        //Forcus Sales Qty onLoad
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         mTxtExchangeQTY.requestFocus();
-        //mTxtExchQTY.requestFocus();
+
     }
 
     public void initComponent() {
@@ -143,7 +120,6 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
                 .color(Color.WHITE).sizeDp(30);
         getSupportActionBar().setHomeAsUpIndicator(mBackArrow);
 
-//        mSalesPricesList = new ArrayList<SalesPrices>();
     }
 
 
@@ -164,40 +140,7 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
         } else {
             mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
         }
-        System.out.println("example unit price 5---"+ mTempSalesOrderLine.getUnitPrice());
 
-//        String objAsJson = extras.getString(getResources().getString(R.string.item_json_obj));
-//        //Selected Item postion in the List. do not change this value !!
-////        position = extras.getInt(getResources().getString(R.string.adapter_position));
-//        if (mExistExchangeItem != null) {
-//            if (mExistExchangeItem.getId() != null) {
-//                mTempExchangeItem = mExistExchangeItem;
-//            } else {
-//                mTempExchangeItem = ExchangeItem.fromJson(objAsJson);
-//            }
-//        } else {
-//            mTempExchangeItem = ExchangeItem.fromJson(objAsJson);
-//        }
-
-        //update item balence pda
-//        startItemBalanceDownload();
-
-//        mTxtVehicleQTY.setText(getVehicleQty(mTempSalesOrderLine.getNo(),
-//                mTempSalesOrderLine.getUnitofMeasure(),
-//                mApp.getmCurrentDriverCode()));
-
-//        getItem(mTempExchangeItem.getNo());
-
-//        header = mTempExchangeItem.getItemCrossReferenceNo();
-//        if (mTempItem.getIdentifierCode() != null) {
-//            if (!mTempItem.getIdentifierCode().isEmpty()) {
-//                header = header + " - " + mTempItem.getIdentifierCode();
-//            }
-//        }
-
-//        quantity = mTempExchangeItem.getQuantity();
-
-//        mTvHeader.setText(header);
         mTxtItemDesc.setText(mTempSalesOrderLine.getDescription());
         mTvItemNo.setText(mTempSalesOrderLine.getNo());
         mTxtExchangeQTY.setText(String.format("%.2f", mTempSalesOrderLine.getQuantity()));
@@ -215,16 +158,7 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
                 }
             }
         }
-//        if (!mSalesPricesList.isEmpty()) {
-//            for (SalesPrices sp : mSalesPricesList) {
-//                if (sp.getUnitOfMeasureCode() == null) {
-//                    uomList.add("");
-//                } else {
-//                    uomList.add(sp.getUnitOfMeasureCode());
-//                }
-//            }
-//        }
-//
+
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, uomList);
 //
         //Setting uom adapter to Spinner
@@ -241,19 +175,7 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
                 String selectedUom = mSpnUom.getSelectedItem().toString();
 
                 setSelectedExchangeItemByUom(selectedUom);
-//                mTempExchangeItem.setUom(selectedUom);
 
-//                if(mTempItem.isInventoryValueZero()){
-//                    mTempExchangeItem.setTotalQty(0.00f);
-//                }else{
-//                    unitPrice = getUnitPrice(mTempExchangeItem.getNo(), mTempCustomer.getCustomerPriceGroup(),
-//                            mTempCustomer.getCode(), selectedUom);
-//                    mTempExchangeItem.setUnitPrice(unitPrice);
-//                }
-
-
-//                mTxtUnitPrice.setText(String.format("%.2f", mTempSalesOrderLine.getUnitPrice()));
-//                totalPrice = quantity * mTempSalesOrderLine.getUnitPrice();
 
                 mTxtAvailableExchangeQTY.setText(String.format("%.2f", mTempExchangeItem.getBalanceQty()));
             }
@@ -263,18 +185,9 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
             }
 
         });
-//
-////        mTxtUnitPrice.setText(String.valueOf(String.format("%.2f", mTempSalesOrderLine.getUnitPrice())));
-//        mTxtExchangeQTY.setText(String.valueOf(Math.round(mTempSalesOrderLine.getQuantity()
-//                                            + mTempSalesOrderLine.getExchangedQty())));
-//        mTxtAvailableExchangeQTY.setText(String.valueOf(Math.round(mTempSalesOrderLine.getExchangedQty())));
-//        //Total Price
-////        totalPrice = mTempSalesOrderLine.getQuantity() * mTempSalesOrderLine.getUnitPrice();
-////        mTxtTotalPrice.setText(String.format("%.2f", totalPrice));
-//
+
         mItemImg.setImageBitmap(loadImageFromStorage(mTempSalesOrderLine.getNo()));
-//
-////        mTxtWarehouseQTY.setText(getItemWarehouseQty(mTempSalesOrderLine.getNo()));
+
     }
 
     private void initSalesQtyTextListner() {
@@ -293,13 +206,9 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
                 if (!mTxtExchangeQTY.getText().toString().equals("")) {
                     enteredQuantity = Float.parseFloat(mTxtExchangeQTY.getText().toString());
 
-//                    totalPrice = enteredQuantity * mTempSalesOrderLine.getUnitPrice();
-//
-//                    mTxtTotalPrice.setText(String.format("%.2f", totalPrice));
                     quantity = enteredQuantity;
                 } else {
-//                    totalPrice = 0;
-//                    mTxtTotalPrice.setText(String.format("%.2f", totalPrice));
+
                     quantity = 0;
                 }
             }
@@ -315,16 +224,7 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
                     Toast.makeText(MvsExchangeOrderItemActivity.this, "Item can not be added!, Item UOM is not " +
                             "available", Toast.LENGTH_SHORT).show();
                 } else {
-                    System.out.println("example unit price 4---"+ mTempSalesOrderLine.getUnitPrice());
-//                    if (mTempSalesOrderLine.getUnitPrice() == 0f && !mTempItem.isInventoryValueZero()) {
-//                        Toast.makeText(MvsExchangeOrderItemActivity.this, "Item can not be added!, Item unit price " +
-//                                "is zero", Toast.LENGTH_SHORT).show();
-//                    } else {
 
-                        /*if (quantity == 0f) {
-                            Toast.makeText(MvsSalesOrderItemActivity.this, "Item can not be added!, QTY can not " +
-                                    "be zero", Toast.LENGTH_SHORT).show();
-                        } else {*/
                             float salesQty = 0f;
                             if(mTxtExchangeQTY.getText().toString().equals(""))
                             {
@@ -335,16 +235,6 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
                                 salesQty = Float.parseFloat(mTxtExchangeQTY.getText().toString());
                             }
 
-//                            if(mTxtAvailableExchangeQTY.getText().toString().equals(""))
-//                            {
-//                                mTempSalesOrderLine.setExchangedQty(0f);
-//                            }
-//                            else {
-//                                mTempSalesOrderLine.setExchangedQty(Float.parseFloat(mTxtAvailableExchangeQTY.getText().toString()));
-//                            }
-
-//                            float billQty = salesQty - mTempSalesOrderLine.getExchangedQty();
-//                            float lineAmount = billQty * mTempSalesOrderLine.getUnitPrice();
 
                             if(salesQty <= mTempExchangeItem.getBalanceQty())
                             {
@@ -373,26 +263,6 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
         }
     }
 
-//    private String getItemWarehouseQty(String itemCode) {
-//        String qty = "0.0";
-//        ItemBalancePdaDbHandler dbAdapter = new ItemBalancePdaDbHandler(this);
-//        dbAdapter.open();
-//
-//        qty = dbAdapter.getItemWarehouseQtyByItemCode(itemCode);
-//
-//        dbAdapter.close();
-//        return qty;
-//    }
-
-//    private void getItem(String Code) {
-//        boolean status = false;
-//        ItemDbHandler dbAdapter = new ItemDbHandler(this);
-//        dbAdapter.open();
-//
-//        mTempItem = dbAdapter.getItemByItemCode(Code);
-//
-//        dbAdapter.close();
-//    }
 
     private Bitmap loadImageFromStorage(String itemCode) {
         Bitmap temp = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.item_no_image);
@@ -409,107 +279,6 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
         return temp;
     }
 
-//    public float getUnitPrice(String itemCode, String customerPriceGroup, String customerCode, String itemUom) {
-//        float itemMasterUnitPrice = 0, groupItemPrice = 0, customerItemPrice = 0;
-//
-//        //1 ItemMaster UnitPrice
-//        itemMasterUnitPrice = Float.parseFloat(getItemUnitPriceFromItemMaster(itemCode, itemUom) == "" ? "0" :
-//                getItemUnitPriceFromItemMaster(itemCode, itemUom));
-//
-//        //2 Group ItemPrice
-//        groupItemPrice = Float.parseFloat(getGroupItemPrice(customerPriceGroup, 1, itemCode, deliveryDate, itemUom)
-//                == "" ? "0" : getGroupItemPrice(customerPriceGroup, 1, itemCode, deliveryDate, itemUom));
-//
-//        //3 customer ItemPrice
-//        customerItemPrice = Float.parseFloat(getCustomerItemPrice(customerCode, 0, itemCode, deliveryDate, itemUom)
-//                == "" ? "0" : getCustomerItemPrice(customerCode, 0, itemCode, deliveryDate, itemUom));
-//
-//        float minimunItemPrice = getMinItemPrice(itemMasterUnitPrice, groupItemPrice, customerItemPrice);
-//
-//        return minimunItemPrice;
-//    }
-
-//    public float getMinItemPrice(float a_, float b_, float c_) {
-//        float a = a_, b = b_, c = c_;
-//        boolean isAZero = false, isBZero = false, isCZero = false;
-//
-//        if (a == 0) {
-//            isAZero = true;
-//        }
-//
-//        if (b == 0) {
-//            isBZero = true;
-//        }
-//
-//        if (c == 0) {
-//            isCZero = true;
-//        }
-//
-//        if (isAZero && isBZero && isCZero) {
-//            return 0;
-//        } else {
-//            if (isAZero && isBZero && !isCZero) {
-//                return c;
-//            }
-//            if (isAZero && !isBZero && isCZero) {
-//                return b;
-//            }
-//            if (!isAZero && isBZero && isCZero) {
-//                return a;
-//            }
-//
-//            if (isAZero && !isBZero && !isCZero) {
-//                return Math.min(b, c);
-//            }
-//            if (!isAZero && !isBZero && isCZero) {
-//                return Math.min(a, b);
-//            }
-//            if (!isAZero && isBZero && !isCZero) {
-//                return Math.min(a, c);
-//            }
-//            if (!isAZero && !isBZero && !isCZero) {
-//                return Math.min(a, Math.min(b, c));
-//            }
-//        }
-//        return 0;
-//    }
-
-//    public String getCustomerItemPrice(String customerCode, int salesType, String itemCode, String deliveryDate,
-//                                       String itemUom) {
-//        SalesPricesDbHandler db = new SalesPricesDbHandler(getApplicationContext());
-//        db.open();
-//
-//        String itemPrice = db.getCustomerItemUnitPriceByCustomerCode(customerCode, salesType, itemCode, deliveryDate,
-//                itemUom);
-//
-//        db.close();
-//
-//        return itemPrice;
-//    }
-
-//    public String getGroupItemPrice(String customerGroup, int salesType, String itemCode, String deliveryDate, String
-//            itemUom) {
-//        SalesPricesDbHandler db = new SalesPricesDbHandler(getApplicationContext());
-//        db.open();
-//
-//        String itemPrice = db.getGroupItemPriceByCustomePriceGroup(customerGroup, salesType, itemCode, deliveryDate,
-//                itemUom);
-//
-//        db.close();
-//
-//        return itemPrice;
-//    }
-
-//    public String getItemUnitPriceFromItemMaster(String itemCode, String itemUom) {
-//        ItemDbHandler db = new ItemDbHandler(getApplicationContext());
-//        db.open();
-//
-//        String unitprice = db.getItemPriceByItemCode(itemCode, itemUom);
-//        db.close();
-//
-//        return unitprice;
-//    }
-
 
     public void getExchangeItemListByItemNo(String itemNo) {
         uomList = new ArrayList<ItemUom>();
@@ -518,21 +287,6 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
         exchangeItemList=dbAdapter.getExchangeItemByItemCode(itemNo);
         dbAdapter.close();
 
-////        if (customer != null) {
-//            ItemUomDbHandler dbAdapter = new ItemUomDbHandler(this);
-//            dbAdapter.open();
-//            uomList = dbAdapter.getUomListbyItemCode(itemNo);
-////            String customerPriceGroup = customer.getCustomerPriceGroup();
-//
-//            //if customer price group is "" then sales type is 0.
-////            if (customer.getCustomerPriceGroup().equals("")) {
-////                customerPriceGroup = customer.getCode();
-////            }
-//
-////            mSalesPricesList = uom.getAllPriceList(customerPriceGroup, itemNo);
-//
-//            dbAdapter.close();
-////        }
     }
     public void setSelectedExchangeItemByUom(String uom){
         for (ExchangeItem ei : exchangeItemList) {
@@ -544,46 +298,10 @@ public class MvsExchangeOrderItemActivity extends AppCompatActivity implements V
 
     @Override
     public boolean onSupportNavigateUp() {
-//        if(itemBalancePdaSyncTask != null){
-//            itemBalancePdaSyncTask.cancel(true);
-//        }
+
         onBackPressed();
         finish();
         return true;
     }
 
-//    private void startItemBalanceDownload() {
-//
-//        if (mTempSalesOrderLine.getNo().equals("") || mTempSalesOrderLine.getNo() == null) {
-//            itemBalancePdaSyncTask = new ItemBalancePdaSyncTask(getApplicationContext()
-//                    , true);
-//            itemBalancePdaSyncTask.delegate = MvsExchangeOrderItemActivity.this;
-//            itemBalancePdaSyncTask.execute((Void) null);
-//        } else {
-//            itemBalancePdaSyncTask = new ItemBalancePdaSyncTask(getApplicationContext()
-//                    , true, mTempSalesOrderLine.getNo());
-//            itemBalancePdaSyncTask.delegate = MvsExchangeOrderItemActivity.this;
-//            itemBalancePdaSyncTask.execute((Void) null);
-//        }
-//    }
-
-//    private String getVehicleQty(String itemNo, String itemUom, String driverCode){
-//
-//        ItemBalancePdaDbHandler ibpDb
-//                = new ItemBalancePdaDbHandler(getApplicationContext());
-//        ibpDb.open();
-//        ItemBalancePda itemPdaObj = ibpDb.getItemBalencePda(itemNo
-//                , itemUom
-//                , driverCode);
-//        ibpDb.close();
-//
-//        float qty = itemPdaObj.getOpenQty() - itemPdaObj.getQuantity();
-//
-//        return String.valueOf(Math.round(qty));
-//    }
-
-//    @Override
-//    public void onAsyncTaskFinished(SyncStatus syncStatus) {
-////        mTxtWarehouseQTY.setText(syncStatus.getScope());
-//    }
 }

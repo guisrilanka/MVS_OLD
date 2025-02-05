@@ -903,6 +903,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_EXCHANGE_ITEM_TABLE = "CREATE TABLE " + TABLE_EXCHANGE_ITEM + "("
                 + KEY_EXCHANGE_ID + " INTEGER PRIMARY KEY, "
                 + KEY_EXCHANGE_ITEM_CODE + " TEXT,"
+                + KEY_ITM_DESCRIPTION + " TEXT,"
                 + KEY_EXCHANGE_ITEM_UOM + " TEXT,"
                 + KEY_EXCHANGE_ITEM_QTY + " TEXT, "
                 + KEY_EXCHANGE_ITEM_ISSUE_QTY + " TEXT, "
@@ -915,10 +916,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if exist
-        if(newVersion == 168) {
+        if(oldVersion == 167) {
             String CREATE_EXCHANGE_ITEM_TABLE = "CREATE TABLE " + TABLE_EXCHANGE_ITEM + "("
                     + KEY_EXCHANGE_ID + " INTEGER PRIMARY KEY, "
                     + KEY_EXCHANGE_ITEM_CODE + " TEXT, "
+                    + KEY_ITM_DESCRIPTION + " TEXT,"
                     + KEY_EXCHANGE_ITEM_UOM + " TEXT, "
                     + KEY_EXCHANGE_ITEM_QTY + " TEXT, "
                     + KEY_EXCHANGE_ITEM_ISSUE_QTY + " TEXT, "
@@ -927,7 +929,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + TABLE_SO_LINE + " ADD " + KEY_SO_LINE_IS_EXCHANGE_ITEM + " TEXT DEFAULT NULL ");
 
             db.execSQL(CREATE_EXCHANGE_ITEM_TABLE);
-        } else if (oldVersion == 167) {
+        } else if (oldVersion == 166) {
             db.execSQL("ALTER TABLE " + TABLE_ITEM + " ADD " + KEY_ITM_IS_ZERO_PRICE + " TEXT DEFAULT NULL ");
         } else if (oldVersion == 166) {
             //this code only for this 166 version . if you new to this remove for
