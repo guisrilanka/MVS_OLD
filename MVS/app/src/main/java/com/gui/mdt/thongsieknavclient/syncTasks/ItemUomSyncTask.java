@@ -19,6 +19,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.ItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemUomDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -43,12 +44,13 @@ public class ItemUomSyncTask extends AsyncTask<Void, Void, Boolean> {
 
     ApiItemUomListParameter mItemUomListParameter;
     ApiItemUomListResult itemUomListResult;
-
+    String mLocationName;
     public ItemUomSyncTask(Context context, boolean isForcedSync) {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog= Logger.getLogger(ItemUomSyncTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = ItemUomSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -228,7 +230,7 @@ public class ItemUomSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_UOM_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_UOM_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
     }

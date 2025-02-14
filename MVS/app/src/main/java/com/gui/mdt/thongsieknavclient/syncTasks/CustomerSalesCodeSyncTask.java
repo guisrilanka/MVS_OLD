@@ -17,6 +17,8 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.CustomerSalesCodeDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.ui.MvsSalesOrderActivity;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -39,7 +41,7 @@ public class CustomerSalesCodeSyncTask extends AsyncTask<Void, Void, Boolean> {
     private boolean isInitialSyncRun = false;
     private String customerCode = "";
     Logger mLog;
-
+    String mLocationName;
     List<ApiCustomerSalesCodeResponse.ApiSalesCodeResultData> customerSalesCodeList;
     ApiCustomerSalesCodeResponse apiCustomerSalesCodeResponse;
     ApiCustomerSalesCodeParameter apiCustomerSalesCodeParameter;
@@ -49,7 +51,8 @@ public class CustomerSalesCodeSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.isInitialSyncRun = isInitialSync;
-        this.mLog= Logger.getLogger(CustomerSyncTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = CustomerSalesCodeSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -208,7 +211,7 @@ public class CustomerSalesCodeSyncTask extends AsyncTask<Void, Void, Boolean> {
         Gson gson = new Gson();
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
-        mLog.info("SYNC_SALES_CODE_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SALES_CODE_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 

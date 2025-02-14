@@ -19,6 +19,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesPricesDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -46,6 +47,7 @@ public class SalesPricesSyncTask extends AsyncTask<Void, Void, Boolean> {
     List<ApiSalesPricesResponse.ApiSalesPricesListResultData> apiSalesPricesListResultData;
     ApiSalesPricesResponse apiSalesPricesResponse;
     Logger mLog;
+    String mLocationName;
     private boolean isInitialSyncRun = false;
     private NavClientApp mApp;
     private boolean isForcedSync = false;
@@ -55,7 +57,8 @@ public class SalesPricesSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.isInitialSyncRun = isInitialSync;
-        this.mLog = Logger.getLogger(SalesPricesSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = SalesOrderUploadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -163,7 +166,7 @@ public class SalesPricesSyncTask extends AsyncTask<Void, Void, Boolean> {
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_SALE_PRICE_RESULT ", json);
-            mLog.info("SYNC_SALE_PRICE_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_SALE_PRICE_RESULT :" + json);
         } catch (Exception ex) {
             //
         }
@@ -339,7 +342,7 @@ public class SalesPricesSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_S_PRICE_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_S_PRICE_PARAMS :" + json);
 
         params.setPassword(mApp.getCurrentUserPassword());
 

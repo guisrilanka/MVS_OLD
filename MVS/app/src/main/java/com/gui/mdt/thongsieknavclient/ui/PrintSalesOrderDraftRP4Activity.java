@@ -36,6 +36,7 @@ import com.gui.mdt.thongsieknavclient.rp4.ConnectionBase;
 import com.gui.mdt.thongsieknavclient.rp4.Connection_Bluetooth;
 import com.gui.mdt.thongsieknavclient.rp4.DocumentDPL;
 import com.gui.mdt.thongsieknavclient.rp4.ParametersDPL;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -75,7 +76,7 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
             mSalesOrderLineList = mTempSalesOrder.getLineItems();
             mCustomer = getCustomer(mTempSalesOrder.getSelltoCustomerNo());
         }
-        this.mLog = Logger.getLogger(PrintSalesOrderDraftRP4Activity.class);
+        this.mLog = Log4jHelper.getLogger();
         mGenerateDraftReportTask = new GenerateDraftReportTask();
         mGenerateDraftReportTask.execute((Void) null);
     }

@@ -52,6 +52,7 @@ import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.syncTasks.StockRequestDownloadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.StockRequestUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.UserSetupRunningNoUploadTask;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
@@ -128,7 +129,7 @@ public class MvsStockRequestListActivity extends AppCompatActivity implements an
         getSupportActionBar().setHomeAsUpIndicator(backArrow);
         myToolbar.setOverflowIcon(menuDrawable);
 
-        this.mLog = Logger.getLogger(MvsStockRequestListActivity.class);
+        this.mLog = Log4jHelper.getLogger();
 
         //Search
         btnStockRequestListSearch = (Button) findViewById(R.id.btnSearch);

@@ -19,6 +19,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.CustomerDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemCrossReferenceDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -45,6 +46,8 @@ public class ItemCrossReferenceSyncTask extends AsyncTask<Void, Void, Boolean> {
     private String customerCode = "";
     Logger mLog;
 
+    String mLocationName;
+
     List<ApiItemCrossReferenceResponse> itemList;
     ApiItemCrossReferenceParameter apiItemCrossReferenceParameter;
 
@@ -53,7 +56,8 @@ public class ItemCrossReferenceSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.isInitialSyncRun = isInitialSync;
-        this.mLog = Logger.getLogger(CustomerSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = ItemCrossReferenceSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -272,7 +276,7 @@ public class ItemCrossReferenceSyncTask extends AsyncTask<Void, Void, Boolean> {
         Gson gson = new Gson();
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
-        mLog.info("SYNC_ITEM_CROSS_REF_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_ITEM_CROSS_REF_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 

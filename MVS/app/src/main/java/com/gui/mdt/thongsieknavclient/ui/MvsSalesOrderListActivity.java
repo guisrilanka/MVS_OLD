@@ -54,6 +54,7 @@ import com.gui.mdt.thongsieknavclient.syncTasks.SalesInvoiceUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderClearAndDownloadForMvsSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderImageUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.UserSetupRunningNoUploadTask;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
@@ -124,7 +125,7 @@ public class MvsSalesOrderListActivity extends AppCompatActivity implements andr
         setSupportActionBar(mMvs_so_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        this.mLog = Logger.getLogger(MvsSalesOrderListActivity.class);
+        this.mLog = Log4jHelper.getLogger();
 
         Drawable backArrow = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_angle_left)
                 .color(Color.WHITE).sizeDp(30);

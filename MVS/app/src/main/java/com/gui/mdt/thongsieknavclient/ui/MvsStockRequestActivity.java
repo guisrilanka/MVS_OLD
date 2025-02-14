@@ -66,6 +66,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesPricesDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.StockRequestDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.StockRequestLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -143,7 +144,7 @@ public class MvsStockRequestActivity extends AppCompatActivity implements View.O
         createView(view);
 
         mApp = (NavClientApp) getApplicationContext();
-        this.mLog = Logger.getLogger(MvsStockRequestActivity.class);
+        this.mLog = Log4jHelper.getLogger();
 
         initComponents();
         settingBtnDrawables();

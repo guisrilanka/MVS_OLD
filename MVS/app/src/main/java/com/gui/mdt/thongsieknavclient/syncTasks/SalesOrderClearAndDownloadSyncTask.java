@@ -20,6 +20,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -42,7 +43,7 @@ public class SalesOrderClearAndDownloadSyncTask extends AsyncTask<Void, Void, Bo
     private boolean isForcedSync = false;
     private boolean isInitialSyncCompleted = false;
     Logger mLog;
-
+    String mLocationName;
     List<ApiSalesOrderResult.ApiSalesOrderListResultData> soList;
     List<ApiSalesOrderLineResultData> soLineList;
     ApiSalesOrderResult apiSalesOrderResult;
@@ -53,7 +54,8 @@ public class SalesOrderClearAndDownloadSyncTask extends AsyncTask<Void, Void, Bo
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.isInitialSyncCompleted = isInitialSync;
-        this.mLog= Logger.getLogger(SalesOrderDownloadSyncTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = SalesOrderClearAndDownloadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -298,7 +300,7 @@ public class SalesOrderClearAndDownloadSyncTask extends AsyncTask<Void, Void, Bo
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_SO_DOWN_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_DOWN_PARAMS :" + json);
 
         params.setPassword(mApp.getCurrentUserPassword());
 
@@ -309,7 +311,7 @@ public class SalesOrderClearAndDownloadSyncTask extends AsyncTask<Void, Void, Bo
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(response);
         //Log.d("SYNC_SO_DOWN_RES", json);
-        mLog.info("SYNC_SO_DOWN_RES :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_DOWN_RES :" + json);
     }
 
 

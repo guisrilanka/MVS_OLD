@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.model.BaseResult;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -41,11 +42,14 @@ public class UserSetupRunningNoUploadTask extends AsyncTask<Void, Void, Boolean>
     private UserSetup mUserSetup;
     Logger mLog;
 
+    String mLocationName;
+
     public UserSetupRunningNoUploadTask(Context context, boolean isForcedSync) {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog= Logger.getLogger(UserSetupRunningNoUploadTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = StockRequestUploadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -146,7 +150,7 @@ public class UserSetupRunningNoUploadTask extends AsyncTask<Void, Void, Boolean>
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_RUNNING_NO_RESULT ", json);
-            mLog.info("SYNC_RUNNING_NO_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_RUNNING_NO_RESULT :" + json);
         } catch (Exception ex) {
             //
         }
@@ -180,7 +184,7 @@ public class UserSetupRunningNoUploadTask extends AsyncTask<Void, Void, Boolean>
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_RUNNING_NO_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_RUNNING_NO_PARAMS :" + json);
 
         params.setPassword(mApp.getCurrentUserPassword());
 

@@ -21,6 +21,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderImageUploadStatusDbHan
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.model.BaseResult;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -52,13 +53,14 @@ public class SalesOrderImageUploadSyncTask extends AsyncTask<Void, Void, Boolean
     SyncConfiguration syncConfig;
     Logger mLog;
 
-
+    String mLocationName;
     public SalesOrderImageUploadSyncTask(Context context, boolean isForcedSync_) {
 
         mApp = (NavClientApp) context;
         this.context = context;
         this.isForcedSync = isForcedSync_;
-        this.mLog = Logger.getLogger(SalesOrderImageUploadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = SalesOrderDownloadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -176,7 +178,7 @@ public class SalesOrderImageUploadSyncTask extends AsyncTask<Void, Void, Boolean
             }
             else
             {
-                mLog.info( "SYNC_SO_IMG_UP :No Image to Upload");
+                mLog.info(mLocationName +":-"+ "SYNC_SO_IMG_UP :No Image to Upload");
                 //Log.d("SYNC_SO_IMG_UP", "No Image to Upload");
             }
             status = true;
@@ -264,7 +266,7 @@ public class SalesOrderImageUploadSyncTask extends AsyncTask<Void, Void, Boolean
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_SO_IMG_UP_RESULT ", json);
-            mLog.info("SYNC_SO_IMG_UP_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_SO_IMG_UP_RESULT :" + json);
         } catch (Exception e) {
             mLog.error("Error",e);
         }

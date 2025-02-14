@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.model.BaseResult;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -46,11 +47,14 @@ public class ItemBalancePdaSyncTask extends AsyncTask<Void, Void, Boolean> {
     private String mItemNo = "";
     private boolean mIsOnlineRequest;
 
+    String mLocationName;
+
     public ItemBalancePdaSyncTask(Context context, boolean isForcedSync) {
         this.context = context;
         this.mIsForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(ItemBalancePdaSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = ItemBalancePdaSyncTask.class.getSimpleName();
         this.mIsOnlineRequest = false;
     }
 
@@ -60,7 +64,8 @@ public class ItemBalancePdaSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.mIsForcedSync = isForcedSync;
         this.mItemNo = itemNo;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(ItemBalancePdaSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = ItemBalancePdaSyncTask.class.getSimpleName();
         this.mIsOnlineRequest = true;
     }
 
@@ -181,7 +186,7 @@ public class ItemBalancePdaSyncTask extends AsyncTask<Void, Void, Boolean> {
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_ITM_BAL_RESULT ", json);
-            mLog.info("SYNC_ITM_BAL_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_ITM_BAL_RESULT :" + json);
 
         } catch (Exception ex) {
             //
@@ -250,7 +255,7 @@ public class ItemBalancePdaSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_ITM_BAL_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_ITM_BAL_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 

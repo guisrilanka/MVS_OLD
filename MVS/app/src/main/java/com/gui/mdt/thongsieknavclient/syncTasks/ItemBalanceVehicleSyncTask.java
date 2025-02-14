@@ -18,6 +18,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.StockStatusDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.ui.ApiVehicleOpenQuantityParameters;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -49,11 +50,14 @@ public class ItemBalanceVehicleSyncTask extends AsyncTask<Void, Void, Boolean> {
     private boolean mIsOnlineRequest;
     Logger mLog;
 
+    String mLocationName;
+
     public ItemBalanceVehicleSyncTask(Context context, boolean isForcedSync) {
         this.context = context;
         this.mIsForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog= Logger.getLogger(ItemBalancePdaSyncTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = ItemBalanceVehicleSyncTask.class.getSimpleName();
         this.mIsOnlineRequest=true;
     }
 
@@ -181,7 +185,7 @@ public class ItemBalanceVehicleSyncTask extends AsyncTask<Void, Void, Boolean> {
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_ITM_BAL_RESULT ", json);
-            mLog.info("SYNC_VEHICLE_BAL_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_VEHICLE_BAL_RESULT :" + json);
 
         } catch (Exception ex) {
             //
@@ -229,7 +233,7 @@ public class ItemBalanceVehicleSyncTask extends AsyncTask<Void, Void, Boolean> {
                                     mLog.info("SYNC_VEHICL_BAL_ADDED :" + itemResult.getItem_No()+"         "+ itemResult.getQuantity());
                                 } else {
                                     dbAdapter.updateOpenQty(item);
-                                    mLog.info("SYNC_VEHICL_BAL_UPDATED :" + itemResult.getItem_No()+"         "+ itemResult.getQuantity());
+                                    mLog.info(mLocationName +":-"+"SYNC_VEHICL_BAL_UPDATED :" + itemResult.getItem_No()+"         "+ itemResult.getQuantity());
                                 }
 
                             }
@@ -270,7 +274,7 @@ public class ItemBalanceVehicleSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_VEHICLE_BAL_PARAM :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_VEHICLE_BAL_PARAM :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 

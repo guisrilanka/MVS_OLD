@@ -639,13 +639,17 @@ public class LoginActivity extends AppCompatActivity {
 
 //        String fileName = Environment.getExternalStorageDirectory() + "/" + "log4j.log";
         String fileName = Objects.requireNonNull(getApplicationContext().getExternalFilesDir(null)).getAbsolutePath() + "/log4j.log";
+        String saveEditLogFile = Objects.requireNonNull(getApplicationContext().getExternalFilesDir(null)).getAbsolutePath() + "/log4j_save_edit.log";
 
         String filePattern = "%d - [%c] - %p : %m%n";
         int maxBackupSize = 10;
         long maxFileSize = 1024 * 1024;
 
         if(canAccessStorage()) {
-            Log4jHelper.Configure(fileName, filePattern, maxBackupSize, maxFileSize);
+//            Log4jHelper.Configure(fileName, filePattern, maxBackupSize, maxFileSize);
+//            Log4jHelper.configureSaveEditLog(saveEditLogFile, filePattern, maxBackupSize, maxFileSize);
+                Log4jHelper.configureMainLog(fileName, filePattern, maxBackupSize, maxFileSize);
+                Log4jHelper.configureSaveEditLog(saveEditLogFile, filePattern, maxBackupSize, maxFileSize);
         }
     }
 

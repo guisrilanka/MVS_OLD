@@ -16,6 +16,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncConfiguration;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.model.BaseResult;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -42,13 +43,15 @@ public class PdfUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
     File pdfFile;
     String fileName,mReportName="";
 
+    String mLocationName;
 
     public PdfUploadSyncTask(Context context, boolean isForcedSync,String fileNmae) {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.fileName=fileNmae;
-        this.mLog = Logger.getLogger(PdfUploadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = PdfUploadSyncTask.class.getSimpleName();
     }
 
     public PdfUploadSyncTask(Context context, boolean isForcedSync,String fileNmae, String reportName_) {
@@ -56,7 +59,7 @@ public class PdfUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.fileName=fileNmae;
-        this.mLog = Logger.getLogger(PdfUploadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
         this.mReportName = reportName_;
     }
 
@@ -167,7 +170,7 @@ public class PdfUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
 
         Gson gson = new Gson();
         String json = gson.toJson(respose);
-        mLog.info("SYNC_PDF_UPLOAD_RESPONSE :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_PDF_UPLOAD_RESPONSE :" + json);
 
     }
 
@@ -175,7 +178,7 @@ public class PdfUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
 
         Gson gson = new Gson();
         String json = gson.toJson(params);
-        mLog.info("SYNC_PDF_UPLOAD_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_PDF_UPLOAD_PARAMS :" + json);
 
     }
 

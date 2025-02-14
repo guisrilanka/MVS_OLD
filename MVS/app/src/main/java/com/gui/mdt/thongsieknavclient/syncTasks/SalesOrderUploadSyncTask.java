@@ -20,6 +20,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -40,7 +41,7 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
     Context context;
     SyncConfiguration syncConfig;
     Logger mLog;
-
+    String mLocationName;
     ApiPostMobileSalesInvoiceHeaderResponse apiSalesOrderHeaderResponse;
     List<ApiPostMobileSalesInvoiceHeaderParameter> apiSalesOrderHeaderParameterList;
     ApiPostMobileSalesInvoiceLineResponse apiSalesOrderLineResponse;
@@ -53,7 +54,8 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(SalesOrderUploadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = SalesOrderUploadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -168,7 +170,7 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_SO_UP_RESULT ", json);
-            mLog.info("SYNC_SO_UP_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_SO_UP_RESULT :" + json);
         } catch (Exception e) {
             mLog.error("Error",e);
         }
@@ -422,7 +424,7 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_UP_PARAMS", json);
-        mLog.info("SYNC_SO_UP_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_UP_PARAMS :" + json);
 
         for (ApiPostMobileSalesInvoiceHeaderParameter p:params) {
             p.setPassword(mApp.getCurrentUserPassword());
@@ -440,7 +442,7 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_LINE_UP_PARAMS", json);
-        mLog.info("SYNC_SO_LINE_UP_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_LINE_UP_PARAMS :" + json);
 
         for (ApiPostMobileSalesInvoiceLineParameter p:params) {
             p.setPassword(mApp.getCurrentUserPassword());
@@ -454,7 +456,7 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(response);
         //Log.d("SYNC_RES_SO_UP_HEAD", json);
-        mLog.info("SYNC_RES_SO_UP_HEAD :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_RES_SO_UP_HEAD :" + json);
 
 
     }
@@ -464,7 +466,7 @@ public class SalesOrderUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(response);
         //Log.d("SYNC_RES_SO_UP_LINE", json);
-        mLog.info("SYNC_RES_SO_UP_LINE :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_RES_SO_UP_LINE :" + json);
     }
 
 

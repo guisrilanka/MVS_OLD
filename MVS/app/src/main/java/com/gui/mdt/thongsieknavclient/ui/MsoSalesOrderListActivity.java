@@ -53,6 +53,7 @@ import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderClearAndDownloadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.UserSetupRunningNoUploadTask;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
@@ -181,7 +182,7 @@ public class MsoSalesOrderListActivity extends AppCompatActivity implements andr
         txtSearch.addTextChangedListener(searchTextWatcher());
         mMyToolbar.setOverflowIcon(drawable);
         mApp = (NavClientApp) getApplicationContext();
-        this.mLog = Logger.getLogger(MsoSalesOrderListActivity.class);
+        this.mLog = Log4jHelper.getLogger();
 
         mFilterSalesPersonCode = mApp.getmCurrentSalesPersonCode();
 
@@ -896,8 +897,7 @@ public class MsoSalesOrderListActivity extends AppCompatActivity implements andr
                     salesOrderListAdapter.notifyDataSetChanged();
 
                     mProgressDialog.dismiss();
-                }
-                else {
+                } else {
                     mProgressDialog.show();
                     salesOrderListAdapter = new MsoSalesOrderListAdapter(salesOrderList,
                             R.layout.item_sales_order_card, MsoSalesOrderListActivity.this);

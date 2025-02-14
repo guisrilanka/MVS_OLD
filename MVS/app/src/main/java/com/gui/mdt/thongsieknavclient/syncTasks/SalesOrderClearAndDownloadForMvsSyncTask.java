@@ -23,6 +23,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -61,7 +62,7 @@ public class SalesOrderClearAndDownloadForMvsSyncTask extends AsyncTask<Void, Vo
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.isInitialSyncCompleted = isInitialSync;
-        this.mLog = Logger.getLogger(SalesOrderDownloadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
     }
 
     @Override

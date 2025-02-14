@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.GSTPostingSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +38,7 @@ public class GSTPostingSetupSyncTask extends AsyncTask<Void, Void, Boolean> {
     private NavClientApp mApp;
     private boolean isForcedSync = false;
     Logger mLog;
-
+    String mLocationName;
     ApiGSTPostingSetupParameter apiGSTPostingSetupParameter;
     ApiGSTPostingSetupResponse apiGSTPostingSetupResponse;
     List<ApiGSTPostingSetupResponse.GSTPostingSetupResultData> gSTPostingSetupResult;
@@ -47,7 +48,8 @@ public class GSTPostingSetupSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog= Logger.getLogger(GSTPostingSetupSyncTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = GSTPostingSetupSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -197,7 +199,7 @@ public class GSTPostingSetupSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_GST_POST_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_GST_POST_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 

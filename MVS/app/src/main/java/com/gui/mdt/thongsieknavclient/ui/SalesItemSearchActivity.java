@@ -79,6 +79,7 @@ import com.gui.mdt.thongsieknavclient.syncTasks.ItemBalanceVehicleSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.ItemImageSync;
 import com.gui.mdt.thongsieknavclient.syncTasks.PdfUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SendEmailSyncTask;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.gui.mdt.thongsieknavclient.utils.ZipManager;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -460,7 +461,7 @@ public class SalesItemSearchActivity extends AppCompatActivity implements View.O
         Date dateObj = new Date();
         mDateToday = df.format(dateObj).toString();
 
-        this.mLog = Logger.getLogger(SalesItemSearchActivity.class);
+        this.mLog = Log4jHelper.getLogger();
 
 
     }

@@ -12,6 +12,8 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncConfiguration;
 import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemBalancePdaDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.ui.MvsSalesOrderActivity;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -46,6 +48,8 @@ public class CreateStockBalanceSummaryPdfSyncTask extends AsyncTask<Void, Void, 
     public AsyncResponse mDelegate = null;
     Logger mLog;
 
+    String mLocationName;
+
     public CreateStockBalanceSummaryPdfSyncTask(Context context, String details) {
         this.mDetails = details;
         this.mContext = context;
@@ -53,7 +57,8 @@ public class CreateStockBalanceSummaryPdfSyncTask extends AsyncTask<Void, Void, 
 
     private void initComp() {
         mApp = (NavClientApp) mContext;
-        this.mLog = Logger.getLogger(CreateStockBalanceSummaryPdfSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = CreateStockBalanceSummaryPdfSyncTask.class.getSimpleName();
         mPlainFont = new Font(Font.FontFamily.TIMES_ROMAN, 13, Font.NORMAL);
         mPlainFontHeader = new Font(Font.FontFamily.TIMES_ROMAN, 13, Font.BOLD);
         mPlainFontTitle = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
@@ -429,6 +434,6 @@ public class CreateStockBalanceSummaryPdfSyncTask extends AsyncTask<Void, Void, 
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params.getName());
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_CREATE_STOCK_BALANCE_SUMMARY_PDF_RESPONSE :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_CREATE_STOCK_BALANCE_SUMMARY_PDF_RESPONSE :" + json);
     }
 }

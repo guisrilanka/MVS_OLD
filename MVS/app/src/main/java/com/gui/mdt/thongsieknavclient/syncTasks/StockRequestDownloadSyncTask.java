@@ -21,6 +21,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.StockRequestDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.StockRequestLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -42,6 +43,8 @@ public class StockRequestDownloadSyncTask extends AsyncTask<Void, Void, Boolean>
     Context context;
     SyncConfiguration syncConfig;
     Logger mLog;
+
+    String mLocationName;
     List<ApiStockRequestHeaderResponse.StockRequestHeaderResultData> srList;
     List<ApiStockRequestLineResponse> srLineList;
     ApiStockRequestHeaderResponse apiStockRequestHeaderResponse;
@@ -59,7 +62,8 @@ public class StockRequestDownloadSyncTask extends AsyncTask<Void, Void, Boolean>
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
         this.isInitialSyncCompleted = isInitialSync;
-        this.mLog = Logger.getLogger(SalesOrderDownloadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = StockRequestDownloadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -161,7 +165,7 @@ public class StockRequestDownloadSyncTask extends AsyncTask<Void, Void, Boolean>
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_SO_RESULT ", json);
-            mLog.info("SYNC_SO_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_SO_RESULT :" + json);
 
         } catch (Exception ex) {
             //
@@ -296,7 +300,7 @@ public class StockRequestDownloadSyncTask extends AsyncTask<Void, Void, Boolean>
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_SO_DOWN_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_DOWN_PARAMS :" + json);
 
         params.setPassword(mApp.getCurrentUserPassword());
 
@@ -307,7 +311,7 @@ public class StockRequestDownloadSyncTask extends AsyncTask<Void, Void, Boolean>
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(response);
         //Log.d("SYNC_SO_DOWN_RES", json);
-        mLog.info("SYNC_SO_DOWN_RES :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_DOWN_RES :" + json);
     }
 
     private boolean isNetworkAvailable() {

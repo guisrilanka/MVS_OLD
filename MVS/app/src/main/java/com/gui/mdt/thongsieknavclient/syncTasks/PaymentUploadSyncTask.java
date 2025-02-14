@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.PaymentLineDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -40,7 +41,7 @@ public class PaymentUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
     Context context;
     SyncConfiguration syncConfig;
     Logger mLog;
-
+    String mLocationName;
     List<ApiPostCashReceiptJournalParameter> apiPostCashReceiptJournalParameterList;
     ApiPostCashReceiptJournalResponse apiPostCashReceiptJournalResponse;
     List<PaymentLine> paymentsToBeSync;
@@ -49,7 +50,8 @@ public class PaymentUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(PaymentUploadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = PaymentUploadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -286,7 +288,7 @@ public class PaymentUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         Gson gson = new Gson();
         String json = gson.toJson(params);
         //Log.d("SYNC_PAYMENT_UP_PARAMS", json);
-        mLog.info("SYNC_PAYMENT_UP_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_PAYMENT_UP_PARAMS :" + json);
 
         for (ApiPostCashReceiptJournalParameter p:params) {
             p.setPassword(mApp.getCurrentUserPassword());
@@ -300,7 +302,7 @@ public class PaymentUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(response);
         //Log.d("SYNC_PAYMENT_UP_RES", json);
-        mLog.info("SYNC_PAYMENT_UP_RES :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_PAYMENT_UP_RES :" + json);
     }
 
 

@@ -15,6 +15,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.model.BaseResult;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -35,6 +36,8 @@ public class SendEmailSyncTask extends AsyncTask<Void, Void, Boolean> {
     SyncConfiguration syncConfig;
     private boolean isForcedSync = false;
     Logger mLog;
+
+    String mLocationName;
     String mFilterCreatedDate;
     String fileName;
     String mEmailSubject = "", mEmailBody = "";
@@ -53,11 +56,12 @@ public class SendEmailSyncTask extends AsyncTask<Void, Void, Boolean> {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(SendEmailSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
         this.mFilterCreatedDate=mFilterCreatedDate;
         this.fileName=fileName;
         this.mEmailSubject = emailSubject;
         this.mEmailBody = emailBody;
+        mLocationName = SendEmailSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -165,7 +169,7 @@ public class SendEmailSyncTask extends AsyncTask<Void, Void, Boolean> {
             Gson gson = new Gson();
             String json = gson.toJson(syncConfig);
             //Log.d("SYNC_ITEM_RESULT ", json);
-            mLog.info("SYNC_ITEM_RESULT :" + json);
+            mLog.info(mLocationName +":-"+"SYNC_ITEM_RESULT :" + json);
 
         } catch (Exception ex) {
             //
@@ -187,7 +191,7 @@ public class SendEmailSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_SEND_EMAIL_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SEND_EMAIL_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 
@@ -197,7 +201,7 @@ public class SendEmailSyncTask extends AsyncTask<Void, Void, Boolean> {
 
         Gson gson = new Gson();
         String json = gson.toJson(response);
-        mLog.info("SYNC_SEND_EMAIL_RESPONSE :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SEND_EMAIL_RESPONSE :" + json);
     }
 
 }

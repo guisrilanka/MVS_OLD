@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.SalesOrderDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -41,7 +42,7 @@ public class SalesOrderDeliveryUploadSyncTask extends AsyncTask<Void, Void, Bool
     Logger mLog;
     List<SalesOrder> salesOrderToBeSync;
     String documentNo="";
-
+    String mLocationName;
     List<ApiPostSalesOrderStatusUpdateParameter>  apiPostSalesOrderStatusUpdateParameterList;
     ApiPostSalesOrderStatusResponse apiPostSalesOrderStatusResponse;
 
@@ -55,14 +56,16 @@ public class SalesOrderDeliveryUploadSyncTask extends AsyncTask<Void, Void, Bool
         syncConfig.setScope(context.getResources().getString(R.string.SyncScopeSoDeliveryFlag));
         syncConfig.setLastSyncDateTime(DateTime.now().toString());
 
+
     }
 
     public SalesOrderDeliveryUploadSyncTask(Context context, boolean isForcedSync,String mdocumentNo) {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(PaymentUploadSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
         this.documentNo=mdocumentNo;
+        mLocationName = SalesOrderDeliveryUploadSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -204,7 +207,7 @@ public class SalesOrderDeliveryUploadSyncTask extends AsyncTask<Void, Void, Bool
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DELIVERY_PARAMS", json);
-        mLog.info("SYNC_SO_DELIVERY_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_DELIVERY_PARAMS :" + json);
 
         for (ApiPostSalesOrderStatusUpdateParameter p:params) {
             p.setPassword(mApp.getCurrentUserPassword());
@@ -217,7 +220,7 @@ public class SalesOrderDeliveryUploadSyncTask extends AsyncTask<Void, Void, Bool
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(response);
         //Log.d("SYNC_SO_DELIVER_UP_RES", json);
-        mLog.info("SYNC_SO_DELIVER_UP_RES :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_SO_DELIVER_UP_RES :" + json);
     }
 
 }

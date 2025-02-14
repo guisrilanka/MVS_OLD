@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.datamodel.SyncStatus;
 import com.gui.mdt.thongsieknavclient.dbhandler.ItemDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 
@@ -43,13 +44,14 @@ public class ItemSyncTask extends AsyncTask<Void, Void, Boolean> {
     ApiItemListParameter apiItemListParameter;
     ApiItemListResult apiItemListResult;
     List<ApiItemListResult.ApiItem> itemListResult;
-
+    String mLocationName;
 
     public ItemSyncTask(Context context, boolean isForcedSync) {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog = Logger.getLogger(ItemSyncTask.class);
+        this.mLog = Log4jHelper.getLogger();
+        mLocationName = ItemSyncTask.class.getSimpleName();
     }
 
     @Override
@@ -221,7 +223,7 @@ public class ItemSyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_ITEM_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_ITEM_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
 

@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.seanzor.prefhelper.SharedPrefHelper;
+import com.google.gson.Gson;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.adapters.MvsSalesOrderAdapter;
@@ -66,6 +67,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SalesPricesDbHandler;
 import com.gui.mdt.thongsieknavclient.dbhandler.UserSetupDbHandler;
 import com.gui.mdt.thongsieknavclient.model.QrScanHeadModel;
 import com.gui.mdt.thongsieknavclient.model.QrScanLineModel;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -125,6 +127,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     SaveSalesOrderTask mSaveSalesOrderTask;
     OpenOldSOTask mOpenOldSOTask;
     private Logger mLog;
+    private Logger saveEditLogger ;
 
     public static List<QrScanHeadModel> qrScanHeadModels;
 
@@ -133,6 +136,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
     SharedPreferences mDefaultSharedPreferences;
     SharedPrefHelper mPrefHelper;
+
+    String mLocationName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +148,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         createView(view);
 
         mApp = (NavClientApp) getApplicationContext();
-        this.mLog = Logger.getLogger(MvsSalesOrderActivity.class);
+        this.mLog = Log4jHelper.getLogger();
+        this.saveEditLogger  = Log4jHelper.getSaveEditLogger();
+        mLocationName = MvsSalesOrderActivity.class.getSimpleName();
 
         initComponents();
         settingBtnDrawables();
@@ -171,7 +178,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
         List<String> arr = splitString("NTUC-GEYLANG LOR 38 (457)-(F51) , 612/620 GEYLANG LORONG 38"
                 , 40);
-        System.out.println(arr.size() + "");
+        logSaveEditParams(mLocationName,"SAVING_SALES_LINES","mSalesOrderLineList");
     }
 
     public static List<String> splitString(String msg, int lineSize) {
@@ -224,7 +231,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             }
         } catch (NullPointerException e) {
             System.out.println(e);
-            logParams(getResources().getString(R.string.message_exception), "192", e.getMessage());
+            logParams(getResources().getString(R.string.message_exception), "234", e.getMessage());
         }
         //take so picture is removed  cus req
         // mItemTakePicture.setVisible(false);
@@ -290,7 +297,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             }
         } catch (Exception e) {
             System.out.println(e);
-            logParams(getResources().getString(R.string.message_exception), "286", e.getMessage());
+            logParams(getResources().getString(R.string.message_exception), "300", e.getMessage());
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -664,6 +671,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
 
+                        logSaveEditParams(mLocationName,"MVS_SALES_ORDER_ITEM", " Document no" + mTempSalesOrderLine.getDocumentNo()
+                                +" no" + mTempSalesOrderLine.getNo() + " exchange qty" + mTempSalesOrderLine.getExchangedQty()
+                                + " qty" + mTempSalesOrderLine.getQuantity());
+
                         if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusComplete))) {
                             mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusComplete));
                         } else if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusVoid))) {
@@ -878,6 +889,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         mTempSalesOrderLine = SalesOrderLine.fromJson(objAsJson);
 
+                        logSaveEditParams(mLocationName,"MVS_EXCHANGE_ORDER_ITEM", " -Document no" + mTempSalesOrderLine.getDocumentNo()
+                                +" -no" + mTempSalesOrderLine.getNo() + " -exchange qty" + mTempSalesOrderLine.getExchangedQty()
+                                + " -qty" + mTempSalesOrderLine.getQuantity());
+
                         if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusComplete))) {
                             mTempSalesOrder.setStatus(getResources().getString(R.string.MVSSalesOrderStatusComplete));
                         } else if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusVoid))) {
@@ -1051,7 +1066,6 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         updateItemCrossRefDetails();
                         mMvsSalesOrderAdapter.notifyDataSetChanged();
-                        System.out.println("example unit price 3---"+ mTempSalesOrderLine.getUnitPrice());
                         Toast.makeText(mApp, getResources().getString(R.string.message_updated), Toast.LENGTH_SHORT).show();
                         isSaved = false;
                     }
@@ -1068,8 +1082,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             try {
                 updateCustomer();
             } catch (Exception e) {
-                Log.d("Exception", e.toString());
-                logParams(getResources().getString(R.string.message_exception), "795", e.getMessage());
+//                Log.d("Exception", e.toString());
+                logParams(getResources().getString(R.string.message_exception), "1086", e.getMessage());
                 return false;
             }
             return true;
@@ -1115,7 +1129,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                 } catch (Exception e) {
                     mProgressDialog.dismiss();
-                    logParams(getResources().getString(R.string.message_exception), "841", e.getMessage());
+                    logParams(getResources().getString(R.string.message_exception), "1132", e.getMessage());
                 }
             } else {
                 mProgressDialog.dismiss();
@@ -1269,6 +1283,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         if (sol.getNo().equals(tempSol.getNo()) && sol.getUnitofMeasure().equals(tempSol.getUnitofMeasure()) && !tempSol.isExchangeItem()) {
                             sol.setQuantity(tempSol.getQuantity());
+                            sol.setExchangedQty(tempSol.getExchangedQty());
 
                             //update price details unit price, total ext...
                             updateSalesOrderLineObject(sol);
@@ -1299,7 +1314,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         updateItemCrossRefDetails();
 
         setAllItems();
-
+        logSaveEditParams(mLocationName,"UPDATE_CUSTOMER",mSalesOrderLineList);
         isCustomerChanged = true;
         isSaved = false;
     }
@@ -1374,7 +1389,6 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         if (mTempCustomer != null) {
                             for (SalesOrderLine sol : mSalesOrderLineList) {
-                                System.out.println("example unit price 6 " +sol.getUnitPrice());
                                 // Escape early if cancel() is called
                                 if (isCancelled()) break;
 
@@ -1424,8 +1438,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     }
                 }
             } catch (Exception e) {
-                Log.d(getResources().getString(R.string.message_exception), e.toString());
-                logParams(getResources().getString(R.string.message_exception), "1162", e.getMessage());
+                logSaveEditParams(mLocationName,"LOAD_ORDER",e.getMessage());
                 return false;
             }
             return true;
@@ -1466,8 +1479,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                 date_ = simpleDateFormat.format(initDate);
 
                             } catch (Exception e) {
-                                Log.e(getResources().getString(R.string.message_exception), e.getMessage().toString());
-                                logParams(getResources().getString(R.string.message_exception), "1176", e.getMessage());
+                                logParams(getResources().getString(R.string.message_exception), "1482", e.getMessage());
                             }
 
                             mTxtDeliveryDate.setText(date_);
@@ -1492,8 +1504,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     applyStatus();
 
                 } catch (Exception e) {
-                    Log.d(getResources().getString(R.string.message_exception), e.toString());
-                    logParams(getResources().getString(R.string.message_exception), "1202", e.getMessage());
+                    logParams(getResources().getString(R.string.message_exception), "1507", e.getMessage());
                     mProgressDialog.dismiss();
                 }
             } else {
@@ -2545,7 +2556,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             try {
                 saveSalesOrder();
             } catch (Exception e) {
-                logParams(getResources().getString(R.string.message_exception), "2134", e.getMessage());
+                logSaveEditParams(mLocationName,"SaveSalesOrderTask-Error", e.getMessage());
                 return false;
             }
             return true;
@@ -2590,9 +2601,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                     }
 
-                } catch (Exception ex) {
-//                    Log.d(getResources().getString(R.string.message_exception), ex.toString());
-                    logParams(getResources().getString(R.string.message_exception), "2181", ex.getMessage());
+                } catch (Exception e) {
+                    logSaveEditParams(mLocationName,"SaveSalesOrderTask-Error", e.getMessage());
                     mProgressDialog.dismiss();
                 }
             } else {
@@ -2660,21 +2670,19 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 }
                 mTempSalesOrder.setComment(mPoComments);
                 updateLineNo();
+                logSaveEditParams(mLocationName,"SAVING_SALES_ORDER",mTempSalesOrder);
                 try {
                     if (dbAdapter.deleteSalesOrder(mTempSalesOrder.getNo())) {
                         dbAdapter.addSalesOrder(mTempSalesOrder);
                         //Updating new so running no
                         saveSoRunningNumber(mTempSalesOrder.getNo());
-//                        Log.d(getResources().getString(R.string.message_so_added), mTempSalesOrder.getNo() == null ? "" : mTempSalesOrder.getNo());
-                        logParams(getResources().getString(R.string.message_so_added), "2255", mTempSalesOrder.getNo() == null ? "" : mTempSalesOrder.getNo());
 
                         if (mSalesOrderLineList != null && mSalesOrderLineList.size() > 0) {
                             for (SalesOrderLine sol : mSalesOrderLineList) {
                                 if (dbLineAdapter.deleteSalesOrderLine(sol.getKey())) {
 
                                     dbLineAdapter.addSalesOrderLine(sol);
-//                                    Log.d(getResources().getString(R.string.message_so_line_added), sol.getNo() == null ? "" : sol.getNo());
-                                    logParams(getResources().getString(R.string.message_so_line_added), "2263", sol.getNo() == null ? "" : sol.getNo());
+
                                 }
                             }
                         }
@@ -2682,10 +2690,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     status = true;
                     this.isSaveSuccess = true;
                     isCustomerChanged = false;
+                    logSaveEditParams(mLocationName,"SAVING_SALES_LINES",mSalesOrderLineList);
                     this.isSaved = true;
-                } catch (Exception ee) {
-                    Log.d(getResources().getString(R.string.message_exception), ee.getMessage().toString());
-                    logParams(getResources().getString(R.string.message_exception), "2274", ee.getMessage());
+                } catch (Exception e) {
+                    logSaveEditParams(mLocationName,"SAVING_SALES_ORDER_ERROR",e.getMessage());
                     dbAdapter.close();
                     dbLineAdapter.close();
                 }
@@ -2732,6 +2740,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             }
             mTempSalesOrder.setComment(mPoComments);
             updateLineNo();
+            logSaveEditParams(mLocationName,"SAVING_SALES_ORDER_ELSE",mTempSalesOrder);
             try {
                 if (dbAdapter.deleteSalesOrder(mTempSalesOrder.getNo())) {
                     dbAdapter.addSalesOrder(mTempSalesOrder);
@@ -2756,10 +2765,11 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 status = true;
                 this.isSaveSuccess = true;
                 isCustomerChanged = false;
+                logSaveEditParams(mLocationName,"SAVING_SALES_ORDER_LINES_ELSE",mSalesOrderLineList);
                 this.isSaved = true;
             } catch (Exception e) {
-                Log.d(getResources().getString(R.string.message_exception), e.getMessage().toString());
-                logParams(getResources().getString(R.string.message_exception), "2348", e.getMessage());
+                logSaveEditParams(mLocationName,"SAVING_SALES_ORDER_ELSE_ERROR",e.getMessage());
+
                 dbAdapter.close();
                 dbLineAdapter.close();
             }
@@ -2883,8 +2893,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 mTxtDeliveryDate.setError(null);
             }
         } catch (ParseException e) {
-            e.printStackTrace();
-            logParams(getResources().getString(R.string.message_exception), "2473", e.getMessage());
+            logSaveEditParams(mLocationName,"validateDeliveryDate", e.getMessage());
         }
     }
 
@@ -2899,8 +2908,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 mTxtDeliveryDate.setText(mUIDateFormat.format(initDate));
 
             } catch (Exception e) {
-                Log.e(getResources().getString(R.string.message_exception), e.getMessage().toString());
-                logParams(getResources().getString(R.string.message_exception), "2489", e.getMessage());
+                logSaveEditParams(mLocationName,"setDeliveryDate", e.getMessage());
             }
         }
     }
@@ -2999,7 +3007,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     } else if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))
                             || mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConfirmed))) {
                         mTempSalesOrder.setLineItems(mSalesOrderLineList);
-
+                        logSaveEditParams(mLocationName,"reprint", " SI_NO: " + mTempSalesOrder.getSINo());
                         openReport(mTempSalesOrder);
                     }
 
@@ -3141,7 +3149,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 headModel.j_driverName = name;
             } catch (Exception e) {
                 headModel.j_driverName = mApp.getCurrentUserDisplayName();
-                logParams(getResources().getString(R.string.message_exception), "2729", e.getMessage());
+                logParams(getResources().getString(R.string.message_exception), "3152", e.getMessage());
             }
             int paragrpheIndicator = (barcodeC + 1);
             headModel.k_paragraphIndicator = String.valueOf(paragrpheIndicator);
@@ -3164,6 +3172,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 //        GSTPostingSetupDbHandler gstDb = new GSTPostingSetupDbHandler(getApplicationContext());
 //        gstDb.open();
 //        String gstPresentage = gstDb.getGSTPrecentage(mTempCustomer.getVatBusPostingGroup());
+        logSaveEditParams(mLocationName,"PRINT_SALES_ORDER",so);
         String gstPresentage = mPrefHelper.getInt(R.string.pref_gst_percentage_key, 7)+"";
         so.setVatPercentage(gstPresentage);
         String soJasonObj = so.toJson();
@@ -3219,7 +3228,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
             updateItemBalencePda(mSalesOrderLineList, true);
 
-            logParams(getResources().getString(R.string.message_void_sale_invoice), "2781", "SI_NO: "
+
+            logSaveEditParams(mLocationName,"voidSalesInvoice", "SI_NO: "
                     + mTempSalesOrder.getSINo() + ", SO_NO: " + soNo);
 
             Toast.makeText(mApp, getResources().getString(R.string.message_voided_success), Toast.LENGTH_SHORT).show();
@@ -3258,7 +3268,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             if (mTempCustomer.getCode() != null) {
                 if (mSalesOrderLineList.size() > 0) {
                     updateSummeryValues(mSalesOrderLineList);
-                    logParams(getResources().getString(R.string.message_confirm_and_print), "2820", "SO_NO: " + soNo);
+
+                    logSaveEditParams(mLocationName,"convertToInvoice", " SI_NO: " + mTempSalesOrder.getSINo() + ", -SO_NO: " + soNo);
                     if (validateGTAndSalesQty()) {
                         if (validateVehicleQtyOnList(mSalesOrderLineList,
                                 mApp.getmCurrentDriverCode(),
@@ -3373,7 +3384,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             String siNo = "";
 
             siNo = dbHandler.convertToInvoice(soNo, mTempSalesOrder.getSINo(), mApp.getCurrentUserName());
-            logParams(getResources().getString(R.string.message_void_sale_invoice), "2955", "GEN SI_NO: "
+            logParams(getResources().getString(R.string.message_void_sale_invoice), "3387", "GEN SI_NO: "
                     + siNo +" mTempSINo:" + mTempSalesOrder.getSINo() + ", SO_NO: " + soNo);
             dbHandler.close();
 
@@ -3482,18 +3493,19 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mAddress = mTempCustomer.getAddress() + "," + postalCode;
 
         } catch (Exception e) {
-            logParams(getResources().getString(R.string.message_exception), "3023", e.getMessage());
+            logParams(getResources().getString(R.string.message_exception), "3496", e.getMessage());
         }
     }
 
     public void updateItemBalencePda(List<SalesOrderLine> lineList, boolean isVoid_) {
         if (lineList != null) {
             if (!lineList.isEmpty()) {
-                ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(getApplicationContext());
-                exchangeHandler.open();
+
 
                 for (SalesOrderLine sol : lineList) {
                     if(sol.isExchangeItem()){
+                        ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(getApplicationContext());
+                        exchangeHandler.open();
                         ExchangeItem item = new ExchangeItem();
                         item.setItemCode(sol.getNo());
                         item.setUom(sol.getUnitofMeasure());
@@ -3501,6 +3513,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                         item.setTotalQty(sol.getExchangedQty());
                         item.setIssueQty(sol.getQuantity());
                         exchangeHandler.updateIssueQty(item, isVoid_);
+                        exchangeHandler.close();
 
                     }else{
 
@@ -3526,17 +3539,19 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                             item.setTotalQty(sol.getExchangedQty());
                             item.setIssueQty(0);
                             item.setLocationCode(sol.getDriverCode());//set location code
-
+                            ExchangeItemDbHandler exchangeHandler = new ExchangeItemDbHandler(getApplicationContext());
+                            exchangeHandler.open();
                             if(exchangeHandler.isItemExist(sol.getNo(),sol.getUnitofMeasure())){
                                 exchangeHandler.updateTotalAndBalanceQty(item,isVoid_);
                             }else{
                                 exchangeHandler.addItems(item);
                             }
+                            exchangeHandler.close();
                         }
                     }
 
                 }
-                exchangeHandler.close();
+
             }
         }
     }
@@ -3578,5 +3593,12 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
     private void logParams(String type, String lineNo, String params) {
         mLog.info(type + "- " + lineNo + " -" + params);
+    }
+
+    private void logSaveEditParams(String location,String logName, Object data) {
+        Gson gson = new Gson();
+        //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(data);
+        saveEditLogger.info(location+":-"+logName +"--"+ json);
     }
 }

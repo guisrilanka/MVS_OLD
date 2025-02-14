@@ -46,6 +46,7 @@ import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderImageUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesOrderUploadSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.SalesPricesSyncTask;
 import com.gui.mdt.thongsieknavclient.syncTasks.UserSetupRunningNoUploadTask;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -105,7 +106,7 @@ public class LdsHomeActivity extends AppCompatActivity implements View.OnClickLi
 
         mApp = (NavClientApp) getApplication();
         logSyncStatus = "";
-        this.mLog= Logger.getLogger(UserSetupRunningNoUploadTask.class);
+        this.mLog= Log4jHelper.getLogger();
 
         mProgressDialog = new ProgressDialog(LdsHomeActivity.this);
         mProgressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

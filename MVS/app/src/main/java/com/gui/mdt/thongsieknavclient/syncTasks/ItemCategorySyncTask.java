@@ -17,6 +17,7 @@ import com.gui.mdt.thongsieknavclient.dbhandler.SyncConfigurationDbHandler;
 import com.gui.mdt.thongsieknavclient.interfaces.AsyncResponse;
 import com.gui.mdt.thongsieknavclient.model.itemmodels.ItemCategoryListParameter;
 import com.gui.mdt.thongsieknavclient.model.itemmodels.ItemCategoryListResultData;
+import com.gui.mdt.thongsieknavclient.utils.Log4jHelper;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -42,12 +43,14 @@ public class ItemCategorySyncTask extends AsyncTask<Void, Void, Boolean> {
     private NavClientApp mApp;
     private boolean isForcedSync = false;
     Logger mLog;
+    String mLocationName;
 
     public ItemCategorySyncTask(Context context, boolean isForcedSync) {
         this.context = context;
         this.isForcedSync = isForcedSync;
         this.mApp = (NavClientApp) context;
-        this.mLog= Logger.getLogger(ItemCategorySyncTask.class);
+        this.mLog= Log4jHelper.getLogger();
+        mLocationName = ItemCategorySyncTask.class.getSimpleName();
     }
 
     @Override
@@ -196,7 +199,7 @@ public class ItemCategorySyncTask extends AsyncTask<Void, Void, Boolean> {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(params);
         //Log.d("SYNC_SO_DOWN_PARAMS", json);
-        mLog.info("SYNC_CAT_PARAMS :" + json);
+        mLog.info(mLocationName +":-"+"SYNC_CAT_PARAMS :" + json);
         params.setPassword(mApp.getCurrentUserPassword());
 
     }
