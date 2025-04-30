@@ -96,9 +96,9 @@ public class ExchangeItemDbHandler {
 
         String selectQuery = "SELECT * FROM " + dbHelper.TABLE_EXCHANGE_ITEM + " ei"
                 + " LEFT JOIN " + dbHelper.TABLE_ITEM + " i "
-                + " ON ei." + dbHelper.KEY_EXCHANGE_ITEM_CODE + " = i." + dbHelper.KEY_ITM_CODE;
+                + " ON ei." + dbHelper.KEY_EXCHANGE_ITEM_CODE + " = i." + dbHelper.KEY_ITM_CODE + " WHERE  ei." + dbHelper.KEY_EXCHANGE_ITEM_BALANCE_QTY +" > ?";
 
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor c = db.rawQuery(selectQuery, new String[]{String.valueOf(0.0)});
 
         // looping through all rows and adding to list
         if (c.moveToFirst()) {

@@ -47,6 +47,7 @@
 
     <string-array name="printers">
         <item>Honeywell </item>
-        <item>Honeywell RP4</item>
+        <item>Honeywell RP4 OLD</item>
+        <item>Honeywell RP4 NEW</item>
     </string-array>
 </resources>

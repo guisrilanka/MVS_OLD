@@ -9,7 +9,7 @@
 <!--<string name="api_server">http://thongsiek.dyndns.biz:9060/</string>-->
 
     <!--    //NEW PORT SETUP UAT-->
-    <string name="api_server">http://thongsiek.dyndns.biz:29020/</string>
+    <string name="api_server">http://thongsiek.dyndns.biz:29060/</string>
 
     <!--    //NEW PORT SETUP LIVE-->
 <!--    <string name="api_server">http://thongsiek.dyndns.biz:29060/</string>-->
@@ -59,7 +59,7 @@
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
 
     <string name="pref_no_of_si_printouts">No Of Invoice Printouts</string>
-    <string name="default_no_of_si_printouts">2</string>
+    <string name="default_no_of_si_printouts">1</string>
     <string name="pref_no_of_si_printouts_key">pref_no_of_si_printouts</string>
 
     <string name="module_mso">MSO</string>
@@ -435,6 +435,8 @@
     <string name="msg_read_barcode">Read barcode</string>
     <string name="select_default_printer">Select default printer</string>
     <string name="printer_honeywell">Honeywell</string>
+    <string name="printer_honeywell_rp4_old">Honeywell RP4 OLD</string>
+    <string name="printer_honeywell_rp4_new">Honeywell RP4 NEW</string>
     <string name="print_successfully">Print successfully</string>
 
 </resources>

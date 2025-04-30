@@ -311,6 +311,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
     }
 
 //    mFabAddNewExcItem.
+
     @Override
     public void onClick(View v) {
 
@@ -3180,7 +3181,6 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         String selectedPrinter = mPrefHelper.getString(R.string.pref_select_printer_key);
         Intent printInvoiceIntent;
         if (selectedPrinter.equals(getResources().getString(R.string.printer_honeywell))) {
-
             printInvoiceIntent = new Intent(MvsSalesOrderActivity.this, PrintInvoiceActivity.class);
         } else {
             printInvoiceIntent = new Intent(MvsSalesOrderActivity.this, PrintInvoiceOnRP4Activity.class);

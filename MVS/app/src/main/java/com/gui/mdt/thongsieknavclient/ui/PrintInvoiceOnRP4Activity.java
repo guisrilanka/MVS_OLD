@@ -3,6 +3,7 @@ package com.gui.mdt.thongsieknavclient.ui;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,6 +60,8 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
     byte[] printData = {0};
 
     ConnectionBase conn = null;
+    SharedPreferences mDefaultSharedPreferences;
+    SharedPrefHelper mPrefHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,8 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
             mCustomer = getCustomer(mTempSalesOrder.getSelltoCustomerNo());
         }
-
+        mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefHelper = new SharedPrefHelper(getResources(), mDefaultSharedPreferences);
         mProgressDialog = new ProgressDialog(PrintInvoiceOnRP4Activity.this);
 
         mNoOfPrintouts = getCountOfCopies();
@@ -193,15 +197,22 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                         //check sales qty zero items
                         float salesQty = sol.getExchangedQty() + sol.getQuantity();
 
-                        if (salesQty > new Float(0) && sol.getUnitPrice() > 0f) {
+                        if (salesQty > new Float(0)) {
                             mTotalNoOfItems++;
-                            dyanamicMediaLength = mTotalNoOfItems * 40;
+                            dyanamicMediaLength = mTotalNoOfItems * 35;
                         }
                     }
                 }
             }
+            int concat = 0;
 
-            int concat = (850 + dyanamicMediaLength) * mNoOfPrintouts;
+            String selectedPrinter = mPrefHelper.getString(R.string.pref_select_printer_key);
+            if (selectedPrinter.equals(getResources().getString(R.string.printer_honeywell_rp4_old))) {
+                concat = (0 + dyanamicMediaLength) * 1;
+            }else{
+                concat = (900 + dyanamicMediaLength) * 1;
+            }
+
 
             int length = (int) (Math.log10(concat) + 1);
 
@@ -219,7 +230,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             int count = 0;
             int row = 0;
 
-            while (count < mNoOfPrintouts) { //print no.of copies according to settings
+//            while (count < mNoOfPrintouts) { //print no.of copies according to settings
 
 //            docDPL.writeTextInternalSmooth("", fontSize, row, 100, paramDPL);
 
@@ -456,7 +467,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
                         count++;
 
-                    }
+//                    }
 
             printData = new byte[docDPL.getDocumentData().length + sDPL.length()];
 

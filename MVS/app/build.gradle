@@ -9,7 +9,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 129
-        versionName "2.3.3"
+        versionName "2.3.5"
         multiDexEnabled true
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "2945ac6bc13c43e3b3a88f125bb7cedf"]
 
