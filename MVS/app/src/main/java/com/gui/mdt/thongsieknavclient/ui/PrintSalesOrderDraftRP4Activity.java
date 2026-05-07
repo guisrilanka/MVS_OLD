@@ -3,6 +3,7 @@ package com.gui.mdt.thongsieknavclient.ui;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,9 +14,11 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.github.seanzor.prefhelper.SharedPrefHelper;
 import com.gui.mdt.thongsieknavclient.NavClientApp;
 import com.gui.mdt.thongsieknavclient.R;
 import com.gui.mdt.thongsieknavclient.datamodel.Customer;
@@ -61,6 +64,9 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
     private Logger mLog;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
+    SharedPreferences mDefaultSharedPreferences;
+    SharedPrefHelper mPrefHelper;
+
     private static final int REQUEST_BLUETOOTH_CONNECT = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,9 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
             mSalesOrderLineList = mTempSalesOrder.getLineItems();
             mCustomer = getCustomer(mTempSalesOrder.getSelltoCustomerNo());
         }
+
+        mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefHelper = new SharedPrefHelper(getResources(), mDefaultSharedPreferences);
         this.mLog = Log4jHelper.getLogger();
         mGenerateDraftReportTask = new GenerateDraftReportTask();
         mGenerateDraftReportTask.execute((Void) null);
@@ -161,7 +170,14 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
             }
             dyanamicMediaLength = mTotalNoOfItems * 40;
 
-            int concat = 550 + dyanamicMediaLength;
+            int concat = 0;
+
+            String selectedPrinter = mPrefHelper.getString(R.string.pref_select_printer_key);
+            if (selectedPrinter.equals(getResources().getString(R.string.printer_honeywell_rp4_old))) {
+                concat = (0 + dyanamicMediaLength) * 1;
+            }else{
+                concat = (750 + dyanamicMediaLength) * 1;
+            }
 
             int length = (int) (Math.log10(concat) + 1);
 
@@ -194,7 +210,7 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
 
             //footnote
             row += 20;
-            docDPL.writeTextInternalSmooth("Received from DODO Marketing Pte Ltd",
+            docDPL.writeTextInternalSmooth("Received from TSG Food Pte. Ltd.",
                     fontSize, row, commanWidth, paramDPL);
 
             paramDPL.setIsBold(true);
@@ -243,7 +259,7 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
                         //check sales qty zero items
                         float salesQty = sol.getExchangedQty() + sol.getQuantity();
 
-                        if ((salesQty > new Float(0) && sol.getUnitPrice() > 0f) || sol.isExchangeItem()) {
+                        if ((salesQty > new Float(0)) || sol.isExchangeItem()) {
 
                             String itemUOM = sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure();
                             String exchQty = sol.getExchangedQty() == 0f ? ""
@@ -262,7 +278,7 @@ public class PrintSalesOrderDraftRP4Activity extends AppCompatActivity implement
                             docDPL.writeTextScalable(sol.getItemCrossReferenceNo(),
                                     "01", row, 40, paramDPL);
                             docDPL.writeTextScalable(Math.round(sol.getQuantity()) + " " + itemUOM,
-                                    "01", row, 130, paramDPL);
+                                    "01", row, 150, paramDPL);
                             docDPL.writeTextScalable(exchQty,
                                     "01", row, 210, paramDPL);
                             docDPL.writeTextScalable(String.format("%.2f", sol.getUnitPrice()),

@@ -755,6 +755,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                     mMvsSalesOrderAdapter.notifyDataSetChanged();
                                 }
                                 if (indexSOLArray.size() > 1) {
+                                    logSaveEditParams(mLocationName,"MERGE_SO_MULTI_CANDIDATES", indexSOLArray);
                                     SalesOrderLine duplicateSOLObject = new SalesOrderLine(),
                                             existSRLObject = new SalesOrderLine();
 
@@ -805,7 +806,23 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                                             updateSalesOrderLineObject(existSRLObject);
                                             //Setting SalesOrderLine item to the list
-                                            mSalesOrderLineList.set(position, existSRLObject);
+                                            int existIndex = mSalesOrderLineList.indexOf(existSRLObject);
+                                            java.util.HashMap<String, Object> mergeTrace = new java.util.HashMap<>();
+                                            mergeTrace.put("position", position);
+                                            mergeTrace.put("existIndex", existIndex);
+                                            mergeTrace.put("tempKey", mTempSalesOrderLine.getKey());
+                                            mergeTrace.put("existKey", existSRLObject.getKey());
+                                            mergeTrace.put("itemNo", mTempSalesOrderLine.getNo());
+                                            mergeTrace.put("uom", mTempSalesOrderLine.getUnitofMeasure());
+                                            mergeTrace.put("qty", mTempSalesOrderLine.getQuantity());
+                                            mergeTrace.put("qtyToInvoice", mTempSalesOrderLine.getQtytoInvoice());
+                                            mergeTrace.put("exchangedQty", mTempSalesOrderLine.getExchangedQty());
+                                            logSaveEditParams(mLocationName,"MERGE_SO_MATCHED_UPDATE", mergeTrace);
+                                            if (existIndex >= 0) {
+                                                mSalesOrderLineList.set(existIndex, existSRLObject);
+                                            } else {
+                                                mSalesOrderLineList.set(position, existSRLObject);
+                                            }
 
                                             updateSummeryValues(mSalesOrderLineList);
                                             mMvsSalesOrderAdapter.notifyDataSetChanged();
@@ -962,6 +979,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                     mMvsSalesOrderAdapter.notifyDataSetChanged();
                                 }
                                 else if (indexSOLArray.size() > 1) {
+                                    logSaveEditParams(mLocationName,"MERGE_EX_MULTI_CANDIDATES", indexSOLArray);
                                     SalesOrderLine duplicateSOLObject = new SalesOrderLine(),
                                             existSRLObject = new SalesOrderLine();
 
@@ -974,7 +992,8 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 //                                            duplicateSOLObject = sol;
 //                                        }
                                         if (sol.getNo().equals(mTempSalesOrderLine.getNo()) &&
-                                                sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure()) && sol.isExchangeItem()) {
+                                                sol.getUnitofMeasure().equals(mTempSalesOrderLine.getUnitofMeasure()) &&
+                                                    sol.isExchangeItem()) {
 
 //                                            itemExist = true;
                                             existSRLObject = sol;
@@ -1011,7 +1030,23 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                                             existSRLObject.setExchangeItem(true);
 
                                             //Setting SalesOrderLine item to the list
-                                            mSalesOrderLineList.set(position, existSRLObject);
+                                            int existIndex = mSalesOrderLineList.indexOf(existSRLObject);
+                                            java.util.HashMap<String, Object> mergeTrace = new java.util.HashMap<>();
+                                            mergeTrace.put("position", position);
+                                            mergeTrace.put("existIndex", existIndex);
+                                            mergeTrace.put("tempKey", mTempSalesOrderLine.getKey());
+                                            mergeTrace.put("existKey", existSRLObject.getKey());
+                                            mergeTrace.put("itemNo", mTempSalesOrderLine.getNo());
+                                            mergeTrace.put("uom", mTempSalesOrderLine.getUnitofMeasure());
+                                            mergeTrace.put("qty", mTempSalesOrderLine.getQuantity());
+                                            mergeTrace.put("qtyToInvoice", mTempSalesOrderLine.getQtytoInvoice());
+                                            mergeTrace.put("exchangedQty", mTempSalesOrderLine.getExchangedQty());
+                                            logSaveEditParams(mLocationName,"MERGE_EX_MATCHED_UPDATE", mergeTrace);
+                                            if (existIndex >= 0) {
+                                                mSalesOrderLineList.set(existIndex, existSRLObject);
+                                            } else {
+                                                mSalesOrderLineList.set(position, existSRLObject);
+                                            }
 
                                             mMvsSalesOrderAdapter.notifyDataSetChanged();
                                         }
@@ -2672,6 +2707,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 mTempSalesOrder.setComment(mPoComments);
                 updateLineNo();
                 logSaveEditParams(mLocationName,"SAVING_SALES_ORDER",mTempSalesOrder);
+                logSaveEditParams(mLocationName,"DB_SAVE_FINAL_LINES_NEW",mSalesOrderLineList);
                 try {
                     if (dbAdapter.deleteSalesOrder(mTempSalesOrder.getNo())) {
                         dbAdapter.addSalesOrder(mTempSalesOrder);
@@ -2680,6 +2716,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
 
                         if (mSalesOrderLineList != null && mSalesOrderLineList.size() > 0) {
                             for (SalesOrderLine sol : mSalesOrderLineList) {
+                                logSaveEditParams(mLocationName,"SAVING_SALES_LINES",sol);
                                 if (dbLineAdapter.deleteSalesOrderLine(sol.getKey())) {
 
                                     dbLineAdapter.addSalesOrderLine(sol);
@@ -2691,7 +2728,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     status = true;
                     this.isSaveSuccess = true;
                     isCustomerChanged = false;
-                    logSaveEditParams(mLocationName,"SAVING_SALES_LINES",mSalesOrderLineList);
+
                     this.isSaved = true;
                 } catch (Exception e) {
                     logSaveEditParams(mLocationName,"SAVING_SALES_ORDER_ERROR",e.getMessage());
@@ -2742,6 +2779,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
             mTempSalesOrder.setComment(mPoComments);
             updateLineNo();
             logSaveEditParams(mLocationName,"SAVING_SALES_ORDER_ELSE",mTempSalesOrder);
+            logSaveEditParams(mLocationName,"DB_SAVE_FINAL_LINES_EDIT",mSalesOrderLineList);
             try {
                 if (dbAdapter.deleteSalesOrder(mTempSalesOrder.getNo())) {
                     dbAdapter.addSalesOrder(mTempSalesOrder);
@@ -3269,7 +3307,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                 if (mSalesOrderLineList.size() > 0) {
                     updateSummeryValues(mSalesOrderLineList);
 
-                    logSaveEditParams(mLocationName,"convertToInvoice", " SI_NO: " + mTempSalesOrder.getSINo() + ", -SO_NO: " + soNo);
+                    logSaveEditParams(mLocationName,"SoSaveBeforeConvert", " SI_NO: " + mTempSalesOrder.getSINo() + ", -SO_NO: " + soNo);
                     if (validateGTAndSalesQty()) {
                         if (validateVehicleQtyOnList(mSalesOrderLineList,
                                 mApp.getmCurrentDriverCode(),
@@ -3350,7 +3388,7 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                     ItemBalancePda itemPdaObj;
                     ItemBalancePdaDbHandler ibpDb
                             = new ItemBalancePdaDbHandler(context);
-                    ibpDb.open();
+                     ibpDb.open();
 
                     itemPdaObj = ibpDb.getItemBalencePda(sol.getNo()
                             , sol.getUnitofMeasure()

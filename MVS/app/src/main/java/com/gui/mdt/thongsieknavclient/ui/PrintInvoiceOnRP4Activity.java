@@ -210,7 +210,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             if (selectedPrinter.equals(getResources().getString(R.string.printer_honeywell_rp4_old))) {
                 concat = (0 + dyanamicMediaLength) * 1;
             }else{
-                concat = (900 + dyanamicMediaLength) * 1;
+                concat = (950 + dyanamicMediaLength) * 1;
             }
 
 
@@ -226,6 +226,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             String sDPL = String.format("%cc" + mediaLength + "\r\n", 2);
 
             docDPL.setEnableAdvanceFormatAttribute(true);
+
 
             int count = 0;
             int row = 0;
@@ -299,6 +300,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             paramDPL.setIsUnicode(true);
             paramDPL.setDBSymbolSet(ParametersDPL.DoubleByteSymbolSet.Unicode);
 
+
             if (mSalesOrderLineList != null) {
                 Collections.reverse(mSalesOrderLineList);
                 if (mSalesOrderLineList.size() >= 0) {
@@ -308,7 +310,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                         //check sales qty zero items
                         float salesQty = sol.getExchangedQty() + sol.getQuantity();
 
-                        if ((salesQty > new Float(0) && sol.getUnitPrice() > 0f) || sol.isExchangeItem()) {
+                        if (salesQty > new Float(0) || sol.isExchangeItem()) {
 
                             String itemUOM = sol.getUnitofMeasure() == null ? "" : sol.getUnitofMeasure();
                             String exchQty = sol.getExchangedQty() == 0f ? ""

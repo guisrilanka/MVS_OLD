@@ -41,6 +41,7 @@ public class Log4jHelper {
                     true
             );
             Logger mainLogger = Logger.getLogger("MainLogger");
+            mainLogger.removeAllAppenders(); // 🔹 Prevent duplicate appenders if configure is called more than once
             mainLogger.addAppender(mainAppender);
             mainLogger.setLevel(Level.INFO);
             mainLogger.setAdditivity(false); // 🔹 Prevents logs from propagating to other loggers
@@ -58,6 +59,7 @@ public class Log4jHelper {
                     true
             );
             Logger saveEditLogger = Logger.getLogger("SaveEditLogger");
+            saveEditLogger.removeAllAppenders(); // 🔹 Prevent duplicate appenders if configure is called more than once
             saveEditLogger.addAppender(saveEditAppender);
             saveEditLogger.setLevel(Level.INFO);
             saveEditLogger.setAdditivity(false); // 🔹 Prevents logs from propagating to other loggers

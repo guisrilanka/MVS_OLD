@@ -293,6 +293,14 @@ public class SalesInvoiceUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
                     // get data
                     soLineParams.setLine_Number(String.valueOf(mLineNo));
 
+                        mLog.info(mLocationName +":-"+"SI_LINE_QTY_TRACE : SO_NO=" + confirmedSalesOrder.getNo()
+                            + ", SI_NO=" + confirmedSalesOrder.getSINo()
+                            + ", ITEM=" + soLine.getNo()
+                            + ", UOM=" + soLine.getUnitofMeasure()
+                            + ", QTY=" + soLine.getQuantity()
+                            + ", QTY_TO_INVOICE=" + soLine.getQtytoInvoice()
+                            + ", EXCH_QTY=" + soLine.getExchangedQty());
+
                     mLineNo++;
 
                     apiSalesOrderLineParameterList.add(soLineParams);
@@ -584,6 +592,14 @@ public class SalesInvoiceUploadSyncTask extends AsyncTask<Void, Void, Boolean> {
                     soLineParams.setNav_Document_Line_No("");//need to confirm the correct column to
                     // get data
                     soLineParams.setLine_Number(String.valueOf(mLineNo));
+
+                        mLog.info(mLocationName +":-"+"SI_LINE_QTY_TRACE : SO_NO=" + confirmedSalesOrder.getNo()
+                            + ", SI_NO=" + confirmedSalesOrder.getSINo()
+                            + ", ITEM=" + soLine.getNo()
+                            + ", UOM=" + soLine.getUnitofMeasure()
+                            + ", QTY=" + soLine.getQuantity()
+                            + ", QTY_TO_INVOICE=" + soLine.getQtytoInvoice()
+                            + ", EXCH_QTY=" + soLine.getExchangedQty());
 
                     mLineNo++;
 
