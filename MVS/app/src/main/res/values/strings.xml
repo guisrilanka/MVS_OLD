@@ -401,6 +401,7 @@
     <string name="no_qr_code_to_scan">No QR code to scan</string>
 
 
+    <string name="mapbox_access_code">pk.eyJ1IjoibWFkaHVzaGFua2FsYXNpdGhhIiwiYSI6ImNrOTE0cTIxeTA2NDYzaHA2ajNuNGs4eHMifQ.TfWtqg8mLdtZDPx_u5ARHA</string>
 
     //datecs printer
     <string name="msg_failed_to_connect">Failed to establish connection</string>
