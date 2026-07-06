@@ -200,6 +200,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                             sol.setQuantity(mQuantity);
                             sol.setQtytoInvoice(mQuantity);
                             sol.setLineAmount(mTotalPrice);
+                            sol.setTotalAmountExclVAT(mTotalPrice);
                             sol.setTotalVATAmount(mVatAmt);
                             sol.setTotalAmountInclVAT(mTotalAmtInclVat);
 
@@ -307,6 +308,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                         sol.setQuantity(mEnteredQuantity);
                         sol.setQtytoInvoice(mEnteredQuantity);
                         sol.setLineAmount(mTotalPrice);
+                        sol.setTotalAmountExclVAT(mTotalPrice);
                         sol.setTotalVATAmount(mVatAmt);
                         sol.setTotalAmountInclVAT( mTotalAmtInclVat);
 
@@ -332,6 +334,7 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
                         sol.setQuantity(0f);
                         sol.setQtytoInvoice(0f);
                         sol.setLineAmount(0f);
+                        sol.setTotalAmountExclVAT(0f);
                         sol.setTotalVATAmount(0f);
                         sol.setTotalAmountInclVAT(0f);
 
