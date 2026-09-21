@@ -195,6 +195,18 @@ public class PrintInvoiceActivity extends AppCompatActivity {
                         //title
                         mPrinter.btOutputStream.write("{PRINT,:@30,200:MF107,HMULT2,VMULT2|TAX INVOICE|}".getBytes());
 
+                        //invoice barcode (Code128) - printed directly below the TAX INVOICE title.
+                        //uses the printer's native EZ-Print barcode command (C128).
+                        //TODO: gate on mCustomer.isShowBarcode() once NAV sends the flag
+                        printCommand = "{PRINT,:@20,60:C128,HIGH60,WIDE2|" + siNo + "|}";
+                        mPrinter.btOutputStream.write(printCommand.getBytes());
+                        try {
+                            com.gui.mdt.thongsieknavclient.utils.Log4jHelper.getLogger()
+                                    .info("PRINT_EZ_BARCODE: ver=ez-barcode-v4 cmd=" + printCommand);
+                        } catch (Exception e) {
+                            Log.e("PRINT_EZ_BARCODE", e.toString());
+                        }
+
                         //suplier code
                         printCommand = "{PRINT,:@30,20:MF107|Supplier Code : " + mCustomer.getCustomerReferenceNo()
                                 + "|}";

@@ -32,6 +32,7 @@ public class Customer {
     private String billToCustomerName;
     private String customerReferenceNo;
     private String ntucStoreCode;
+    private boolean showBarcode;
 
     public Customer() {
     }
@@ -219,6 +220,14 @@ public class Customer {
 
     public void setNtucBuyerCode(String ntucBuyerCode) {
         this.ntucStoreCode = ntucBuyerCode;
+    }
+
+    public boolean isShowBarcode() {
+        return showBarcode;
+    }
+
+    public void setShowBarcode(boolean showBarcode) {
+        this.showBarcode = showBarcode;
     }
 
     //Gson

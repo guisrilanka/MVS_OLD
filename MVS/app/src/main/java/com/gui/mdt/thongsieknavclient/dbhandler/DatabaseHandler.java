@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Version
-    public static final int DATABASE_VERSION = 168;
+    public static final int DATABASE_VERSION = 169;
 
     // Database Name
     public static final String DATABASE_NAME = "thongsiek";
@@ -66,6 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public static final String KEY_CUS_BILL_TO_NAME = "billToCustomerName";
     public static final String KEY_CUS_REF_NO = "customerReferenceNo";
     public static final String KEY_CUS_NTUC_STORE_CODE = "ntucStoreCode";
+    public static final String KEY_CUS_SHOW_BARCODE = "showBarcode";
 
     //Sync Config table columns
     public static final String KEY_SYNC_ID = "id";
@@ -486,7 +487,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_CUS_BILL_TO_NO + " TEXT, "
                 + KEY_CUS_BILL_TO_NAME + " TEXT, "
                 + KEY_CUS_REF_NO + " TEXT, "
-                + KEY_CUS_NTUC_STORE_CODE + " TEXT "
+                + KEY_CUS_NTUC_STORE_CODE + " TEXT, "
+                + KEY_CUS_SHOW_BARCODE + " TEXT "
                 + ")";
         db.execSQL(CREATE_CUSTOMER_TABLE);
 
@@ -916,7 +918,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if exist
-        if(oldVersion == 167) {
+        if (oldVersion == 168) {
+            //add customer show barcode column only
+            db.execSQL("ALTER TABLE " + TABLE_CUSTOMER + " ADD " + KEY_CUS_SHOW_BARCODE + " TEXT DEFAULT NULL ");
+        } else if(oldVersion == 167) {
             String CREATE_EXCHANGE_ITEM_TABLE = "CREATE TABLE " + TABLE_EXCHANGE_ITEM + "("
                     + KEY_EXCHANGE_ID + " INTEGER PRIMARY KEY, "
                     + KEY_EXCHANGE_ITEM_CODE + " TEXT, "
@@ -957,7 +962,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + KEY_CUS_BILL_TO_NO + " TEXT, "
                     + KEY_CUS_BILL_TO_NAME + " TEXT, "
                     + KEY_CUS_REF_NO + " TEXT, "
-                    + KEY_CUS_NTUC_STORE_CODE + " TEXT "
+                    + KEY_CUS_NTUC_STORE_CODE + " TEXT, "
+                    + KEY_CUS_SHOW_BARCODE + " TEXT "
                     + ")";
             db.execSQL(CREATE_CUSTOMER_TABLE);
         } else {

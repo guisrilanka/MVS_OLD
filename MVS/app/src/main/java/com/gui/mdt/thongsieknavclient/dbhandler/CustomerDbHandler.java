@@ -89,6 +89,7 @@ public class CustomerDbHandler {
         values.put(dbHelper.KEY_CUS_BILL_TO_NAME, customer.getBillToCustomerName());
         values.put(dbHelper.KEY_CUS_REF_NO, customer.getCustomerReferenceNo());
         values.put(dbHelper.KEY_CUS_NTUC_STORE_CODE, customer.getNtucBuyerCode());
+        values.put(dbHelper.KEY_CUS_SHOW_BARCODE, customer.isShowBarcode() ? 1 : 0);
 
 
         // Inserting Row
@@ -338,6 +339,25 @@ public class CustomerDbHandler {
         return customerList;
     }
 
+    // showBarcode is a device-local flag (not sent by NAV), so sync must preserve it across delete/re-insert.
+    public List<String> getShowBarcodeCustomerCodes() {
+        List<String> codes = new ArrayList<String>();
+        db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT " + dbHelper.KEY_CUS_CODE + " FROM " + dbHelper.TABLE_CUSTOMER
+                + " WHERE CAST(" + dbHelper.KEY_CUS_SHOW_BARCODE + " AS INTEGER) > 0";
+        Cursor c = db.rawQuery(query, null);
+
+        if (c.moveToFirst()) {
+            do {
+                codes.add(c.getString(0));
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        return codes;
+    }
+
     private Customer getCustomerFromCursor(Customer customer, Cursor c) {
         //customer.setKey(c.getString(c.getColumnIndex(dbHelper.KEY_CUS_KEY)));
         customer.setName(c.getString(c.getColumnIndex(dbHelper.KEY_CUS_NAME)));
@@ -361,6 +381,7 @@ public class CustomerDbHandler {
         customer.setBillToCustomerName(c.getString(c.getColumnIndex(dbHelper.KEY_CUS_BILL_TO_NAME)));
         customer.setCustomerReferenceNo(c.getString(c.getColumnIndex(dbHelper.KEY_CUS_REF_NO)));
         customer.setNtucBuyerCode(c.getString(c.getColumnIndex(dbHelper.KEY_CUS_NTUC_STORE_CODE)));
+        customer.setShowBarcode(c.getInt(c.getColumnIndex(dbHelper.KEY_CUS_SHOW_BARCODE)) > 0);
         return customer;
     }
 

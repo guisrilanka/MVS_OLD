@@ -199,6 +199,11 @@ public class CustomerSyncTask extends AsyncTask<Void, Void, Boolean> {
                 //delete if customer exist and insert newly downloaded customer.
                 CustomerDbHandler dbAdapter = new CustomerDbHandler(context);
                 dbAdapter.open();
+
+                //showBarcode is a device-local flag not returned by NAV;
+                //capture it before deleting so re-inserted customers keep it.
+                List<String> showBarcodeCusCodes = dbAdapter.getShowBarcodeCustomerCodes();
+
                 if (isNeedDeleteAllCusData) {
                     dbAdapter.deleteAllCustomer();
                 }
@@ -228,6 +233,7 @@ public class CustomerSyncTask extends AsyncTask<Void, Void, Boolean> {
                     customer.setBillToCustomerName(cus.getBill_to_Customer_Name());
                     customer.setCustomerReferenceNo(cus.getCustomer_Reference_No());
                     customer.setNtucBuyerCode(cus.getNTUC_Store_Code());
+                    customer.setShowBarcode(showBarcodeCusCodes.contains(cus.getNo()));
 
                     if (mApp.getmCurrentModule().equals(context.getResources().getString(R.string.module_mvs))) {
                         if (!customer.isBlocked()) {

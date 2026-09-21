@@ -39,6 +39,8 @@ import java.util.regex.Pattern;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
+import android.graphics.Color;
+
 public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runnable {
 
     NavClientApp mApp;
@@ -199,18 +201,24 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
                         if (salesQty > new Float(0)) {
                             mTotalNoOfItems++;
-                            dyanamicMediaLength = mTotalNoOfItems * 35;
+                            dyanamicMediaLength = dyanamicMediaLength + 35;
                         }
                     }
                 }
             }
             int concat = 0;
 
+            //extra media length reserved for the invoice barcode (Code128)
+            //TODO: gate on mCustomer.isShowBarcode() once NAV sends the flag
+            int barcodeExtra = 100;
+
             String selectedPrinter = mPrefHelper.getString(R.string.pref_select_printer_key);
             if (selectedPrinter.equals(getResources().getString(R.string.printer_honeywell_rp4_old))) {
-                concat = (0 + dyanamicMediaLength) * 1;
+                concat = (0 + dyanamicMediaLength + barcodeExtra) * 1;
             }else{
-                concat = (950 + dyanamicMediaLength) * 1;
+                //900 base covers the redesigned layout without the bank remittance block
+                //(header+logo ~1035 dots for a 2 item invoice); add ~200 when the bank block is enabled
+                concat = (900 + dyanamicMediaLength + barcodeExtra) * 1;
             }
 
 
@@ -250,7 +258,46 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             docDPL.writeTextInternalSmooth("-----------------------------------------------------",
                     fontSize, row, 100, paramDPL);
 
-            row += 200;
+            //bank remittance details block (PayNow QR at left, account details at right)
+            //disabled for now - uncomment when the client wants bank details + QR on the invoice
+            //(also add paynow_qr.png to assets and increase the media length base by ~200)
+            /*
+            row += 60; //signing space above the signature line
+            int bankBaseRow = row;
+            boolean qrPrinted = false;
+            try {
+                Bitmap qrImage = BitmapFactory.decodeStream(getAssets().open("paynow_qr.png"));
+                docDPL.writeImage(qrImage, bankBaseRow, 15, paramDPL);
+                qrPrinted = true;
+            } catch (Exception e) {
+                Log.e("PRINT_RP4", "paynow_qr.png missing in assets - QR skipped: " + e);
+            }
+            docDPL.writeTextInternalSmooth("Swift Code       : UOVBSGSG",
+                    fontSize, row, 130, paramDPL);
+            row += 18;
+            docDPL.writeTextInternalSmooth("Branch Code      : 001",
+                    fontSize, row, 130, paramDPL);
+            row += 18;
+            docDPL.writeTextInternalSmooth("Account No.      : 4513064807",
+                    fontSize, row, 130, paramDPL);
+            row += 18;
+            docDPL.writeTextInternalSmooth("Bank Name        : United Overseas Bank Limited",
+                    fontSize, row, 130, paramDPL);
+            row += 18;
+            docDPL.writeTextInternalSmooth("Beneficiary Name : TSG Food Pte. Ltd.",
+                    fontSize, row, 130, paramDPL);
+            row += 22;
+            paramDPL.setIsBold(true);
+            docDPL.writeTextInternalSmooth("BANK REMITTANCE DETAILS",
+                    12, row, 130, paramDPL);
+            paramDPL.setIsBold(false);
+            if (qrPrinted) {
+                //make sure the next line clears the QR image height
+                row = Math.max(row, bankBaseRow + 140);
+            }
+            */
+
+            row += 200; //signing space above the signature line
             docDPL.writeTextInternalSmooth("The above mentioned goods in good order and condition.",
                     fontSize, row, commanWidth, paramDPL);
 
@@ -319,11 +366,6 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
 
                             row += 20;
-//                            docDPL.writeTextScalable(String.format(tableRowSpaceing
-//                                    , "       " + sol.getItemCrossReferenceNo()
-//                                    , String.valueOf(Math.round(sol.getQuantity())) + " " + itemUOM
-//                                    , exchQty),
-//                                    "00", row, commanWidth, paramDPL);
                             docDPL.writeTextScalable(sol.getItemCrossReferenceNo(),
                                     "01", row, 40, paramDPL);
                             docDPL.writeTextScalable(Math.round(sol.getQuantity()) + " " + itemUOM,
@@ -331,10 +373,10 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                             docDPL.writeTextScalable(exchQty,
                                     "01", row, 210, paramDPL);
                             docDPL.writeTextScalable(String.format("%.2f", sol.getUnitPrice()),
-                                    "01", row, 280, paramDPL);
+                                    "01", row, 295, paramDPL);
 
                             docDPL.writeTextScalable(String.format("%.2f", sol.getLineAmount()),
-                                    "01", row, 350, paramDPL);
+                                    "01", row, 352, paramDPL);
 
                             row += 14;
                             docDPL.writeTextScalable(sol.getNo() + " " + sol.getItemCrossReferenceDescription(),
@@ -351,12 +393,13 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                     ".........................................................................................................",
                     fontSize, row, commanWidth, paramDPL);
 
-            tableRowSpaceing = "%-20s %12s %12s %12s %12s";
-            //table header column names
+            //table header column names, positioned to line up with the item row columns
             row += 15;
-            docDPL.writeTextInternalSmooth(String.format(tableRowSpaceing
-                    , "Item", "Qty Billed", "Qty Exch.", "U.Price($)", "Total($)"),
-                    fontSize, row, commanWidth, paramDPL);
+            docDPL.writeTextInternalSmooth("Item", fontSize, row, commanWidth, paramDPL);
+            docDPL.writeTextInternalSmooth("Qty Billed", fontSize, row, 125, paramDPL);
+            docDPL.writeTextInternalSmooth("Qty Exch.", fontSize, row, 205, paramDPL);
+            docDPL.writeTextInternalSmooth("U.Price($)", fontSize, row, 275, paramDPL);
+            docDPL.writeTextInternalSmooth("Total($)", fontSize, row, 350, paramDPL);
 
             //table upper line
             row += 20;
@@ -364,9 +407,24 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                     "......................................................................................................",
                     fontSize, row, commanWidth, paramDPL);
 
-            row += 20;
+            //delivery by + mobile no (mobile is embedded after the last '-' of the display name)
+            String deliveryBy = mApp.getCurrentUserDisplayName() == null ? "" : mApp.getCurrentUserDisplayName();
+            String driverMobile = "";
+            int dashIdx = deliveryBy.lastIndexOf('-');
+            if (dashIdx > 0 && deliveryBy.substring(dashIdx + 1).trim().matches("\\d{7,}")) {
+                driverMobile = deliveryBy.substring(dashIdx + 1).trim();
+                deliveryBy = deliveryBy.substring(0, dashIdx).trim();
+            }
+
             paramDPL.setIsBold(true);
-            docDPL.writeTextInternalSmooth("Delivery By: " + mApp.getCurrentUserDisplayName(),
+            if (!driverMobile.isEmpty()) {
+                row += 20;
+                docDPL.writeTextInternalSmooth("Mobile No : " + driverMobile,
+                        fontSize, row, commanWidth, paramDPL);
+            }
+
+            row += 20;
+            docDPL.writeTextInternalSmooth("Delivery By: " + deliveryBy,
                     fontSize, row, commanWidth, paramDPL);
 
             if (siNoParts.length == 3) {
@@ -380,15 +438,6 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             docDPL.writeTextInternalSmooth(mCustomer.getPostalCode(),
                     fontSize, row, 50, paramDPL);
 
-//            List<String> arr = splitString(mTempSalesOrder.getSelltoCustomerName() + " , "
-//                    + mTempSalesOrder.getSelltoAddress(), 40);
-//            Collections.reverse(arr);
-//            for (String s : arr) {
-//                row += 20;
-//                docDPL.writeTextScalable(s,
-//                        "00", row, 50, paramDPL);
-//            }
-
                 List<String> arr = splitString(mTempSalesOrder.getSelltoAddress(), 40);
                 Collections.reverse(arr);
                 for (String s : arr) {
@@ -398,8 +447,8 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                 }
 
             row += 20;
-            docDPL.writeTextInternalSmooth(mTempSalesOrder.getSelltoCustomerName()+",",
-                        fontSize, row, 50, paramDPL);
+            docDPL.writeTextInternalSmooth("Address :",
+                    fontSize, row, commanWidth, paramDPL);
 
             //po no(External Document no)
             if (mTempSalesOrder.getExternalDocumentNo() != null) {
@@ -408,14 +457,22 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                         fontSize, row, commanWidth, paramDPL);
             }
 
-            //Ship to customer
+            //Ship to customer (code, with customer name on the line below)
+            row += 20;
+            docDPL.writeTextInternalSmooth(mTempSalesOrder.getSelltoCustomerName(),
+                    fontSize, row, 50, paramDPL);
             row += 20;
             docDPL.writeTextInternalSmooth("Ship To : " + mTempSalesOrder.getSelltoCustomerNo(),
                     fontSize, row, commanWidth, paramDPL);
 
-            //Bill to customer
+            //Bill to customer (code, with customer name on the line below)
+            String billToNo = mCustomer.getBillToCustomerNo() == null ? "" : mCustomer.getBillToCustomerNo();
+            String billToName = mCustomer.getBillToCustomerName() == null ? "" : mCustomer.getBillToCustomerName();
             row += 20;
-            docDPL.writeTextInternalSmooth("Bill To : " + mCustomer.getBillToCustomerName(),
+            docDPL.writeTextInternalSmooth(billToName,
+                    fontSize, row, 50, paramDPL);
+            row += 20;
+            docDPL.writeTextInternalSmooth("Bill To : " + (billToNo.trim().isEmpty() ? billToName : billToNo),
                     fontSize, row, commanWidth, paramDPL);
 
             //delivery date
@@ -425,13 +482,28 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
             // invoice no.
             row += 20;
-            docDPL.writeTextInternalSmooth("INV. NO. : " + siNo,
+            docDPL.writeTextInternalSmooth("Invoice No: " + siNo,
                     18, row, commanWidth, paramDPL);
 
-            //suplier code
-            row += 30;
-            docDPL.writeTextInternalSmooth("Supplier Code : " + mCustomer.getCustomerReferenceNo(),
-                    fontSize, row, commanWidth, paramDPL);
+            //suplier code (only when the customer has a reference no)
+            String supplierCode = mCustomer.getCustomerReferenceNo() == null ? "" : mCustomer.getCustomerReferenceNo();
+            if (!supplierCode.trim().isEmpty()) {
+                row += 30;
+                docDPL.writeTextInternalSmooth("Supplier Code : " + supplierCode,
+                        fontSize, row, commanWidth, paramDPL);
+            }
+
+            //invoice barcode (Code128) - printed directly below the TAX INVOICE title when enabled.
+            //uses the printer's native DPL barcode record ("e" = Code128, no human readable text);
+            //image download (writeImage) is not rendered by these RP4 units, so a bitmap barcode never prints.
+            //TODO: gate on mCustomer.isShowBarcode() once NAV sends the flag
+            row += 25;
+            paramDPL.setWideBarWidth(2);
+            paramDPL.setNarrowBarWidth(2);
+            paramDPL.setSymbolHeight(60); //barcode is 60 dots tall, drawn upwards from 'row'
+            docDPL.writeBarCode("e", siNo, row, 130, paramDPL); //col 130 centers the ~310 dot wide barcode on 4in media
+            Log.d("DPL_BARCODE", "Code128 record added: data=" + siNo + " row=" + row);
+            row += 30; //clearance so the title clears the top of the barcode
 
             //title
             row += 40;
@@ -477,6 +549,8 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
             System.arraycopy(docDPL.getDocumentData(), 0, printData, sDPL.getBytes().length, docDPL.getDocumentData().length);
 
 //            printData =  docDPL.getDocumentData();
+
+            logDplForDebug(mediaLength);
 
             new Thread(PrintInvoiceOnRP4Activity.this, "PrintingTask").start();
 
@@ -539,6 +613,34 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
         }
     }
 
+
+    //writes the generated DPL label commands (image binary excluded) to the app log file,
+    //so remote test prints can be verified without adb access
+    private void logDplForDebug(String mediaLength) {
+        try {
+            org.apache.log4j.Logger log = com.gui.mdt.thongsieknavclient.utils.Log4jHelper.getLogger();
+            String dpl = new String(printData, "ISO-8859-1");
+            int start = -1; //label section begins at STX (2) followed by L (76)
+            for (int i = 0; i + 1 < dpl.length(); i++) { if (dpl.charAt(i) == 2 && dpl.charAt(i + 1) == 76) { start = i; break; } }
+            int end = dpl.lastIndexOf("E\r\n");
+            String label = (start >= 0 && end > start) ? dpl.substring(start, end + 3) : "(label section not found)";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < label.length(); i++) {
+                char ch = label.charAt(i);
+                if (ch == 2) sb.append("<STX>");
+                else if (ch == '\r') continue;
+                else if (ch == '\n') sb.append(" | ");
+                else if (ch < 32 || ch > 126) sb.append(String.format(Locale.US, "<%02X>", (int) ch));
+                else sb.append(ch);
+            }
+            log.info("PRINT_RP4_DPL: ver=native-barcode-v3 siNo=" + siNo
+                    + " mediaLength=" + mediaLength
+                    + " totalBytes=" + printData.length
+                    + " label=" + sb);
+        } catch (Exception e) {
+            Log.e("PRINT_RP4_DPL", e.toString());
+        }
+    }
 
     public Customer getCustomer(String cusCode) {
         Customer customerObj;
