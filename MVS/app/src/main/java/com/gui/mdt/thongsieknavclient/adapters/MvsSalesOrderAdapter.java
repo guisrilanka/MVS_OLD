@@ -60,9 +60,10 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
             @Override
             public void onClick(View viewIn) {
 
-                if (status.equals(activity.getResources().getString(R.string.MVSSalesOrderStatusPending))
+                if (!isOrderLocked()
+                        && (status.equals(activity.getResources().getString(R.string.MVSSalesOrderStatusPending))
                         || status.equals(activity.getResources().getString(R.string.MVSSalesOrderStatusComplete))
-                        || status.equals(activity.getResources().getString(R.string.MVSSalesOrderStatusVoid))) {
+                        || status.equals(activity.getResources().getString(R.string.MVSSalesOrderStatusVoid)))) {
                     int position = viewHolder.getAdapterPosition();
 
                     SalesOrderLine msoSalesOrderLineObj = salesOrderLineList.get(position);
@@ -122,6 +123,11 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    //block edits once the order is converted/confirmed (live status check)
+                    if (isOrderLocked()) {
+                        return false;
+                    }
 
                    final int position = viewHolder.getAdapterPosition();
                    final SalesOrderLine sol = salesOrderLineList.get(position);
@@ -263,6 +269,11 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
+                    //block edits once the order is converted/confirmed (live status check)
+                    if (isOrderLocked()) {
+                        return false;
+                    }
+
                     final int position = viewHolder.getAdapterPosition();
                     final SalesOrderLine sol = salesOrderLineList.get(position);
 
@@ -372,6 +383,16 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
         }
 
         return viewHolder;
+    }
+
+    //live check against the activity's current order status. The adapter's own 'status'
+    //field is a snapshot from construction time and recycled view holders keep listeners
+    //from older adapter instances, so the snapshot cannot be trusted after void/convert.
+    private boolean isOrderLocked() {
+        if (activity instanceof MvsSalesOrderActivity) {
+            return !((MvsSalesOrderActivity) activity).isOrderEditable();
+        }
+        return false;
     }
 
     public float floatRound(float value_, int places) {
@@ -496,13 +517,18 @@ public class MvsSalesOrderAdapter extends RecyclerView.Adapter<MvsSalesOrderAdap
         holder.mTvItemDescroption.setText( salesOrderLineList.get(position).getNo()+" - "+
                 salesOrderLineList.get(position).getItemCrossReferenceDescription());
 
+        //re-apply the enable state on EVERY bind: recycled holders keep the state (and
+        //listeners) they were created with, so onCreateViewHolder alone is not enough
+        boolean locked = isOrderLocked();
+        holder.mTxtBillQTY.setEnabled(!locked);
+
         // Check if the item is an exchanged item
         if (salesOrderLineList.get(position).isExchangeItem()) {
             holder.mTxtExchQTY.setEnabled(false);
             holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.orange));
             applyColorCodesForExchange(salesOrderLineList.get(position).getQuantity(),holder);
         } else {
-            holder.mTxtExchQTY.setEnabled(true);
+            holder.mTxtExchQTY.setEnabled(!locked);
             holder.mTvNo.setBackgroundColor(activity.getResources().getColor(R.color.white));
             applyColorCodes(salesOrderLineList.get(position).getQuantity(),
                     salesOrderLineList.get(position).getExchangedQty(),

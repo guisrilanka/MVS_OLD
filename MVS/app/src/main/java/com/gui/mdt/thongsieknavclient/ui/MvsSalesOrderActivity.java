@@ -1571,6 +1571,19 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         updateItemCrossRefDetails();
     }
 
+    //live editability check - adapters must use this instead of a status snapshot, because
+    //recycled RecyclerView rows keep listeners from an old adapter whose status is stale
+    //(driver could still edit exchange qty after void -> edit -> re-convert and print a
+    //receipt whose lines no longer match the saved header totals)
+    public boolean isOrderEditable() {
+        if (mTempSalesOrder == null || mTempSalesOrder.getStatus() == null) {
+            return true;
+        }
+        String st = mTempSalesOrder.getStatus();
+        return !(st.equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))
+                || st.equals(getResources().getString(R.string.MVSSalesOrderStatusConfirmed)));
+    }
+
     public void applyStatus() {
         if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConfirmed))) {
             mBtnSearchCus.setEnabled(false);
