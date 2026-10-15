@@ -3058,7 +3058,17 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                         alert_.show();
                     } else if (mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConverted))
                             || mTempSalesOrder.getStatus().equals(getResources().getString(R.string.MVSSalesOrderStatusConfirmed))) {
+                        //reprint from the saved DB lines, never the in-memory list: an in-memory
+                        //edit after conversion (V0726-02814) printed 2/8 exch while DB and NAV
+                        //held 10/0, so the paper disagreed with its own header and with NAV
+                        getSalesOrderLineList(mTempSalesOrder.getNo());
                         mTempSalesOrder.setLineItems(mSalesOrderLineList);
+                        mMvsSalesOrderAdapter = new MvsSalesOrderAdapter(mSalesOrderLineList,
+                                R.layout.item_mvs_sales_order_detail_card
+                                , MvsSalesOrderActivity.this, mTempSalesOrder.getStatus()
+                                , mTempCustomer, deliveryDate);
+                        mRecyclerViewSalesOrderDetails.setAdapter(mMvsSalesOrderAdapter);
+                        updateSummeryValues(mSalesOrderLineList);
                         logSaveEditParams(mLocationName,"reprint", " SI_NO: " + mTempSalesOrder.getSINo());
                         openReport(mTempSalesOrder);
                     }

@@ -650,6 +650,11 @@ public class LoginActivity extends AppCompatActivity {
 //            Log4jHelper.configureSaveEditLog(saveEditLogFile, filePattern, maxBackupSize, maxFileSize);
                 Log4jHelper.configureMainLog(fileName, filePattern, maxBackupSize, maxFileSize);
                 Log4jHelper.configureSaveEditLog(saveEditLogFile, filePattern, maxBackupSize, maxFileSize);
+
+                //record the installed build so device logs identify which APK produced them
+                //(V0726-02814 investigation: could not tell from logs whether 2.4.1 was deployed)
+                Log4jHelper.getLogger().info("LoginActivity:-APP_VERSION : " + BuildConfig.VERSION_NAME
+                        + " (" + BuildConfig.VERSION_CODE + ")");
         }
     }
 
