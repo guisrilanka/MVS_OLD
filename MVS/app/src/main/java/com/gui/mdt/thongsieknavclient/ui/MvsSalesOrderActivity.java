@@ -2594,7 +2594,11 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
         protected void onPreExecute() {
             mProgressDialog = new ProgressDialog(MvsSalesOrderActivity.this);
             mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setMessage("Saving...");
+            if (mTaskName.equals("SoSaveBeforeConvert")) {
+                mProgressDialog.setMessage("Saving sales order and converting to invoice...");
+            } else {
+                mProgressDialog.setMessage("Saving...");
+            }
             mProgressDialog.show();
 
             mPoComments = mTxtPoComments.getText().toString();
@@ -3036,7 +3040,10 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                         AlertDialog.Builder builder_ = new AlertDialog.Builder(MvsSalesOrderActivity.this);
 
                         builder_.setTitle(getResources().getString(R.string.message_title_alert));
-                        builder_.setMessage("Do you want to convert this sales order to invoice?");
+                        //make the implicit save explicit: convert always saves the current
+                        //lines first, and that saved copy is what gets printed and sent to NAV
+                        builder_.setMessage("The sales order will be saved with the current quantities "
+                                + "and converted to an invoice.\n\nDo you want to continue?");
 
                         builder_.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
