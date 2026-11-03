@@ -366,7 +366,14 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
 
                             row += 20;
-                            docDPL.writeTextScalable(sol.getItemCrossReferenceNo(),
+                            //cross-ref fields are filled by the activity, not the DB; never let
+                            //a missing lookup abort the whole print
+                            String crossRefNo = sol.getItemCrossReferenceNo() == null
+                                    ? sol.getNo() : sol.getItemCrossReferenceNo();
+                            String crossRefDesc = sol.getItemCrossReferenceDescription() == null
+                                    ? (sol.getDescription() == null ? "" : sol.getDescription())
+                                    : sol.getItemCrossReferenceDescription();
+                            docDPL.writeTextScalable(crossRefNo,
                                     "01", row, 40, paramDPL);
                             docDPL.writeTextScalable(Math.round(sol.getQuantity()) + " " + itemUOM,
                                     "01", row, 130, paramDPL);
@@ -379,7 +386,7 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
                                     "01", row, 352, paramDPL);
 
                             row += 14;
-                            docDPL.writeTextScalable(sol.getNo() + " " + sol.getItemCrossReferenceDescription(),
+                            docDPL.writeTextScalable(sol.getNo() + " " + crossRefDesc,
                                     "01", row, commanWidth, paramDPL);
 
                         }
@@ -556,6 +563,9 @@ public class PrintInvoiceOnRP4Activity extends AppCompatActivity implements Runn
 
 
         } catch (Exception ex) {
+            //log as well as toast: V007 2.4.3 reprints failed 42 times in a day with no trace
+            com.gui.mdt.thongsieknavclient.utils.Log4jHelper.getLogger()
+                    .info("PRINT_RP4_BUILD_ERROR: siNo=" + mTempSalesOrder.getSINo() + " " + ex);
             Toast.makeText(PrintInvoiceOnRP4Activity.this, ex.getMessage(), Toast.LENGTH_SHORT)
                     .show();
         }

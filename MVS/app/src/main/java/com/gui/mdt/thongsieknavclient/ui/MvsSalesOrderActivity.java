@@ -3069,6 +3069,9 @@ public class MvsSalesOrderActivity extends AppCompatActivity implements View.OnC
                         //edit after conversion (V0726-02814) printed 2/8 exch while DB and NAV
                         //held 10/0, so the paper disagreed with its own header and with NAV
                         getSalesOrderLineList(mTempSalesOrder.getNo());
+                        //DB rows carry no cross-ref no/description; the printer writes them
+                        //directly and NPEs on null (V007 2.4.3: "Print pdf get issue ... getBytes")
+                        updateItemCrossRefDetails();
                         mTempSalesOrder.setLineItems(mSalesOrderLineList);
                         mMvsSalesOrderAdapter = new MvsSalesOrderAdapter(mSalesOrderLineList,
                                 R.layout.item_mvs_sales_order_detail_card
